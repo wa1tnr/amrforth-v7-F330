@@ -1,0 +1,21 @@
+# Various files
+*.o
+*.ko
+*.obj
+*.elf
+branches.log
+commas.log
+exits.log
+hidden-symbols.log
+immed.log
+iram.log
+labels.log
+rom.bin
+rom.hex
+sfrs.log
+sources.log
+symbols.log
+tags.log
+target-markers.bin
+xdatex
+_head

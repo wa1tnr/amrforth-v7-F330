@@ -45,6 +45,8 @@ create object-code  64 1024 * allot
 
 : download-all  (  - )
 	clear-sbuf cr
+        ." download-cygnal.fs:" cr
+        ." Silabs CP2104 is a suitable interface for uploading." cr cr
 	."     To download to the target," cr
 	." press and hold RESET on the target board," cr
 	." or turn off power to the target board," cr
