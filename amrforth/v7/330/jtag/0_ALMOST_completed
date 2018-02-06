@@ -1,0 +1,35 @@
+Tue Feb  6 09:19:41 UTC 2018
+
+Tests indicate that a combination of actions produces a
+new, functioning JTAG/C2 MCU from an old one.
+
+  An MCU that had a smaller program was reprogrammed
+  via C2 of the contents of this directory (the JTAG/C2
+  interface program).
+
+  Then the two MCUs were swapped.
+
+  The newly-minted JTAG/C2 unit seemed to do its job.
+
+  The older JTAG/C2 unit, now in the role of just an
+  application target, would not download via serial.
+  Changing its programming required C2 (which worked
+  fine).
+
+  Once it was reprogrammed with the contents of ../example
+  it was then able to redownload ia serial (CP2104
+  PiUART interface).
+
+It would seem that the JTAG/C2 program itself was not
+a good platform for downloading updates to its own
+code, at least not during these tests.
+
+Instead, a functioning JTAG/C2 programmed MCU is used
+to update another MCU, via C2 only, in some cases (as
+when it happens to be holding a program that does not
+have a good serial bootloader).
+
+Not certain it is possible to start from scratch, with
+just a pair of (uninitialized) factory MCUs.  Would
+probably require a working debugger of some sort, that
+can talk C2 and upload a binary.
