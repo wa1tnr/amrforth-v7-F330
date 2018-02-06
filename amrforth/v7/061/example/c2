@@ -1,0 +1,1 @@
+gforth -m 1M -e "false constant windows" ./c2.fs -e quit

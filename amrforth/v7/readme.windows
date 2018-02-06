@@ -1,0 +1,128 @@
+***** Release Note 03Dec04 *****
+*****     Version 7.0      *****
+
+Gforth version 0.6.2 has been updated such that it now works correctly
+in Windows 95, 98, and ME.  We now recommend using Gforth 0.6.2.  In
+fact only version 0.6.2 allows access to libraries that give us serial
+port access in Windows.
+
+If by chance you have Gforth installed, don't bother reinstalling it,
+unless you need to upgrade to 0.6.2.  Chances are you don't have it, so
+it is provided on a CD, and is available over the Internet as well.
+
+For Windows users, Gforth comes with a self installing
+file.
+
+Use Gforth version 0.6.2 on the CD, or to get the most recent version of
+Gforth go to:
+
+   http://www.complang.tuwien.ac.at/forth/gforth/
+
+and get the file named:
+
+   gforth-0.6.2.exe
+
+To get the latest version of amrforth go to the AM Research website at:
+
+   http://www.amresearch.com/
+
+and click on SOFTWARE, then amrFORTH_V7, then Download s/w Windows and
+click on the most recent version of amrforth-v7-windows-xxxxxxx.zip and
+amr-install.bat, and unzip.exe.  Install amrforth by running
+amr-install.bat either from the AMR CD or from the directory you
+downloaded it into.  amr-install.bat is just a batch file that runs
+unzip with the correct options on amrforth-v7-windows-xxxxxxx.zip in
+order to put amrforth into the right path.  You need to have all three
+files downloaded into the same directory, or use the CD.  Alternatively
+you can use winZIP or another unzip program.  Just be sure to use the
+path \amrforth\v7\ or the other scripts won't work.
+
+You will want to put all your files for a particular project in a
+separate directory.  For example, create \Projects\test.  Then start a
+command prompt (DOS window) and cd to \amrforth\v7.  At the command line
+type project \Projects\test and the 'project' batch program will copy
+the necessary files to your directory.  Now cd to \Projects\test.  Type
+config to run the configuration program.  Choose the appropriate comm
+port, processor, etc.
+
+Now you need a way to start amrforth (and/or amrBASIC).  If you are
+using Windows 98 the following works.  If you are using Windows 2000
+skip down to the win2000 instructions.  We have not tested the system in
+Windows XP, but suspect that the win2000 instructions would also work
+there.  By the way, the win2000 instructions will also work for windows
+98.
+
+***** Windows 98 *****
+
+Add a shortcut to the desktop that starts amr.bat.  One way to do this
+is to use explorer and create a shortcut for AMR.BAT.  Rename the
+shortcut to something like amrForth.  Edit its properties so that its
+target is:
+
+   C:\AMRFORTH\V6_4\300\EXAMPLE\AMR.BAT
+
+and it starts in:
+
+   C:\AMRFORTH\V7\300\EXAMPLE\
+
+Now when you click on the shortcut icon a window should appear labeled:
+
+   amrFORTH v7.0.x
+
+You will want to create a separate icon for each project directory you
+have.  An alternative is to start amr from a DOS shell.  CD to the
+project directory, e.g. c:\amrforth\v7\300\example as above, then type
+amr to run the amr.bat file.
+
+Finally you can try out amrForth v7.  Source code is included for the
+serial bootloaders for Cygnal f300 and f017 chips, as well as the JTAG
+converter for the f300 and some simple test code.  These are in the
+\amrforth\v7\300 and \amrforth\v7\017 directories.  From a DOS shell
+cd to \amrforth\v7\300\example and run the amr.bat script.  You should
+see the amrForth v7 UI.  Type config at the command line.  Choose
+the appropriate processor and comm port.
+
+There are several ways to download code depending on where it is going.
+Once the serial bootloader is installed you always download code by
+typing d at the command line.  Press reset on the target machine to
+invoke the serial bootloader.
+
+The serial bootloader is installed at the factory so you may never need
+to use the JTAG or C2 downloaders.  If you do need to install a serial
+bootloader you will need to have the JTAG program installed in an f300
+in the JTAG slot of the motherboard.  At the least you need a serial
+bootloader in the f300 in this slot.  You can install the JTAG converter
+program by cd'ing to \amrforth\v7\300\jtag and configuring in amr.bat.
+Use the 'turnkey' command to compile the turnkey jtag converter, then
+download the program using the 'd' command.
+
+Now be sure to have an f017, f310 or an f300 in the appropriate slot in
+the motherboard.  Test the JTAG converter by choosing jtag/dump for the
+f017 or c2/dump for the f300.  You should see a hex dump of the lowest
+page in memory on the target.  The jtag dump is 512 bytes and the C2
+dump is 256 bytes.  See more pages by choosing jtag/next or c2/next.  If
+the dump works you can install the serial bootloader by choosing
+jtag/download for the f017 or c2/download for the f300 or f310.  Use the
+dump and next to verify the download occurred.  Now you should be able
+to switch from the jtag serial port to the target serial port and
+download programs via the serial bootloader.
+
+***** Windows 2000 *****
+
+Gforth has a problem with system calls in Windows 2000 that prevents the
+amr.bat file from working properly.  To use amrForth in Windows 2000 you
+need to create your project directory as explained above, then cd to
+that directory and type 'copy \amrforth\v7\*.bat .' to copy a series of
+batch files for running portions of amrForth.  To compile the program in
+job.fs, type 'c' at the command line.  To make a turnkey type 'turnkey'.
+To download the object code from the compile, type 'd' and follow
+instructions.  To interactively test your code, type 'f' for a forth
+interpreter or 'b' for a basic interpreter.  In order for 'b' to work
+you must have compiled a basic program first.  To use the JTAG
+interface, type 'jtag', and for C2 type 'c2'.  To disassemble/decompile
+a word that you have compiled, type 'see <word>' replacing <word> with
+the name of the word.  These command are the same as the one provided on
+the amrForth command line when you run amr.bat in Windows 98, so you can
+read the documentation above and remember that you are at the Windows
+2000 command prompt instead of the amrForth command prompt.
+

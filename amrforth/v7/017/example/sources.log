@@ -1,0 +1,36 @@
+: source-filename$  ( a1 - a2 len) 
+	case 
+	997 of  s" kernel8051.fs"  endof
+	1075 of  s" kernel8051.fs"  endof
+	1085 of  s" kernel8051.fs"  endof
+	1099 of  s" kernel8051.fs"  endof
+	1250 of  s" kernel8051.fs"  endof
+	1264 of  s" kernel8051.fs"  endof
+	1298 of  s" kernel8051.fs"  endof
+	1352 of  s" kernel8051.fs"  endof
+	1360 of  s" kernel8051.fs"  endof
+	1372 of  s" kernel8051.fs"  endof
+	1427 of  s" debug.fs"  endof
+	1439 of  s" debug.fs"  endof
+	1447 of  s" debug.fs"  endof
+	1468 of  s" debug.fs"  endof
+	1472 of  s" debug.fs"  endof
+	1486 of  s" debug.fs"  endof
+	1492 of  s" debug.fs"  endof
+	1494 of  s" debug.fs"  endof
+	1500 of  s" debug.fs"  endof
+	1533 of  s" debug.fs"  endof
+	1546 of  s" debug.fs"  endof
+	1550 of  s" debug.fs"  endof
+	1589 of  s" debug.fs"  endof
+	1599 of  s" debug.fs"  endof
+	1607 of  s" debug.fs"  endof
+	1621 of  s" debug.fs"  endof
+	1689 of  s" debug.fs"  endof
+	1701 of  s" debug.fs"  endof
+	1769 of  s" debug.fs"  endof
+	1870 of  s" debug.fs"  endof
+	1876 of  s" debug.fs"  endof
+	1882 of  s" debug.fs"  endof
+	1903 of  s" debug.fs"  endof
+	endcase ; 

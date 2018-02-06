@@ -1,0 +1,2 @@
+#! /bin/sh
+ls -l ~/backups/linux/amrforth/v7/

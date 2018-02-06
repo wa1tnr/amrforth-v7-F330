@@ -1,0 +1,2 @@
+#! /bin/sh
+konqueror "file://$HOME/amrforth/www.amresearch.com/v6/index.html" &

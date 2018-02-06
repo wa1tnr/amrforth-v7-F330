@@ -1,0 +1,25 @@
+If you have purchased the amrGadget developer's system, you have four
+printed circuit boards.  The largest is called the motherboard.  The
+next smaller board is the f017 target board.  The remaining two smaller
+boards are the f300 target board and the JTAG interface board.
+
+Most of the time you will be developing code for one or the other of the
+target boards.  You should not install both at the same time.  This will
+not work.  Decide whether you are developing for the f017 chip or for
+the f300 chip, then install the appropriate board as follows:
+
+Hold the motherboard such that the two black modular connectors are in
+the lower right corner.  If you are using the f017 board, install it in
+the left most IDE connector, with the parts side facing you and the
+modular connectors.  If you want to use the f300 target board, install
+it into the middle IDE connector, once again with the parts side facing
+you and the modular connectors.  These two configurations will satisfy
+most of your programming needs.
+
+If you find that you need to use the JTAG interface board, it is
+installed in the right most IDE connector, also with the parts side
+facing you and the modular connectors.  In this case you must also
+install either the f017 board or the f300 board, but not both of them.
+
+We hope this will prevent confusion.
+

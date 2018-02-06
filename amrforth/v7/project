@@ -1,0 +1,10 @@
+# Move needed files into new project directory.
+# For final system, add confirmation.
+if [ $# == 0 ]
+then
+	echo "Where do you want the project?"
+	exit -1
+fi
+# echo "Move project files to $1  y/n"
+# Get response from keyboard, exit if not y or Y.
+./fresh-project $1

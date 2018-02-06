@@ -1,0 +1,2 @@
+db41a1f836e661d52d83e42454b186c5  ./amrforth-v7-linux-09May05.tar.gz
+4df00f1367051cd17835d47cd72c62d3  amrforth-v7-linux-09May05.tar

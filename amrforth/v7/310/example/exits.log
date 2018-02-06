@@ -1,0 +1,33 @@
+: exit-point?  ( a - flag) 
+	case 
+	943 of  -1  endof
+	1143 of  -1  endof
+	1149 of  -1  endof
+	1206 of  -1  endof
+	1220 of  -1  endof
+	1252 of  -1  endof
+	1302 of  -1  endof
+	1306 of  -1  endof
+	1381 of  -1  endof
+	1389 of  -1  endof
+	1401 of  -1  endof
+	1414 of  -1  endof
+	1428 of  -1  endof
+	1442 of  -1  endof
+	1475 of  -1  endof
+	1492 of  -1  endof
+	1541 of  -1  endof
+	1549 of  -1  endof
+	1563 of  -1  endof
+	1631 of  -1  endof
+	1643 of  -1  endof
+	1711 of  -1  endof
+	1745 of  -1  endof
+	1812 of  -1  endof
+	1818 of  -1  endof
+	1824 of  -1  endof
+	1830 of  -1  endof
+	1883 of  -1  endof
+	1905 of  -1  endof
+	0 swap
+	endcase ; 

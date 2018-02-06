@@ -1,0 +1,68 @@
+***** Release Note 03Dec04 *****
+*****     Version 7.0      *****
+ 
+If by chance you have Gforth installed, don't bother reinstalling it.
+You may have Gforth on your Linux distribution, SuSE for example
+includes it.  The latest version can also be found on the web at:
+
+   http://www.complang.tuwien.ac.at/forth/gforth/
+
+To install Gforth either get it from the website mentioned above or from
+the amrForth CD.  The file is named something like:
+
+   gforth-0.6.2.bin.i386-pc-linux-gnu.tar.gz
+
+The version number will change as time passes.  Be sure to get the one
+ending in .tar.gz for the Linux environment.  Copy that file into your
+home directory and untar it with:
+
+   tar -xvzf gforth-0.6.2.bin.i386-pc-linux-gnu.tar.gz.
+
+which will create subdirectories off you home directory.  To finally
+install Gforth, cd to ~/gforth-0.6.2, su to root, and run
+'make install'.  That should do it.
+
+To get the latest version of amrforth go to the AM Research website at:
+
+   http://www.amresearch.com/
+
+and click on SOFTWARE, then amrFORTH_V7, then Download s/w Linux and
+click on the most recent version of amrforth-v7-linux-xxxxxxx.zip and
+amr-install.  Install amrforth by running amr-install either from the
+AMR CD or from the directory you downloaded it into.  amr-install is
+just a script file that runs tar with the correct options on
+amrforth-v7-linux-xxxxxxx.zip in order to put amrforth into the right
+path.  You need to have both files downloaded into the same directory,
+or use the CD.  Of course you also need to be able to run tar on your
+system.  
+
+Finally you need a way to start amrforth (and/or amrBASIC).  The easiest
+way might be to start a shell window and use the command line.  For
+example cd to ~/amrforth/v7/300/example.  From there run amr and you
+should see the amrForth user interface.  To configure, type config at
+the command line.  Choose the appropriate processor and comm port.
+
+There are several ways to download code depending on where it is going.
+Once the serial bootloader is installed you always download code by
+typing d at the command line.  Press reset on the target machine to
+invoke the serial downloader.
+
+The serial bootloader is installed at the factory so you may never need
+to use the JTAG or C2 downloaders.  If you do need to install a serial
+bootloader you will need to have the JTAG program installed in an f300
+in the JTAG slot of the motherboard.  At the least you need a serial
+bootloader in the f300 in this slot.  You can install the JTAG converter
+program by cd'ing to ~/amrforth/v7/300/jtag/ and configuring in 'amr'.
+Use the 'turnkey' command to compile the turnkey jtag converter, then
+download the program using the 'd' command.
+
+Now be sure to have an f017, f310 or an f300 in the appropriate slot in
+the motherboard.  Test the JTAG converter by choosing jtag/dump for the
+f017 or c2/dump for the f300 or f310.  You should see a hex dump of the
+lowest page in memory on the target.  The jtag dump is 512 bytes and the
+C2 dump is 256 bytes.  See more pages by choosing jtag/next or c2/next.
+If the dump works you can install the serial bootloader by choosing
+jtag/download for the f017 or c2/download for the f300 or f310.  Use the
+dump and next to verify the download occurred.  Now you should be able
+to switch from the jtag serial port to the target serial port and
+download programs via the serial bootloader.

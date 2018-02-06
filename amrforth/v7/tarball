@@ -1,0 +1,2 @@
+tar -cvzpf amrforth-v7-linux-$(date +%d%b%y).tar.gz ./amrforth/*
+cp amrforth-v7-linux-$(date +%d%b%y).tar.gz ~/release/

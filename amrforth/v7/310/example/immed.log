@@ -1,0 +1,1 @@
+." s" exec: next for r>drop dup>r dup0<notuntil dup0<until dup0=until dupnotuntil dupuntil dup0<notif dup0<if dup0=if dupnotif dupif 1-dup0=until repeat while again until begin then else if r@ i r> pop >r push -; ; [ \s \ ( [char] ['] #lit #xor #or #and literal nip [asm exit 

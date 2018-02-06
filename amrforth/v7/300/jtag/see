@@ -1,0 +1,2 @@
+#! /bin/sh
+ssh -l prog1 fileserver ls -l /home/Public/amrforth/v7

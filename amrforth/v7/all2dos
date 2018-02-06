@@ -1,0 +1,3 @@
+#! /bin/bash
+for file in *; do unix2dos $file; done
+

@@ -1,0 +1,6 @@
+2005-4-8 10:46:47
+tib	8	$08
+buffer	12	$0C
+addr	76	$4C
+flash-timing	77	$4D
+dump-page	78	$4E

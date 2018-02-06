@@ -1,0 +1,11 @@
+: branch-point?  ( a - flag) 
+	case 
+	1345 of  -1  endof
+	1970 of  -1  endof
+	2079 of  -1  endof
+	2220 of  -1  endof
+	4536 of  -1  endof
+	4555 of  -1  endof
+	4574 of  -1  endof
+	0 swap
+	endcase ; 

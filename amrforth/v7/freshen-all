@@ -1,0 +1,18 @@
+# echo 300/boot
+# ./fresh-project ./300/boot
+echo 300/jtag
+./fresh-project ./300/jtag
+echo 300/example
+./fresh-project ./300/example
+# echo 310/boot
+# ./fresh-project ./310/boot
+echo 310/example
+./fresh-project ./310/example
+# echo 017/boot
+# ./fresh-project ./017/boot
+echo 017/example
+./fresh-project ./017/example
+# echo 061/boot
+# ./fresh-project ./061/boot
+echo 061/example
+./fresh-project ./061/example

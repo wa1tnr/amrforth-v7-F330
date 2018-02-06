@@ -1,0 +1,1 @@
+scp /home/prog/release/* prog1@fileserver:/home/Public/releases/current/

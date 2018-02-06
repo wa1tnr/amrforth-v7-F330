@@ -1,0 +1,430 @@
+Thu Oct 14 15:25:04 PDT 2004 zip011
+-- Move v6.4 to this directory.  Started a text based user interface,
+run by the shell command ./amrf.  Started a configuration program.
+Downloaders for Cygnal and ADuC.  Makefile for use in Linux and with
+VIM.  Script for downloading from the shell, d.
+
+Fri Oct 15 16:35:57 PDT 2004 zip012
+-- Factored and streamlined the config.fs program.  Not finished.
+
+Mon Oct 18 12:07:06 PDT 2004 zip013
+-- Finished with config.fs for now.
+
+Wed Oct 20 13:16:14 PDT 2004 zip014
+-- In process of converting 8051 disassembler to work in v7.
+
+Wed Oct 20 17:50:44 PDT 2004 zip015
+-- Much more of the disassembler finished.  Added byte dump, colors,
+labels.  Need to get all the byte dumps right (1, 2, or 3 bytes) and
+handle inline literals such as lit and (s").
+
+Thu Oct 21 15:02:15 PDT 2004 zip016
+-- Changed definition of 2+ from high level to code.  Added display of
+inline literals and ; for tail recursed jumps to the
+decompiler/disassembler.
+
+Thu Oct 21 15:51:40 PDT 2004 zip017
+-- Made a change in metacomp.fs which fixed the spacing for calls and
+jumps without labels in the decompiler/disassembler.
+
+Thu Oct 21 16:03:50 PDT 2004 zip018
+-- More minor spacing changes.
+
+Fri Oct 22 17:19:28 PDT 2004 zip019
+-- Improved the decompiler/disassembler.  Now you can type see <word>
+from the main screen and the disassembler is loaded and run on <word>.
+Finished the byte dump words for each instruction.  Coded >get in
+interpret.fs in preparation for the single-stepper.  Centralized the
+colorscheme into a single file.  It had been redundantly spread out.
+
+Mon Oct 25 14:48:08 PDT 2004 zip020
+-- Separated the screen background and scroll window commands out and
+centralized them in system.fs.  The individual modules can now be run
+separately in a normal shell window such that the shells history
+function is not defeated.
+
+Mon Oct 25 15:54:53 PDT 2004 zip021
+-- In the decompiler/disassembler now the SFRs are displayed by name,
+not just by address.
+
+Mon Oct 25 16:15:54 PDT 2004 zip022
+-- Made a new log file to mark addresses in tables compiled by , and c,
+so that the disassembler/decompiler can avoid trying to disassemble
+table entries.
+
+Tue Oct 26 15:39:28 PDT 2004 zip023
+-- First pass at the single stepper.  No special cases are handled yet,
+only calls and tail recursive jumps.
+
+Wed Oct 27 15:59:35 PDT 2004 zip024
+-- Single stepping through branch (one of the jump instructions)
+correctly.  Needed to make another log file to do it, namely
+branches.log.  This is so that a branch can be distinguished from a tail
+recursive jump, impossible otherwise I think.
+
+Wed Oct 27 17:35:49 PDT 2004 zip025
+-- Got the branch to look right when stepping through begin again.  The
+timing had to be tweaked.  Also LIT works now.
+
+Thu Oct 28 11:06:35 PDT 2004 zip026
+-- Development is taking place in ./300/example.  I added a couple of
+scripts there to check and see if the important files are identical in
+each directory.  This is to be sure I have copied the new files into
+this directory before saving the latest version.  The scripts are called
+check and checkall.  Using them I found 2 files that hadn't been
+synched.
+
+Thu Oct 28 11:26:58 PDT 2004 zip027
+-- Changed colorscheme, using bold text in disassembler makes yellow
+look yellow instead of brown.  Replicated SEE in the inteprpreter as
+well as in the main window.  More convenient for debugging.
+
+Thu Oct 28 12:06:50 PDT 2004 zip028
+-- Single stepper now handles ?BRANCH.
+
+Thu Oct 28 15:22:23 PDT 2004 zip029
+-- Single stepper now handles FOR,NEXT.  Return stack is not simulated,
+the target return stack is used.  This means that words like r@ can run
+on the target without simulation.
+
+Thu Oct 28 16:28:26 PDT 2004 zip030
+-- Single stepper now handles (STRING) for s".
+
+Thu Oct 28 16:40:03 PDT 2004 zip031
+-- Added the 'e' command to system.fs, which for now runs my favorite
+editor, VIM.
+
+Fri Oct 29 16:37:02 PDT 2004 zip032
+-- Got nesting to work.  Started attempting to handle the hand optimized
+code sequences in the single stepper.  Got the colors more centralized
+it the file colorscheme.fs.  Still need to do same in system.fs.  Added
+rdepth and .rs to the stock system because it is very useful in the
+single stepper.
+
+Mon Nov  1 16:24:45 PST 2004 zip033
+-- Got the single stepper working with source display, similar to the
+old F-PC and v5 single steppers.  Not finished, can't nest yet.  Also no
+controlling the size of the source display yet.
+
+Tue Nov  2 12:15:08 PST 2004 zip034
+-- Working in getting the source display to scroll when it's too long
+for the space allotted.  Added the instruction lines.
+
+Tue Nov  2 13:59:37 PST 2004 zip035
+-- Got the scrolling to look pretty good, including a stack dump right
+under the source code display.  Still needs more testing.
+
+Tue Nov  2 15:59:24 PST 2004 zip036
+-- Apparently fixed bug in single stepper where EXIT (RET) would crash.
+Needs more testing though.
+
+Wed Nov  3 11:40:26 PST 2004 zip037
+-- Fixed the EXIT bug even better.  Now the ; gets properly highlighted
+while waiting to be executed, when the RET instruction has been
+compiled.  Added refresh-display, in case the display ever gets messed.
+
+Wed Nov  3 14:03:29 PST 2004 zip038
+-- Cosmetic changes to do-forth in the single stepper.
+
+Wed Nov  3 14:44:13 PST 2004 zip039
+-- Got the first code optimization to single step, namely 1-dup0=until.
+
+Wed Nov  3 16:34:02 PST 2004 zip040
+-- Got most of the optimizations working in the single stepper.  Still
+to do: dup>r, r>drop, #and, #or, #xor, #lit.
+
+Thu Nov  4 10:26:13 PST 2004 zip041
+-- Added dup>r and r>drop to the list of optimizations that can be
+single stepped.
+
+Thu Nov  4 10:58:18 PST 2004 zip042
+-- Added #and, #or, #xor, and #lit to the list of optimizations that can
+be single stepped.
+
+Thu Nov  4 11:41:11 PST 2004 zip043
+-- Renamed dup0=if and dup0=until to dupnotif and dupnotuntil.  They
+seem more consistent now with dup0<notif and dup0<notuntil.
+
+Thu Nov  4 16:01:23 PST 2004 zip044
+-- Exec: is handled in the single stepper.  There is still a bug when
+nesting into a word containing exec:, need to solve that tomorrow.
+
+Fri Nov  5 11:14:55 PST 2004 zip045
+-- Still can't nest into a create,does> word in the single stepper.
+Make immediate words for #and, #or, #xor, and #lit to be used in high
+level forth.  They reclaim the preceeding literal and assemble the
+appropriate optimized code.
+
+Fri Nov  5 14:05:52 PST 2004 zip046
+-- Source code display is correct for DOES> type words, even nesting,
+except in the case of the beginning of the word, the DOES> code segment.
+The single stepper handles the code correctly, just doesn't display the
+source quite right.
+
+Mon Nov  8 13:03:32 PST 2004 zip047
+-- Still unable to get the highlighting correct on the word DOES>, but
+the source _is_ displayed and all the other words are highlighted
+correctly.
+
+Thu Nov 11 14:20:12 PST 2004 zip048
+-- Got serial ports working for Gforth in Windows today.  Used calls to
+the file cygwin1.dll using the new fflib.fs for Gforth 0.6.2.  Still a
+few problems.  The file gforth.fi can't be found when I call gforth from
+gforth, unless it is copied into the local directory.  The bottom line
+of the display isn't used properly in Windows yet.  Otherwise, pretty
+good!
+
+Tue Nov 16 15:45:29 PST 2004 zip049
+-- The display is pretty much the same now in Windows and Linux.  Row
+numbers seem to be off by one in Windows vs. Linux for the ansi display.
+
+Thu Nov 18 15:17:26 PST 2004 zip050
+-- Removed words to create stepper-source-file, which was only needed by
+Tcl/Tk.  Noticed problems with single-stepper.
+
+Thu Nov 18 15:37:45 PST 2004 zip051
+-- The single-stepper problem was the wrong mask for absolute addresses.
+Fixed.
+
+Thu Nov 18 16:00:32 PST 2004 zip052
+-- Cleaned up kernel8051.fs, removing commented out lines.  Also removed
+some unneeded files.
+
+Fri Nov 19 12:00:54 PST 2004 zip053
+-- Fixed a bug in singlestepper where C for continuous would crash at
+the end of a word.
+
+Fri Nov 19 14:38:51 PST 2004 zip054
+-- Added the special word 'timing' to the intepreter, which toggles the
+timing display variable.
+
+Fri Nov 19 16:52:57 PST 2004 zip055
+-- Started restoring BASIC to v7.  The compiler from v6 still works, but
+the interpreter needs to be recoded in forth.
+
+Mon Nov 22 12:48:57 PST 2004 zip056
+-- Changed BASIC interpreter so that hostbasic is a vocabulary rather
+than a series of comparisons.  Much simpler and more compact.
+
+Mon Nov 22 13:53:59 PST 2004 zip057
+-- Got infix to at least partially work in basicinterpreter.fs.
+
+Mon Nov 22 16:59:28 PST 2004 zip058
+-- Filled out the basic interpreter to include LET, PRINT, GOSUB, PAUSE,
+WAIT, HIGH, and LOW.  PAUSE is too slow.
+
+Tue Nov 23 16:06:40 PST 2004 zip059
+-- Fixed disassembler to show SFR name for PUSH and POP.  Changed the
+top and bottom line displays.  They are more standardized and factored
+better.
+
+Tue Nov 23 17:18:30 PST 2004 zip060
+-- c2.fs has some real words in it now, though untested.
+
+Mon Nov 29 16:43:25 PST 2004 zip061
+-- c2.fs has been fleshed out and tested.  Noticed that the jtag code
+has not yet been converted to subroutine-threaded, won't compile.  We've
+been using the v5 compilation.
+
+Mon Nov 29 18:10:05 PST 2004 zip062
+-- Jtag.fs has been fleshed out too and mostly tested.  The code common
+to each (C2 and JTAG) has been separated into the file jtag_c2.fs to
+avoid redundancy or missed changes.
+
+Wed Dec  1 13:21:25 PST 2004 zip063
+-- Changed bootf300.fs, bootf017.fs, and bootf061.fs.  Renamed COLD to
+RESET to avoid the not unique message.  Also RESET makes more sense.
+
+Thu Dec  2 14:01:28 PST 2004 zip064
+-- Moved and tested the converted JTAG file for 300 from v6.4.  Deleted
+some unneeded files from past versions.  Still need to go through
+'release' and 'prepinstall'.
+
+Thu Dec  2 17:25:26 PST 2004 zip065
+-- Added 'help local' and 'help online' to run a browser for help.
+Tested in Linux with konqueror so far, not in Windows yet.
+
+Thu Dec  2 17:50:15 PST 2004 zip066
+-- Worked on the 'prepinstall' script for releasing a new version.
+Still needs testing.
+
+Fri Dec  3 14:36:33 PST 2004 zip067
+-- Gforth in Windows has a path problem where it can't find gforth.fi
+sometimes.  The cure seems to be to put gforth.fi in the current
+directory.  'amr.bat' now copies gforth.fi into the current directory
+before running gforth.  Not very satisfying but it works.
+
+Fri Dec  3 17:51:58 PST 2004 zip068
+-- Updated the readme files in the amrForth home directory to refer to
+v7 instead of v6.  Added an 'e' command back into the file 'system.fs',
+which runs vim by default.
+
+Mon Dec  6 17:54:43 PST 2004 zip069
+-- Added the following batch files: c.bat, turnkey.bat, d.bat, f.bat,
+b.bat, see.bat, c2.bat, and jtag,bat.  This is for Windows 2000 users
+and maybe XP too.  Gforth can't seem to call another gforth in Windows
+2000.
+
+Mon Dec  6 18:46:24 PST 2004 zip070
+-- Fixed batch files: config.bat and project.bat.
+
+Wed Dec  8 18:55:09 PST 2004 zip071
+-- In the process of adding support for 8051, 8052, 80c451, 80c552, and
+80c537.  Downloader not working yet.
+
+Thu Dec  9 14:05:52 PST 2004 zip072
+-- Made changes in serial-linux.fs and serial-windows.fs to allow use of
+the old amr boards at 19200 baud.
+
+Thu Dec  9 14:37:32 PST 2004 zip073
+-- Made changes in end8051.fs and download-oldamr.fs, to allow
+downloading to and then cold starting our old boards.
+
+Thu Dec  9 15:08:31 PST 2004 zip074
+-- Fixed the project.bat file so it correctly checks for the existence
+of the project directory.
+
+Fri Dec 10 13:42:00 PST 2004 zip075
+-- Fixed end8051.fs so that it still works with the new system, not just
+the old one!
+
+Fri Dec 10 14:12:50 PST 2004 zip076
+-- Updated readme.windows to help people using Windows 2000 figure out
+how to use amrForth.  A problem in gforth in Windows 2000 prevents the
+main host user interface from working, so Windows 2000 users must work
+from the command prompt instead.
+
+Mon Dec 13 18:58:52 PST 2004 zip077
+-- Fixed a bug in the word 'string' in the file 'config.fs' which caused
+a control character to appear in the file 'amrfconf.fs'.
+
+Tue Dec 14 18:27:00 PST 2004 zip078
+-- Supporting the Atmel AT89C51RC2 including 'download-atmel.fs'.  This
+is mainly for the prototype webGadget.
+
+Wed Dec 15 14:27:03 PST 2004 zip079
+-- In response to Wolfgang Allinger's concerns, the operators /mod, /,
+mod, and */ have been made optional.  Edit the file 'compile.fs' to
+choose from three versions, unsigned, symmetric, and floored.  The
+signed operators still need testing.
+
+Wed Dec 15 17:57:11 PST 2004 zip080
+-- Now words with embedded double quotes can be used without confusing
+the disassembler, singlestepper, or interpreter.  Also the optimized
+words dupnotif and dupnotuntil have aliases dup0=if and dup0=until.
+Added 'forth.vim' for those who use vim as their editor.
+
+Tue Dec 21 13:59:25 PST 2004 zip081
+-- Fixed bug in iramLOG in 'kernel8051.fs' which showed incorrect
+addresses.  Bug noticed and fixed by Wolfgang Allinger.  Thanks.
+
+Wed Jan  5 10:52:54 PST 2005 zip082 v7.0.1 beta
+-- Fixed spelling of http://www.complang.tuwien.ac.at/forth/gforth/ in
+both readme.windows and readme.linux.  Now maybe people can find gforth.
+Thanks to Henrik Thurfjell for pointing this out.
+
+Fri Jan  7 14:38:15 PST 2005 zip083
+-- Fixed some bugs pointed out by Ed of Australia.  The file config.fs
+refered to the files 'sfr-51.fs' and 'sfr-52.fs'.  Changed to
+'sfr-31.fs' and 'sfr-32.fs', since those are the names of the actual
+files.  Also the file 'compile.fs' sets the fpath to a v6 directory.
+Rather than change this to v7 I removed it as we no longer have any need
+to know where the installation directory is.  Any file that is needed is
+copied into the project directory.  Also, the file 8051.bin was an old
+kernel/loader rom for 8051/80c451 chips, those with only 128 bytes of
+internal RAM.  It was set up for 9600 baud, should be 19200 baud.  The
+new file, 80c451.bin is set up for 19200 baud.  It should work for any
+8051 that has only 128 bytes of RAM.
+   Added the definition  : t  turnkey ;  to system.fs.  I got tired of
+typing the whole word over and over.
+
+Fri Jan  7 15:22:32 PST 2005 zip084 v7.0.2_beta
+-- Freshened all the example directories, bumped the name, ran
+prepinstall to create a release.
+
+Thu Jan 13 12:06:05 PST 2005 zip085
+-- Made a conditionally compiled word gforth-string which is used to
+call gforth from gforth.  Different in Windows than in Linux.  Also did
+same for amr.bat, as suggested by Bob Nash from his experience with
+Windows 2000.
+
+Thu Jan 13 14:17:15 PST 2005 zip086
+-- Tested those changes in Windows 98, and they don't work!  Don't know
+why.  Since I don't have 2000 or XP to test on, I will leave this for a
+later time, and go back to what works for 98.
+
+Fri Mar 18 11:24:38 PST 2005 zip087
+-- Added basicinterpreter.fs to freshen-project, in case anyone wants to
+use amrBASIC.  Also added bash scripts compile, download, interpret, for
+people who want to work from the bash command line in Linux.  Fixed bugs
+in mathfloored.fs and mathsymmetric.fs, namely an incorrect ?negate.
+
+Fri Mar 18 12:45:01 PST 2005 zip088
+-- Experimenting with a suggestion from Wolfgang Allinger, namely to
+include the bootloader with each compiled program.  This would eliminate
+the need for a separate bootloader image and a separate bootloader
+directory.  A bootloader can be compiled and installed via JTAG from any
+directory.  Also the initialization code exists in every project
+directory, not just the bootloader directory.  The only thing to be
+careful about is assuming that the bootloader in the chip is the same as
+the one you just compiled, since it is only downloaded via JTAG.  Thanks
+Wolfgang, I wish I had thought of this in the first place.  (Charley).
+So far implemented only in /amrforth/v7/300/example for testing.
+
+Fri Mar 18 15:31:28 PST 2005 zip089
+-- Extending ubiquitous bootloader into the 310.  Had to change 300/jtag
+program to eliminate single use of /mod as well as headers for / and
+mod, since they are not included by default anymore.
+
+Fri Mar 25 15:25:31 PST 2005 zip090
+-- Extended the ubiquitous bootloader into the 017.  Also started a lib
+directory and included one file so far, adc310.fs.
+
+Fri Mar 25 15:44:47 PST 2005 zip091
+-- Extended bootloader into 061.  Haven't deleted the ~.../boot
+directories yet.
+
+Fri Mar 25 16:22:04 PST 2005 zip092
+-- Deleted the ~.../boot directories.  Added a line to prepinstall for
+changing the 061/example directory to DOS format.  Commented out the
+lines doing same to the boot directories.  Now each of the Silicon
+Laboratories (Cygnal) chips has its bootloader compiled along with it
+always.  There is no longer a special bootloader file.  Any rom.hex will
+act as a bootloader file if installed via JTAG.  Thanks again Wolfgang.
+
+Mon Apr  4 11:32:56 PDT 2005 zip093
+-- Added some filenames to "project.bat" so that it works just like the
+Linux version.
+
+Tue Apr 12 14:03:32 PDT 2005 zip094
+-- Made 'download-aduc.fs' work with both Linux and Windows, as the rest
+of the downloaders already did.
+
+Wed May  4 13:04:45 PDT 2005 zip095
+-- Added more .bat files to project.bat, so that users of NT, win2000,
+XP, etc., can use the individual batch files when amr.bat fails.
+Something about the NT branch of windows prevents Gforth from calling
+another instance of Gforth.
+
+Wed May  4 13:28:36 PDT 2005 zip096
+-- Renamed see.bat show.bat, because I always have a script named see in
+my project directories that shows my zip directory for that project.
+Now type 'show <word>' instead of 'see <word>' for disassembly and
+decompilation.
+
+Wed May  4 14:30:28 PDT 2005 zip097
+-- Cleaned up the scroll-window for single stepper.  It works properly
+both from amr and from f.  Needs to be tested in windows too.  All this
+is to make amrForth work in NT, win2000, and probably XP.
+
+Fri May  6 11:01:06 PDT 2005 zip098
+-- Added one more unix script (bash actually), called 'go'.  It attempts
+to Compile, Download, and interpret Forth, in a single command.  If the
+compile or the download fails, then no further commands are tried.  This
+is run from the shell, not from 'amr'.
+
+Mon May  9 12:04:56 PDT 2005 zip099
+-- Renamed version to v7.1.0_beta in system.fs.  Making a new release
+for the website.
+
+

@@ -1,0 +1,1 @@
+gforth -m 1M -e "false constant windows" ./amrfconf.fs -e "downloader included"

@@ -1,0 +1,3 @@
+amrFORTH v7.1.0_beta HOST C8051F330 9600 baud /dev/ttyUSB0
+ script $ gforth --version
+gforth 0.6.2

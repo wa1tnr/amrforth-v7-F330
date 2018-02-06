@@ -1,0 +1,1591 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="generator" content="Bluefish pre0.7">
+<link rel ="shorcut icon" href="http://www.amresearch.com/graphics/amr.ico">
+<style type="text/css">
+body { font-family: helvetica, arial, sans-serif }
+</style><title>Version Six</title><!-- base href="http://www.amresearch.com/hardware.html" -->
+</head>
+
+<body>
+<div align="center">
+<img src="../graphics/logo5.gif" border="0" alt="amrlogo">
+</div>
+
+<table cellpadding="6" cellspacing="1" border="0" align="center" width="95%">
+<tbody>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4" align="center">
+<h1>amrFORTH V6</h1>
+</td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr>
+<td colspan="2" align="left"><h2>Table of Contents</h2></td>
+<td align="center"><font size="-3">Shortcut to <a href="./windows/">Windows</a> files</font></td>
+<td align="center"><font size="-3">Shortcut to <a href="./linux/">Linux/BSD</a> files</font></td>
+</tr>
+
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+<ul>
+<li><a href="index.html#intro"><b>Introduction</b></a>
+<ul>
+<li><a href="index.html#BASIC"><b>Basic</b></a></li>
+<li><a href="index.html#FORTH"><b>FORTH</b></a></li>
+<li><a href="index.html#Assembler"><b>Assembler</b></a></li>
+<li><a href="index.html#better"><b>Why AM Research?</b></a></li>
+</ul></li>
+
+<li><a href="index.html#install"><b>Install</b></a>
+<ul>
+<li><a href="index.html#windows"><b>Windows Install</b></a></li>
+<li><a href="index.html#linux"><b>Linux/BSD Install</b></a></li>
+</ul></li>
+
+<li><a href="index.html#startup"><b>Startup</b></a></li>
+<li><a href="index.html#features"><b>Features</b></a></li>
+
+<li><a href="index.html#interpreter"><b>Interpreter</b></a>
+<ul>
+<li><a href="index.html#linkd"><b>Basic Commands</b></a></li>
+<li><a href="index.html#linke"><b>Forth Words</b></a></li>
+</ul>
+</li>
+
+<li><a href="index.html#history"><b>History</b></a></li>
+<li><a href="index.html#terminology"><b>Terminology</b></a></li>
+<li><a href="index.html#appnotes"><b>Application Notes</b></a></li>
+</ul>
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4"><div align="center">
+<a name="intro"><font size="+2"><b>Introduction</b></font></a><font size="+1"></font></div>
+</td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4" valign="top">
+<a name="BASIC"></a><font size="+1"><b>Why Basic?</b></font> Basic offers one major advantage to precompiled langauges such as Assembler or 'C', it allows the programmer to incrementally and interpretatively test work in progress. This encourages small modules of tested, trusted, code. These modules are then linked together as subroutines. &nbsp;&nbsp; Unlike Assembler and 'C' BASIC doesn't require large, expensive, bulky support equipment such as in-circuit-emulators or single-step debuggers.<br><br>
+
+Another advantage is that BASIC is a &#8220;High Level Language&#8221; allowing the programmer to accomplish more in a single command making the program more comprehensible and much shorter.  C did have advantages but at the same time brought about it's own set of problems; mainly C was arcane, difficult to learn, and expensive for usable implementations. Being deveopled for large systems, C is overkill for most embedded projects...<br><br>
+
+BASIC's major advantage is that it isolates us from much of the underlying structure permiting the programmer to focus directly upon the problem at hand rather than on their tools. </td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4">
+<a name="FORTH"></a><font size="+1"><b>Why FORTH?</b></font> amrFORTH Is a new species of the machine-control language FORTH, a high level language with a kernel of about half a kilobyte while remaining fully interactive, able to interpret keyboard commands.  amrFORTH contains a full slate of functions including editor, compiler, serial communications to the host terminal, an assembler, and soon a disassembler, decompiler and single-step source level debugger. All in as little as 582 bytes of memory on the target microcontroller.<br><br>
+
+Our Gadget series complements current technology amr51, amr451, amr537, amr552 and amr6811 products in a classification called "Tethered Microcontrollers". In this class much of the overhead not needed in embedded applications is relegated to the Host/File server for two reasons, first moving the compiler and interpreter to the host dramatically reduces the ROM requirements of the Target system and, secondly, the Host has more horsepower and is able to reduce the compilation time significantly.<br><br>
+
+As application engineers ourselves, we need a complete development system wherein we can remain within a friendly environment, any environment would do if only we could work within one command set.  We, too, suffered the vicious time wasting cycle of editing the program in a word processor or a commercial assembler, compiling with another set of commands, spitting the result to disk and exiting to DOS where we would have to copy the file to a ROM burner directory, move to that directory and enter the ROM burner program, find and fry the EPROM, exit back to DOS or switch to an In-Circuit-Emulator to debug in yet another language. Ugh! Then, when the inevitable bug was found we would have to repeat this terribly time consuming process.<br><br>
+
+Now, with amrFORTH and amrBASIC, we are free to develop applications with a fully interpretive language where debugging is quick and simple, compilation is essentially instantaneous, the editor, ROM emulator, ROM burner, decompiler and disassembler are all available within a unified framework.  Read on and go where your interest takes you, this manual has been written in a modular manner with each chapter complete in itself Some of the examples and code are better understood if you have a Target system functioning at your fingertips. Within a very short time it is reasonable to expect a productivity improvement factor of 10 or more over assembler, basic or 'C' languages while obtaining an improvement of 2 to 20 times in execution speed.<br><br>
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+<a name="Assembler"></a><font size="+1"><b>Why Assembler?</b></font><br>
+
+<b>Assembler has a number of uses:</b>
+<ul>
+<li>When you want absolute control over your code without the compiler getting in the way.</li>
+<li>Some things	are just easer to do in assembler than in high level Forth or Basic.</li>
+<li>For dinosaur programmers who refuse to use modern tools.</li>
+<li>Adding features that are otherwise unavailable.<br><br></li>
+</ul>
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4"><p>
+<a name="better"></a><font size="+1"><b>Why AM Research Gadgets are better than stamps</b></font></p>
+<ul>
+	<li>They're faster.  Not just a bit faster.  Not twice as fast.  In some cases our Gadgets are 2,500 times faster than stamps!</li>
+	<li>They use a higher level of integration.  Standard features included which are unavailable on stamps.</li>
+	<li>Standard core processing unit.  Based upon the 8051 which has been tested by professionals for 30 years.</li>
+	<li>More features.  Timer/counters, A/D's, multiple UART's, D/A's.<br><br></li>
+</ul>
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+<a name="install"></a><div align="center"><font size="+2"><b>Install</b></font></div>
+</td></tr>
+
+<tr><td colspan="4">
+Installation is similar in both Windows and Linux/BSD.    Just choose Windows or Linux, then from CD or from the Web:
+</td></tr>
+
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4">
+<a name="windows"></a><font size="+1"><b>Windows Install</b></font>
+
+<ul>
+<li><b>Installing From CD</b><br>
+
+<ul>
+<li><b>Install Tcl/TK</b><br> &nbsp;&nbsp; Using File Explorer, or any GUI file browser, find the \windows directory on the CD. &nbsp;&nbsp; Hold down the control key on your keyboard, click on the ActiveTcl8.4.2.0-win32-ix86.exe icon drag and drop it onto your desktop.  This copies the install file rather than making a shortcut.  Now run the installer by double clicking on the icon on your desktop.  Follow instructions and accept the default directory paths.  When the installer has finished you may delete the icon from your desktop.  Tcl/Tk will not install directly from the CD, you must copy it to your workstation and install from there.</li>
+
+<li><b>Install Gforth</b><br> &nbsp;&nbsp; From the CD execute: "gforth-0.5.0.exe"  (or newer revision) and follow the instructions.  Use all suggested folders and directories.</li>
+
+<li><b>Install amrFORTH</b><br> &nbsp;&nbsp; From the CD execute amr-install.bat to complete the installation.</li>
+
+<li><b>Run amrFORTH</b><br> &nbsp;&nbsp; Now, to launch and execute amrFORTH or amrBASIC go to <a href="index.html#startup"><b>Startup</b></a></li>
+
+</ul><br>
+
+</li><li><b>Installing From the Web</b>
+<ul>
+<li><b>Install Tcl/TK</b><br> &nbsp;&nbsp; Download and execute:   <a href="http://aspn.activestate.com/ASPN/Downloads/ActiveTcl/">Tcl/Tk</a>   follow the instructions, use default folders and directories.</li>
+
+<li><b>Install Gforth</b><br> &nbsp;&nbsp; Download and execute newest revision of   <a href="http://www.complang.tuwien.ac.at/forth/gforth/">Gforth</a>   , follow the instructions.    Use default folders and directories. </li>
+
+<li><b>Install amrFORTH</b><br> &nbsp;&nbsp; Download and install the latest version of <a href="./windows/">amrforth</a>  Grab all three files, the most recent version of amrforth-v6-windows-xxxxxxx.zip, amr-install.bat, and unzip.exe.  Be sure to have all three files downloaded into the same directory then execute amr-install.bat to complete the installation.</li>
+
+<li><b>Run amrFORTH</b><br> &nbsp;&nbsp; Now, to launch and execute amrFORTH or amrBASIC go to <a href="index.html#startup"><b>Startup</b></a></li>
+
+</ul><br>
+
+<li><b>Upgrading From the Web</b>
+
+<ul>
+<li><b>Tcl/tk</b><br> &nbsp;&nbsp; Before installing the latest version, you should uninstall the previous version.  Go to the start menu, choose Programs/ActiveStateActiveTcl8.4.4.0/UninstallActiveTcl8.4.4.0 and follow instructions, remembering that the version number may change. Now simply install the latest version of Tcl/Tk from the CD or from the Web as detailed above.</li>
+
+<li><b>Gforth</b><br> &nbsp;&nbsp; Uninstall the previous version before upgrading to a new version.  Go to the start menu, choose Programs/Gforth/Uninstall Gforth, and follow instructions.  Now you may install the new version of Gforth from CD or the Web as detailed above.</li>
+
+<li><b>amrFORTH</b><br> &nbsp;&nbsp; To uninstall amrFORTH simply delete the \amrforth folder using your filemanager.  Then install the new version from CD or from the Web as detailed above.</li>
+
+<li><b>Run amrFORTH</b><br> &nbsp;&nbsp; Now, to launch and execute amrFORTH or amrBASIC go to <a href="index.html#startup"><b>Startup</b></a></li>
+
+</ul></ul><br>
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+<a name="linux"></a><font size="+1"><b>Linux/BSD Install</b></font>
+
+
+<ul>
+<li><b>Installing From CD</b><br>
+
+<ul>
+
+<li><b>Install Tcl/TK</b><br> &nbsp;&nbsp; If you already have Tcl/Tk installed then <b><u>don't</u></b> reinstall. &nbsp;&nbsp; It is unlikely that your default installation included Tcl/Tk however you will find Tcl/Tk on your installation CD's. &nbsp;&nbsp; First confirm that Tcl/Tk is not installed.  If that is the case then install from your Linux distribution. &nbsp;&nbsp; The chances that your Linux distribution does not include Tcl/Tk are so slight that we have not included Tcl/Tk on our CD.<br><br>
+
+ &nbsp;&nbsp; If you cannot get Tcl/Tk from your Linux distribution then install from the Web.<br><br></li>
+
+<li><b>Install Gforth</b><br> &nbsp;&nbsp; If you already have Gforth installed then do not reinstall. &nbsp;&nbsp; It is probable that your default ation included Gforth. &nbsp;&nbsp; If not then first consult and install from your Linux distribution if available otherwise install from the amrFORTH CD by moving to your home directory and executing "tar -xvzf /path/gforth-0.5.0-i386-pc-linux-gnu.tar.gz"   where "/path/" is the path to your CD drive and may be similar to "/mnt/cdrom/linux/".<br></li>
+
+<li>Decompressing the .tar file will create the subdirectory "gforth-0.5.0" off your home directory.  To finally install Gforth, cd to ~/gforth-0.5.0, su to root, execute './configure' then 'make install'.<br></li>
+
+<li>Gforth may be a newer, higher, revision in future releases, so the version number may change.<br><br></li>
+
+<li><b>Install amrFORTH</b><br> &nbsp;&nbsp; From the CD execute <b>'amr-install'<em></em></b> to complete the installation.  The batch file will create the ~/amrforth/v6/ path and untar the files there.<br><br></li>
+
+<li><b>Run amrFORTH</b><br> &nbsp;&nbsp; Now, to launch and execute amrFORTH or amrBASIC go to <a href="index.html#startup"><b>Startup</b></a>
+</li>
+
+</ul><br>
+
+</li>
+
+<li><b>Installing From the Web</b><br><br>
+
+<ul>
+<li><b>Install Tcl/TK</b><br> &nbsp;&nbsp; ActiveTcl for Linux is available at:   <a href="http://aspn.activestate.com/ASPN/Downloads/ActiveTcl/">Tcl/Tk</a>   follow the instructions, use default folders and directories. &nbsp;&nbsp; You will probably not need to get Tcl/Tk from the Web.<br><br></li>
+
+<li><b>Install Gforth</b><br> &nbsp;&nbsp; Download newest revision of   <a href="http://www.complang.tuwien.ac.at/forth/gforth/">Gforth</a>   into your home directory.  Move to your home directory and execute "tar -xvzf gforth-0.5.0-i386-pc-linux-gnu.tar.gz"  Decompressing the .tar file will create the subdirectory "gforth-0.5.0" off your home directory.  To finally install Gforth, cd to ~/gforth-0.5.0, su to root, execute './configure' then 'make install'.<br><br></li>
+
+<li>Gforth may be a newer, higher, revision in future releases, so the version number may change.<br><br>
+</li>
+
+<li><b>Install amrFORTH</b><br>
+Download and install the latest version of <a href="./linux/">amrforth</a> &nbsp;&nbsp; Be sure to grab both files, the most recent version of amrforth-v6-windows-xxxxxxx.zip, and amr-install.  Be sure to have both files downloaded into the same directory, then execute amr-install to complete the installation.<br><br></li>
+
+<li><b>Run amrFORTH</b><br>
+Now, to launch and execute amrFORTH or amrBASIC go to <a href="index.html#startup"><b>Startup</b></a><br><br></li>
+
+</ul>
+
+<li><b>Upgrading From the Web</b><br><br>
+
+<ul>
+<li><b>Tcl/tk</b><br>
+There really is no reason to upgrade your Tcl/Tk from the Web.  Simply use the version that comes with your distribution of Linux/BSD.<br><br></li>
+
+<li><b>Gforth</b><br>
+If you have already installed Gforth there is probably not a good reason to upgrade.  We are not using any cutting edge features of Gforth.  In fact, we have no experience upgrading Gforth.  We believe that a new version can be installed over an old version without uninstalling. &nbsp;&nbsp; Simply follow instructions above for installing from the Web.<br><br>
+</li>
+
+<li><b>amrFORTH</b><br>
+To uninstall amrFORTH simply delete the ~/amrforth directory with rm -r ./amrforth.  Then install the new version from CD or from the Web as detailed above.<br><br>
+</li>
+
+<li><b>Run amrFORTH</b><br>
+Now, to launch and execute amrFORTH or amrBASIC go to <a href="index.html#startup"><b>Startup</b></a><br><br>
+</li>
+</ul></ul></td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+<a name="startup"></a><div align="center"><font size="+2"><b>Startup</b></font></div>
+</td></tr>
+
+<tr><td colspan="4">
+<b><font size="+1">Index</font></b>
+
+<ul>
+<li><b><a href="index.html#Overview"><font size="+1">Overview</font></a></b></li>
+<li><b><font size="+1">Startup</font></b></li>
+
+<li><ul>
+<li><b><a href="index.html#Startwindows"><font size="+1">Start Windows</font></a></b></li>
+<li><b><a href="index.html#Startlinux"><font size="+1">Start Linux/BSD</font></a></b></li>
+</ul></li>
+
+<li><b><a href="index.html#Options"><font size="+1">Options</font></a></b></li>
+<li><b><a href="index.html#Projects"><font size="+1">Projects</font></a></b></li>
+<li><b><a href="index.html#Compiling"><font size="+1">Compiling</font></a></b></li>
+<li><b><a href="index.html#Downloading"><font size="+1">Downloading</font></a></b></li>
+<li><b><a href="index.html#JTAG%20Loader"><font size="+1">JTAG Loader</font></a></b></li>
+<li><b><a href="index.html#Checking"><font size="+1">Checking the JTAG Loader</font></a></b></li>
+</ul>
+
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+<a name="Overview"></a><b><font size="+1">Overview</font></b><br><br>
+The installation disk includes source code for the serial bootloaders
+for a number of Cygnal C8051Fxxx chips as well as the f300-hosted JTAG
+loader along with some simple test code.<br><br>
+
+For Windows and MS-DOS users, this source is contained in the
+<em><b>amrForth\V6\300</b></em> , <em><b>amrForth\V6\310</b></em> ,
+<em><b>amrForth\V6\061</b></em> and <em><b>\amrForth\V6\017</b></em>
+directories. For Linux users, this source is in the
+<em><b>~/amrforth/V6/300</b></em> , <em><b>~/amrforth/V6/310</b></em> , <em><b>~/amrforth/V6/061</b></em> and <em><b>~/amrforth/V6/017</b></em> directories.<br><br>
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+
+<a name="Startwindows"></a><b><font size="+1">Windows Startup</font></b>
+
+<ul>
+<li>Use Explorer to create a desktop shortcut for the <em>"\amrforth\v6\300\example\amrf.bat"</em> batch file, for example. Clicking on this shortcut the amrFORTH GUI will startup in the ...\300\example\ directory.
+</li>
+
+<li>From an MS-DOS Prompt, <em>"cd"</em> to the <em>C:\amrForth\v6\300\example</em> directory and run the <em>amrf.bat</em> script. This should bring up the amrForth V6 GUI, ready for you to configure.
+</li></ul>
+
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+<a name="Startlinux"></a><b><font size="+1">Linux Startup</font></b>
+
+<ul>
+<li>
+From a shell prompt, <em>"cd"</em> to <em>~/amrforth/v6/300/example</em> and run the <em>./amrf</em> script.
+</li></ul>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+
+<a name="Options"></a><b><font size="+1">Options</font></b><br>
+
+<ul><li>
+After starting amrFORTH you <u>absolutely must</u> set system options before communicating with a Gadget.  In the title bar you will see "amrForth V6". &nbsp;&nbsp; Below the Title Bar is a menu row, pull down the <em>"Configure"</em> choice then <em>"Configure: Processor/C8051F0xx"</em>. &nbsp;&nbsp;  A list of choices will be offered, set the appropriate comm port, your choice of font size and colors and save when finished.  Now you're ready to communicate with your Gadget and develop a project.
+</li></ul>
+
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+
+<a name="Projects"></a><b><font size="+1">Projects</font></b><br>
+
+<ul><li>
+After starting amrFORTH, you can create your own project directories.  Pull down the FILE menu and choose NEW PROJECT.  You will get a file browser dialog that lets you choose (or create) a directory for your next project.  The necessary batch or script files are placed in that directory automatically when you click on OK.  Configure your project by pulling down the OPTIONS menu and choosing CONFIGURE, then choosing the correct processor and comm ports.  Finally, if you are using Windows, you may want to create an icon for this project as detailed above.
+</li></ul>
+
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+<a name="Compiling"></a><b><font size="+1">Compiling</font></b><br><br>
+Two methods of compiling exist, GUI clicking and command line.<br><br>
+
+<b>GUI Compilation.</b>
+You can compile by entering <em>c</em> at the GUI command line as well as by pulling down the Compiler/Compile menu. To turnkey your application, use the <em>TURNKEY</em> option on the <em>COMPILE</em> menu or just enter <em>t</em> at the GUI command line.  The compiler automatically loads the file named job.fs in the current directory.  This file should either contain your program, or load other files that do contain your program. &nbsp;&nbsp; The example directories show how this can be done.  In order to turnkey your program, the word <em>go</em> must be defined and it must first perform any initialization and then fall into an endless loop.<br><br>
+
+
+<b>Command Line Compilation</b><br><br>
+<b>Windows/DOS</b><br><br>
+
+Three batch files are used that you should be familiar with, amrf.bat, c.bat, and t.bat.<br>
+<ul>
+<li><b>"c.bat"</b>&nbsp;&nbsp; is short for "compile" which translates your high level Forth and Basic instructions to machine instructions the Gadget understands.  The entry point is "quit" which is the interactive forth/BASIC interpreter.<br><br></li>
+
+<li><b>"t.bat"</b>&nbsp;&nbsp; is short for "turnkey" which compiles your high level Forth or Basic instructions just as "compile" does, except that the entry point will be the word "go", which should be the name of your main program loop.<br><br></li>
+
+<li><b>"amrf.bat"</b> launches the amrFORTH GUI.  This GUI has menus as well as a command line to make configuring, compiling, downloading, and interpreting easy, all in one environment.<br><br></li>
+
+<li><b>Note:</b> You may wish to use your favorite editor.  This is fine as long as the output is straight ascii, Micro$oft Notepad will not suffice because it installs footers inline with your code.<br>
+</li></ul>
+    
+<br>
+
+<b>Linux/BSD</b><br>
+<ul>
+<li>In the V6 directory are the script files <em>./c</em> and <em>./t</em> as well as <em>./amrf</em>. If you want to work from a Linux shell, edit your files with your favorite editor and compile with <em>./c (or ./t</em> for Turnkey) and then run <em>./amrf</em> to test interactively once you have compiled successfully.  You can use your own editor and still compile and download from within the ./amrf GUI.  Just be sure the output is straight ascii.
+</li>
+</ul><br>
+
+</td></tr>
+
+<tr><td colspan="4">
+<hr>
+</td></tr>
+
+<tr><td colspan="4">
+<a name="Downloading"></a><b><font size="+1">Downloading</font></b><br><br>
+
+As you will see, there are various ways to download code, depending on environment, destination and usage. However, there is seldom a need to worry about download modes. Because the serial bootloader is installed on all Target chips at the factory, you may never need to use the JTAG or C2 downloaders.<br><br>
+
+Once the serial bootloader is installed on the Target Board (by the factory or by the JTAG Loader), you will usually want to download code either via the <em>COMPILE/DOWNLOAD_RS232</em> menu sequence from the GUI Menu bar or from the command line in the GUI.<br><br>
+
+Sometimes mousing becomes inconvenient.  To save hand movement you can use the amrForth command line on the <b><u>amrFORTH GUI</u></b> for many oft used functions.  For example type <em>c</em> at the GUI command line prompt to compile your application. &nbsp;&nbsp; Similarly, you can turnkey your application by typing <em>t</em> and you can download code by entering <em>d</em>.<br><br>
+
+<b><u>MS-DOS</u></b> users can also compile or turnkey code by typing <em>c</em> or <em>t</em> at the MS-DOS command line prompt using the same single-letter commands.  They will still need to run amrf.bat, the amrFORTH GUI, and change to forth or BASIC mode, in order to download and test their code.<br><br>
+
+<b><u>Linux</u></b> users can do the same operations from a shell by entering <em>./c</em> and <em>./t</em>. &nbsp;&nbsp; Interactive testing occurs in the amrFORTH GUI in the forth or the basic mode.<br><br>
+
+Note: Executing the serial downloader is driven by screen prompt.  Whether the GUI menu choice "Compile/Download_RS232" or the command line (by typing "d <enter>") is used, amrFORTH will prompt you through the process.  This process is: first press the reset button on the Gadget Motherboard.  Hold the reset button. down then tap the spacebar then release the reset button.  On the Host screen download progress will be displayed.<br><br>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4"><a name="JTAG Loader"></a><b><font size="+1">JTAG/C2 Loader</font></b><br><br>
+
+We are simply explaining the process here for your information, in case you find a need to create a JTAG Loader. You may skip this explanation without missing anything of critical importance.<br><br>
+
+An f300 Target Board with the JTAG and C2 loaders programmed into its f300 chip is called a JTAG Loader Board (or just a JTAG Loader). You can use the JTAG Loader to directly download programs to f017 Target Board and the C2 Loader to download programs to the f300 or f310 Target Board.<br><br>
+
+Normally, the JTAG/C2 Loader is used to load a serial downloader program (serial bootloader) into your Target Board. After the serial bootloader is loaded into the Target, you can use it to program the Target's flash memory. To make a JTAG Loader, first install an f300 Target Board in the JTAG slot located near the right hand edge of the Development Board.  Also connect the serial cable to the JTAG jack. This jack is the one to the right of the serial development jack and is labeled "JTAG"../ on the printed circuit board.<br><br>
+
+Note: To download the JTAG program in the following way, the f300 Target must have a serial bootloader programmed into it -- all f300 Target boards have this program installed on the chip when they are shipped from the factory.<br><br>
+
+Load the JTAG program into the f300 Target Board by first selecting the <em>\V6\f300\JTAG</em> directory using the <em>FILE/OPEN_PROJECT</em> menu sequence. Make sure that you have set the processor to <em>f300</em>, and saved this configuration, in this directory, using the <em>SAVE</em> button in the Configure dialog.<br><br>
+
+Compile the JTAG Loader program by selecting the <em>Turnkey</em> option on the Compile Menu. Finally, select the <em>Download RS-232</em> option on the Compile Menu to download the JTAG loader program.<br><br>
+
+Note: If you try to download your own program via C2 or JTAG, you must patch a jump to COLD at address 0 as follows:<br><br>
+<pre>    <b>romHERE ( *) 0 org<br>
+    in-assembler COLD jump c;<br>
+    ( *) org<br><br></b></pre><br>
+
+Normally the amr serial bootloader resides at address 0, the reset vector.  If you just use the amr serial bootloader you will not need to worry about any of this.<br><br>
+</td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4">
+
+<a name="Checking"></a><font size="+1"><b>Checking the JTAG Loader</b></font><br><br>
+
+To check the JTAG Loader, install either an f017 or an f300 in the appropriate slot in the motherboard.<br><br>
+
+Note:<em>Do not install two Target boards at the same time!</em><br><br>
+
+Test the JTAG Loader by choosing the PROGRAMMER/<em>JTAG/DUMP</em> menu sequence for the f017 or the PROGRAMMER/C<em>2/DUMP</em> sequence for the f300. You should see a hex dump of the lowest page in memory on the target. The JTAG dump is 512 bytes and the C2 dump is 256 bytes. To see more dump pages, select the <b><font size="2">PROGRAMMER/</font></b><em>JTAG/NEXT</em> or <b><font size="2"><font face="arial">PROGRAMMER/</font></font></b><em>C2/NEXT</em> menu sequences.  For command line users, type jtag or c2 to change to the appropriate mode.  The prompt will show what mode you are in.  Then type dump to see the first page and next or n to see subsequent pages.<br><br>
+
+If the dump works, you can install the serial bootloader by choosing <em>JTAG/DOWNLOAD</em> for the f017 or <em>C2/DOWNLOAD</em> for the f300. Use the <em>DUMP</em> and <em>NEXT</em> options to verify that the download occurred.<br><br>
+
+Now you should be able to switch from the jtag serial port to the target serial port and download programs via the serial bootloader.<br><br>
+</td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4" align=center><FONT SIZE=+2><b><a name="features"></a>Version 6 Features</b></FONT></td></tr><BR><BR>
+
+<tr><td colspan="4">
+
+Version 6 is a big change from version 5. &nbsp;&nbsp; If you have familiarity with Version 5 then please study these differences carefully.<br><br>
+
+<FONT SIZE=+2>Index</FONT><br><br>
+
+<A HREF="index.html#interpreter"><FONT SIZE="+1">Interpreter</FONT></A><br>
+<A HREF="index.html#Loops and For/Next"><FONT SIZE="+1">Loops and For/Next</FONT></a><br>
+<A HREF="index.html#Goodbye to Old Friends"><FONT SIZE="+1">Goodbye to Old Friends</FONT></A><br>
+<A HREF="index.html#Switching Between Forth and Assembler"><FONT SIZE="+1">Switching Between Forth and Assembler</FONT></A><br>
+<A HREF="index.html#Target Heads"><FONT SIZE="+1">Target Heads</FONT></FONT></A><br>
+<A HREF="index.html#System Portability"><FONT SIZE="+1">System Portability</FONT></A><br>
+<A HREF="index.html#Comments and Suggestions"><FONT SIZE="+1">Comments and Suggestions</FONT></FONT></a>
+
+<br><br><HR><br>
+
+<A NAME="interpreter"></A><FONT SIZE="+1">Interpreter</FONT><br><br>
+
+&nbsp; Actually there are five different modes of interpretation each with a corresponding prompt:<br><br>
+
+&nbsp;&nbsp; - "<b>host</b>" which give you the "<b>host></b>" prompt.  For communicating with Tcl/Tk on the workstation.  Rarely needed except for changing modes of operation.<br><br>
+
+&nbsp;&nbsp; - "<b>forth</b>" which gives the "<b>forth></b>" prompt.  for communicating with the Gadget using the amrFORTH language.<br><br>
+
+&nbsp;&nbsp; - "<b>basic</b>" which gives the "<b>basic></b>" prompt.  For communicating with the Gadget using the amrBASIC language.<br><br>
+
+&nbsp;&nbsp; - "<b>jtag</b>" which gives the "<b>jtag></b>" prompt.  For communicating with the Gadget using amrFORTH with only JTAG words compiled.  Needed only to install the boot loader into the C8051F310, 017 and 061 Gadgets.<br><br>
+
+&nbsp;&nbsp; - "<b>c2</b>" which gives the "<b>c2></b>" prompt.  For communicating with the Gadget using amrFORTH but with only JTAG2 words compiled.  Needed only to install the boot loader into the C8051F300 Gadget.<br><br>
+
+The amrFORTH target interpreter has changed from a direct threaded inner interpreter in V3-5 to native machine code or call threading in Version6 providing an 8-fold speed improvement in NEXT. The new compiler tries to be smart enough to change redundant calls to jumps in the word &quot;exit&quot; for efficient tail recursion.<br><br>
+
+Most <em>'words'</em> now end in a jump to the last word instead of a call followed by a return. Also if you use exit inside a definition, it will change a preceding call into a jump. This is a thinly disguised goto.<br><br>
+
+These changes were inspired by Chuck Moore's ColorForth. We have also added the words <EM>push</EM> and <EM>pop</EM> which are aliases for <EM>&gt;R</EM> and <EM>R&gt;</EM>.<br>
+
+<br><hr><br>
+
+Here are links to specific vocabulary definitions for each interpretative mode:<br><br>
+
+<A HREF="index.html#linka"><FONT SIZE="+1">Host Words</font></a><br>
+<A HREF="index.html#linkb"><FONT SIZE="+1">Host JTAG Interface Words</font></a><br>
+<A HREF="index.html#linkc"><FONT SIZE="+1">Host JTAG C2 Interface Words</font></a><br>
+<A HREF="index.html#linkd"><FONT SIZE="+1">Gadget Basic Mode</font></a><br>
+<A HREF="index.html#linke"><FONT SIZE="+1">Gadget Forth Mode</font></a><br>
+</td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4"><a name="linka"><div align="center"><br><font size="+1"><b>HOST WORDS</b></font><br>(Words that execute on the host, when not in communication with the Gadget.)<br><br></div></a></td></tr>
+
+<tr>
+<td><b>jtag</b></td>
+<td colspan="3">Change the current, working, vocabulary to the standard, 4-wire, JTAG vocabulary.  Command line control of the JTAG interface.</Td>
+</tr>
+
+<tr valign=top>
+<td><b>forth </b></td>
+<td colspan="3">Change the current, working, vocabulary to the target Forth vocabulary for interactive testing.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c2 </b></td>
+<td colspan="3">Change the current, working, vocabulary to the C2 JTAG vocabulary, command line control of the C2 interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>basic </b></td>
+<td colspan="3">Change the current, working, vocabulary to the target BASIC vocabulary.</td>
+</tr>
+
+<tr valign=top>
+<td><b>words </b></td>
+<td colspan="3">Show the words of the current vocabulary.</td>
+</tr>
+
+<tr valign=top><td><b>bye</b></td>
+<td colspan="3">Exit amrForth.</td>
+</tr>
+
+<tr valign=top><td><b>edit</b></td>
+<td colspan="3">Start	editing the file whose name follows on the command line.</td>
+</tr>
+
+<tr valign=top><td><b>c</b></td>
+<td colspan="3"><u><b>C</b></u>ompile the current project as defined within job.fs in the <strong><u>current</u></strong> project directory.  For interactive testing, does not install an autostart vector..</td>
+</tr>
+
+<tr valign=top>
+<td><b>t</b></td>
+<td colspan="3"><u><b>T</b></u>urnkey compile the current project as defined within job.fs in the <strong><u>current</u></strong> project directory, for turnkey installation.</td>
+</tr>
+
+<tr valign=top>
+<td><b>d</b></td>
+<td colspan="3"><u><b>D</b></u>ownload the object code from the file rom.bin to the target via RS232.</td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4"><a name="linkb"><div align="center"><br><font size="+1"><b>JTAG Interface Words</b></font><br>(Words used to install a boot kernel into the Gadgets through a special JTAG interface.  Very rarely used.)<br><br></div></a></td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr valign=top><td><b>host</b></td>
+<td colspan="3">Change to the Host vocabulary, your starting point.</td>
+</tr>
+
+<tr valign=top><td><b>forth </b></td>
+<td colspan="3">Change to the target Forth vocabulary, for interactive testing.</td>
+</tr>
+
+<tr valign=top><td><b>c2</b></P></td>
+<td colspan="3">Change to the C2 vocabulary, command line control of the C2 interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>basic</b></td>
+<td colspan="3">Change to the target BASIC vocabulary, for interactive testing.</td>
+</tr>
+
+<tr valign=top><td><b>words</b></td>
+<td colspan="3">Show the words in the JTAG vocabulary, these words.</td>
+</tr>
+
+<tr valign=top>
+<td><b>suspend</b></td>
+<td colspan="3">Issue the JTAG suspend command.</td>
+</tr>
+
+<tr valign=top>
+<td><b>run</b></td>
+<td colspan="3">Issue the JTAG run command.</td>
+</tr>
+
+<tr valign=top>
+<td><b>reset</b></td>
+<td colspan="3">Issue the JTAG reset command.</td>
+</tr>
+
+<tr valign=top>
+<td><b>next</b></td>
+<td colspan="3">Dump the next page of target memory via JTAG interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>n</b></td>
+<td colspan="3">Alias for <b><u>N</u></b>ext, easier to type.</td>
+</tr>
+
+<tr valign=top>
+<td><b>halt</b></td>
+<td colspan="3">Issue the JTAG halt command.</td>
+</tr>
+
+<tr valign=top>
+<td><b>erase</b></td>
+<td colspan="3">Erase all of target memory via the JTAG interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>dump</b></td>
+<td colspan="3">Dump the first page, 512 bytes, of target memory via the JTAG interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>download</b></td>
+<td colspan="3">Download the object code in the file rom.bin to the target via the JTAG interface.</td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4"><a name="linkc"><div align="center"><br><font size="+1"><b>JTAG C2 Interface Words</b></font><br>(Words used to install a boot kernel into the Gadgets through a special JTAG interface.  Very rarely used.)<br><br></div></a></td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr valign=top>
+<td><b>jtag</b></td>
+<td colspan="3">Change to the JTAG vocabulary, command line control of the JTAG interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>host</b></td>
+<td colspan="3">Change to the Host vocabulary, your starting point.</td>
+</tr>
+
+<tr valign=top>
+<td><b>forth</b></td>
+<td colspan="3">Change to the target Forth vocabulary, for interactive testing.</td>
+</tr>
+
+<tr valign=top>
+<td><b>basic </b></td>
+<td colspan="3">Change to the target BASIC vocabulary, for interactive testing.</td>
+</tr>
+
+<tr valign=top>
+<td><b>words</b></td>
+<td colspan="3">Show the words in the C2 vocabulary, these words.</td>
+</tr>
+
+<tr valign=top><td><b>bye</b></td>
+<td colspan="3">Exit amrForth or amrBASIC.</td>
+</tr>
+
+<tr valign=top>
+<td><b>next</b></td>
+<td colspan="3">Dump the next page of target memory via C2 interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>n</b></td>
+<td colspan="3">Alias for <b><u>N</u></b>ext, easier to type.</td>
+</tr>
+
+<tr valign=top>
+<td><b>erase</b></td>
+<td colspan="3">Erase	all of target memory via the C2 interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>dump</b></td>
+<td colspan="3">Dump the first page, 256 bytes, of target memory via the C2 interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>download</b></td>
+<td colspan="3">Download the object code in the file rom.bin to the target via the C2 interface.</td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4"><a name="linkd"><div align="center"><br><font size="+2"><b>Gadget Basic Mode</b></font><br>(Words that execute on the Host and Gadget when in Basic mode)</div></a><br></td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4"><div align="center"><br><font size="+1"><b>Host Words</b></font><br>(Words that execute on the host, when not in communication with the Gadget.)</div><br></td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr valign=top>
+<td><b>jtag</b></td>
+<td colspan="3">Change to the JTAG vocabulary, command line control of the JTAG interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>host</b></td>
+<td colspan="3">Change to the Host vocabulary, your starting point.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c2</b></td>
+<td colspan="3">Change to the C2 vocabulary, command line control of the C2 interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>forth</b></td>
+<td colspan="3">Change to the target FORTH vocabulary, for interactive testing.</td>
+</tr>
+
+<tr valign=top>
+<td><b>words</b></td>
+<td colspan="3">Show the words in the Forth vocabulary, both host and target.</td>
+</tr>
+
+<tr valign=top>
+<td><b>t</b></td>
+<td colspan="3"><b><u>T</u></b>urnkey compile job.fs in the current project directory, for turnkey installation.</td>
+</tr>
+
+<tr valign=top>
+<td><b>d</b></td>
+<td colspan="3"><b><u>D</u></b>ownload the object code from the file rom.bin to the target via RS232.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c</b></td>
+<td colspan="3"><b><u>C</u></b>ompile job.fs in the current project directory.  For interactive testing.</td>
+</tr>
+
+<tr valign=top>
+<td><b>bye </b></td>
+<td colspan="3">Exit amrForth.</td>
+</tr>
+
+<tr valign=top>
+<td><b>edit</b></td>
+<td colspan="3">Start editing the file whose name follows on the command line.</td>
+</tr>
+				
+
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4"><div align="center"><font size="+1"><b>BASIC OPERATORS</b></font><br> (Arithmetic and logic, logical operators return numbers, -1 for true and 0 for false) <br> (operators are evaluated left to right, no precedence, no parentheses)<br><br></div></td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr valign=top>
+<td><b>&lt;&gt;</b></td>
+<td colspan="3">'not equal' e.g. print b0 &lt;&gt; 0 ; let b1 = b0 &lt;&gt; 0</td>
+</tr>
+
+<tr valign=top>
+<td><b>&gt;=</b></td>
+<td colspan="3">'greater or equal' e.g. print b0 &gt;= 10 ; let b1 = b0 &gt;= 10 </td>
+</tr>
+
+<tr valign=top>
+<td><b>&lt;=</b></td>
+<td colspan="3">'less than or equal' e.g. print b0 &lt;= 10 ; let b1 = b0 &lt;= 10 </td>
+</tr>
+
+<tr valign=top>
+<td><b>|/</b></td>
+<td colspan="3">'bit or logical not' e.g. print b0 |/ b1</td>
+</tr>
+
+<tr valign=top>
+<td><b>^/</b></td>
+<td colspan="3">'bit xor logical not' e.g. print b0 ^/ b1</td>
+</tr>
+
+<tr valign=top>
+<td><b>&amp;/</b></td>
+<td colspan="3">'bit and logical not'</td>
+</tr>
+
+<tr valign=top>
+<td><b>//</b></td>
+<td colspan="3">'remainder'e.g. print 26 // 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>/</b></td>
+<td colspan="3">'integer divide'</td>
+</tr>
+
+<tr valign=top>
+<td><b>**</b></td>
+<td colspan="3">'high word of product' e.g. print 10000 ** 10000</td>
+</tr>
+
+<tr valign=top>
+<td><b>*</b></td>
+<td colspan="3">'low word of product, or simply multiply' e.g. print 5 * 2</td>
+</tr>
+
+<tr valign=top>
+<td><b>max</b></td>
+<td colspan="3">'signed max' returns the greater, e.g. print -10 max 10 </td>
+</tr>
+
+<tr valign=top>
+<td><b>min</b></td>
+<td colspan="3">'signed min' returns the lesser, e.g. print -10 min 10 </td>
+</tr>
+
+<tr valign=top>
+<td><b>&gt;</b></td>
+<td colspan="3">'greater'returns true or false, e.g. print b0 &gt; 0</td>
+</tr>
+
+<tr valign=top>
+<td><b>=</b></td>
+<td colspan="3">'equal'e.g. print b0 = 0 </td>
+</tr>
+
+<tr valign=top>
+<td><b>&lt;</b></td>
+<td colspan="3">'less than' returns true or false, e.g. print b0 &lt; 0 </td>
+</tr>
+
+<tr valign=top>
+<td><b>^</b></td>
+<td colspan="3">'bitwise exclusive or' e.g. print b0 ^ 1</td>
+</tr>
+
+<tr valign=top>
+<td><b>|</b></td>
+<td colspan="3">'bitwise inclusive or' e.g. print b0 | 1</td>
+</tr>
+
+<tr valign=top>
+<td><b>&amp;</b></td>
+<td colspan="3">'bitwise and' e.g. print b0 &amp; 15</td>
+</tr>
+
+<tr valign=top>
+<td><b>-</b></td>
+<td colspan="3">'minus' e.g. print b0 - 2 </td>
+</tr>
+
+<tr valign=top>
+<td><b>+</b></td>
+<td colspan="3">'plus'e.g. print b0 + 10 </td>
+</tr>
+
+<tr valign=top>
+<td><b>b9</b></td>
+<td colspan="3">e.g. print b9 ; let b9 = 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>b8</b></td>
+<td colspan="3">e.g. print b8 ; let b8 = 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>b7</b></td>
+<td colspan="3">e.g. print b7 ; let b7 = 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>b6</b></td>
+<td colspan="3">e.g. print b6 ; let b6 = 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>b5</b></td>
+<td colspan="3">e.g. print b5 ; let b5 = 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>b4</b></td>
+<td colspan="3">e.g. print b4 ; let b4 = 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>b3</b></td>
+<td colspan="3">e.g. print b3 ; let b3 = 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>b2</b></td>
+<td colspan="3">e.g. print b2 ; let b2 = 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>b1</b></td>
+<td colspan="3">e.g. print b1 ; let b1 = 5</td>
+</tr>
+
+<tr valign=top>
+<td><b>b0</b></td>
+<td colspan="3">e.g. print b0 ; let b0 = 5</td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<td colspan="4"><br><div align="center"><font size="+1"><b>BASIC WORD VARIABLES</b></font></div><br></td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr valign=top>
+<td><b>w4</b></td>
+<td colspan="3">e.g. print w4 ; let w4 = 500</td>
+</tr>
+
+<tr valign=top>
+<td><b>w3</b></td>
+<td colspan="3">e.g. print w3 ; let w3 = 500</td>
+</tr>
+
+<tr valign=top>
+<td><b>w2</b></td>
+<td colspan="3">e.g. print w2 ; let w2 = 500</td>
+</tr>
+
+<tr valign=top>
+<td><b>w1</b></td>
+<td colspan="3">e.g. print w1 ; let w1 = 500</td>
+</tr>
+
+<tr valign=top>
+<td><b>w0</b></td>
+<td colspan="3">e.g. print w0 ; let w0 = 500</td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+				
+<tr>
+<td colspan=4><b><div align="center"><font size="+1">BASIC I/O BITS</b></font></div></td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr>
+<td><b>pins</b></td>
+<td colspan="3">Pins is the BASIC I/O port. There are currently only 8 I/O bits available including the serial port Tx and Rx bits. They are encapsulated in the byte variable pins. e.g. print pins ; let pins = 1</td>
+</tr>
+
+<tr>
+<td><b>dirs</b></td>
+<td colspan="3">The 8 bit I/O port pins has a corresponding direction register called dirs. Zero bits are input ports and one bits are output ports.</td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr>
+<td><b>pin7</b></td>
+<td colspan="3">e.g. print pin7 ; let pin7 = 0</td>
+</tr>
+
+<tr>
+<td><b>pin6</b></td>
+<td colspan="3">e.g. print pin6 ; let pin6 = 1</td>
+</tr>
+
+<tr valign=top>
+<td><b>pin5</b></td>
+<td colspan="3">e.g. print pin5 ; let pin5 = 0</td>
+</tr>
+
+<tr valign=top>
+<td><b>pin4</b></td>
+<td colspan="3">e.g. print pin4 ; let pin4 = 1</td>
+</tr>
+
+<tr valign=top>
+<td><b>pin3</b></td>
+<td colspan="3">e.g. print pin3 ; let pin3 = 0</td>
+</tr>
+
+<tr valign=top>
+<td><b>pin2</b></td>
+<td colspan="3">e.g. print pin2 ; let pin2 = 1</td>
+</tr>
+
+<tr valign=top>
+<td><b>pin1</b></td>
+<td colspan="3">e.g. print pin1 ; let pin1 = 0</td>
+</tr>
+
+<tr valign=top>
+<td><b>pin0</b></td>
+<td colspan="3">e.g. print pin0 ; let pin0 = 1</td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4"><a name="linke"><div align="center"><br><font size="+2"><b>Gadget Forth Mode</b></font><br>(Words that execute on the Host and Gadget when in Forth mode)</div></a><br></td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4"><div align="center"><br><font size="+1"><b>Host Words</b></font><br>(Words that execute on the host, when not in communication with the Gadget.)</div><br></td></tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr valign=top>
+<td><b>jtag</b></td>
+<td colspan="3">Change to the JTAG vocabulary, command line control of the JTAG interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>host</b></td>
+<td colspan="3">Change to the Host vocabulary, your starting point.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c2</b></td>
+<td colspan="3">Change to the C2 vocabulary, command line control of the C2 interface.</td>
+</tr>
+
+<tr valign=top>
+<td><b>basic </b></td>
+<td colspan="3">Change to the target BASIC vocabulary, for interactive testing.</td>
+</tr>
+
+<tr valign=top>
+<td><b>words</b></td>
+<td colspan="3">Show the words in the Forth vocabulary, both host and target.</td>
+</tr>
+
+<tr valign=top>
+<td><b>t</b></td>
+<td colspan="3"><b><u>T</u></b>urnkey compile job.fs in the current project directory, for turnkey installation.</td>
+</tr>
+
+<tr valign=top>
+<td><b>d</b></td>
+<td colspan="3"><b><u>D</u></b>ownload the object code from the file rom.bin to the target via RS232.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c</b></td>
+<td colspan="3"><b><u>C</u></b>ompile job.fs in the current project directory.  For interactive testing.</td>
+</tr>
+
+<tr valign=top>
+<td><b>bye </b></td>
+<td colspan="3">Exit amrForth.</td>
+</tr>
+
+<tr valign=top>
+<td><b>edit</b></td>
+<td colspan="3">Start editing the file whose name follows on the command line.</td>
+</tr>
+				
+<tr>
+<td colspan="4"><br><div align=center><A NAME="FORTH1"></A><font size="+1"><b>Gadget Words</b></font><br>
+(Words that execute on the Gadget while in Forth Interpretative mode)<br><br></td>
+</tr>
+
+<tr valign=top>
+<td><b>type</b></td>
+<td colspan="3">(addr len - ) Send a string out the serial port.</th>
+</tr>
+
+<tr valign=top>
+<td><b>.s</b></td>
+<td colspan="3">( - ) Show what's on the data stack, top of stack to the right.</td>
+</tr>
+
+<tr valign=top>
+<td><b>dump</b></td>
+<td colspan="3">( addr len - ) Show a hexadecimal dump of target memory over the serial port.</td>
+</tr>
+
+<tr valign=top>
+<td><b>.</b></td>
+<td colspan="3">( n - ) Display top of stack (TOS) via the serial port as a signed 16 bit number.</td>
+</tr>
+
+<tr valign=top>
+<td><b>u.</b></td>
+<td colspan="3">( u - ) Display top of stack over the serial port as an unsigned 16 bit number.</td>
+</tr>
+
+<tr valign=top>
+<td><b>dot</b></td>
+<td colspan="3">( u base - ) Display top of stack in radix specified by base.</td>
+</tr>
+
+<tr valign=top>
+<td><b>hb.</b></td>
+<td colspan="3">( u - ) Display top of stack as two hex digits, 8 bits.</td>
+</tr>
+
+<tr valign=top>
+<td><b>h.</b></td>
+<td colspan="3">( u - ) Display top of stack as four hex digits, 16 bits.</td>
+</tr>
+
+<tr valign=top>
+<td><b>.hex</b></td>
+<td colspan="3">( digit - ) Display top of stack as a single hex digit, 4 bits.</td>
+</tr>
+
+<tr valign=top>
+<td><b>cr</b></td>
+<td colspan="3">( - ) Send a carriage return, line feed pair out the serial port.</td>
+</tr>
+
+<tr valign=top>
+<td><b>space</b></td>
+<td colspan="3">( - ) Send a space character out the serial port.
+</td>
+
+</tr>
+<tr valign=top>
+<td><b>quit</b></td>
+<td colspan="3">( - ) Run the text target portion of the interactive text interpreter.</td>
+</tr>
+
+<tr valign=top>
+<td><b>vectors</b></td>
+<td colspan="3">( - addr) The address of an array of used in quit, to implement the text interpreter.</td>
+</tr>
+
+<tr valign=top>
+<td><b>perform</b></td>
+<td colspan="3">( - ) Receive a 16 bit address over the serial port and execute its code. Used in quit.</td>
+</tr>
+
+<tr valign=top>
+<td><b>number</b></td>
+<td colspan="3">( - ) Receive a 16 bit number over the serial port. Used by quit.</td>
+</tr>
+
+<tr valign=top>
+<td><b>emit</b>
+</td>
+
+<td colspan="3">( c - ) Send a character over the serial port.</td>
+</tr>
+
+<tr valign=top>
+<td><b>key</b></td>
+<td colspan="3">( - c) Receive a character over the serial port.</td>
+</tr>
+
+<tr valign=top>
+<td><b>key?</b></td>
+<td colspan="3">( - flag) Flag is true if a character is waiting on the serial port.</td>
+</tr>
+
+<tr valign=top>
+<td><b>abort</b></td>
+<td colspan="3">( - ) Reset the stacks and run the default startup word, 'quit' if debugging, 'go' if turnkeyed.</td>
+</tr>
+
+<tr valign=top>
+<td><b>(s&rdquo;)</b></td>
+<td colspan="3">( - ) Runtime behavior of s&rdquo;. Don't run this from the command line. It is compiled inline by the word s&rdquo;. It appears in the word list as an artifact of the compiler.</td>
+</tr>
+
+<tr valign=top>
+<td><b>*</b></td>
+<td colspan="3">( n1 n2 &ndash; n2) Multiply n1 by n2 returning n3, a signed 16 bit number.</td>
+</tr>
+
+<tr valign=top>
+<td><b>*/</b></td>
+<td colspan="3">( u1 u2 u3 &ndash; u4) Multiply u1 by u2 then divide the 32 bit intermediate product by u3. All numbers are 16 bit unsigned, except the intermediate product.</td>
+</tr>
+
+<tr valign=top>
+<td><b>/</b></td>
+<td colspan="3">( u1 u2 &ndash; u3) Divide u1 by u2, returning the truncated quotient u3. All numbers are 16 bit unsigned.</td>
+</tr>
+
+<tr valign=top>
+<td><b>mod</b></td><td colspan="3">( u1 u2 &ndash; u3) Divide u1 by u2, returning the remainder. All numbers are 16 bit unsigned.</td>
+</tr>
+
+<tr valign=top>
+<td><b>/mod</b></td>
+<td colspan="3">( u1 u2 &ndash; u3 u4) Divide u1 by u2, returning the remainder u3 and the truncated quotient u4. All numbers are 16 bit unsigned.</td>
+</tr>
+
+<tr valign=top>
+<td><b>max</b></td>
+<td colspan="3">( n1 n2 &ndash; n3) N3 is the greater of n1 and n2. All numbers are 16 bit signed.</td>
+</tr>
+
+<tr valign=top>
+<td><b>min</b></td>
+<td colspan="3">( n1 n2 &ndash; n3) N3 is the lesser of n1 and n2. All numbers are 16 bit signed.</td>
+</tr>
+
+<tr valign=top>
+<td><b>u&gt;</b></td>
+<td colspan="3">( u1 u2 &ndash; flag) Flag is true, all bits set, if u1 greater than u2, all zero otherwise. Unsigned 16 bit numbers.</td>
+</tr>
+<tr valign=top>
+<td><b>&gt;</b></td>
+<td colspan="3">( n1 n2 &ndash; flag) Flag is true if n1 greater than n2, all zero otherwise. Signed 16 bit numbers.</td>
+</tr>
+
+<tr valign=top>
+<td><b>=</b></td>
+<td colspan="3">( n1 n2 &ndash; flag) Flag is true is n1 equals n2. Signed 16 bit numbers.</td>
+</tr>
+
+<tr valign=top>
+<td><b>&lt;</b></td>
+<td colspan="3">( n1 n2 &ndash; flag) Flag is true if n1 less than n2. Signed 16 bit numbers.</td>
+</tr>
+
+<tr valign=top>
+<td><b>negate</b></td>
+<td colspan="3">( n1 &ndash; n2) N2 is the two's complement negative of n1.</td>
+</tr>
+
+<tr valign=top>
+<td><b>abs</b></td>
+<td colspan="3">( n1 &ndash; n2) N2 is the absolute value of n1, in other words it's positive.</td>
+</tr>
+
+<tr valign=top>
+<td><b>2*</b></td>
+<td colspan="3">( n1 &ndash; n2) Multiply n1 by 2. &nbsp;&nbsp; Actually shift the bits of n1 left one place. Much faster than an actual multiplication.</td>
+</tr>
+
+<tr valign=top>
+<td><b>+!</b></td>
+<td colspan="3">( n addr - ) Add n to the value at address addr.</td>
+</tr>
+
+<tr valign=top>
+<td><b>nip</b></td>
+<td colspan="3">( n1 n2 &ndash; n2) Drop the second number on the data stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>clear</b></td>
+<td colspan="3">( ??? - ) Make the data stack empty.</td>
+</tr>
+
+<tr valign=top>
+<td><b>count</b></td>
+<td colspan="3">( addr1 - addr2 c) Addr2 is addr1+1 and c is the byte value at address addr1. Called count because it takes advantage of the format of a counted string in forth.</td>
+</tr>
+
+<tr valign=top>
+<td><b>um/mod</b></td>
+<td colspan="3">( ud u1 - u2 u3) The division primitive. &nbsp;&nbsp; All numbers are unsigned. Divide the double precision (32 bit) number ud by 16 bit u1, returning 16 bit remainder u2 and 16 bit truncated quotient u3.</td>
+</tr>
+
+<tr valign=top>
+<td><b>um*</b></td>
+<td colspan="3">( u1 u2 - ud) The multiplication primitive. All numbers are unsigned. Multiply 16 bit u1 by 16 bit u2 returning 32 bit ud.</td>
+</tr>
+
+<tr valign=top>
+<td><b>u&lt;</b></td>
+<td colspan="3">( u1 u2 -flag) Flag is true if u1 is less that u2. All numbers are 16 bit unsigned.</td>
+</tr>
+
+<tr valign=top>
+<td><b>2/</b></td>
+<td colspan="3">( n1 &ndash; n2) 2/ divides n1 by two, by shifting bits right one space. Much faster than actual division.</td>
+</tr>
+
+<tr valign=top>
+<td><b>(next)</b></td>
+<td colspan="3">( - ) Runtime behavior of next, part of the for, next loop. Don't run this from the command line. It is compiled inline by the word next. It appears in the word list as an artifact of the compiler.</td>
+</tr>
+
+<tr valign=top>
+<td><b>r@</b></td>
+<td colspan="3">( - n) Copies the top of the return stack to the data stack. This word is compiled inline by for when using a for, next loop.</td>
+</tr>
+
+<tr valign=top>
+<td><b>i</b></td>
+<td colspan="3">( - n) An alias for r@. Returns the index to a for, next loop.</td>
+</tr>
+
+<tr valign=top>
+<td><b>invert</b></td>
+<td colspan="3">( n1 - n2) Invert all bits. Bitwise not.</td>
+</tr>
+
+<tr valign=top>
+<td><b>not</b></td>
+<td colspan="3">( n1 - n2) Logical not. If n1 is zero is -1, true, otherwise n2 is zero.</td>
+</tr>
+
+<tr valign=top>
+<td><b>0=</b></td>
+<td colspan="3">( n1 - n2) Logical not. An alias for not. &nbsp;&nbsp; Returns true of top of stack is zero.</td>
+</tr>
+
+<tr valign=top>
+<td><b>xor</b></td>
+<td colspan="3">( n1 n2 - n3) Exclusive or.</td>
+</tr>
+
+<tr valign=top>
+<td><b>or</b></td>
+<td colspan="3">( n1 n2 - n3) Inclusive or.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c!</b></td>
+<td colspan="3">( c addr - ) Store the byte c at address addr. If the address is less than 256 it resides in internal RAM, otherwise it is in external data memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>!</b></td>
+<td colspan="3">( n addr - ) Store the 16 bit word n at address addr. If address is less than 256 it resides in internal RAM, otherwise in external data memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>!x</b></td>
+<td colspan="3">( n addr - ) Store the 16 bit word n at address addr. Address is always in external data memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>!i</b></td>
+<td colspan="3">( n addr - ) Store the 16 bit word n at address addr. Address is always in internal RAM. The high byte of address is ignored.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c!i</b></td>
+<td colspan="3">( c addr - ) Store the byte c at address addr. Address is always in internal RAM. The high byte of address is ignored.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c@</b></td>
+<td colspan="3">( addr - c) Fetch the byte c from address addr. If address is less than 256 it resides in internal RAM, otherwise in program memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>@</b></td>
+<td colspan="3">( addr - n) Fetch the 16 bit word n from address addr. If address is less than 256 it resides in internal RAM, otherwise in program memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>@xd</b></td>
+<td colspan="3">( addr - n) Fetch the 16 bit word n from address addr in external data memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c@xd</b></td>
+<td colspan="3">( addr - c) Fetch the byte c from address addr in external data memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c@x</b></td>
+<td colspan="3">( addr - c) Fetch the byte c from address addr in program memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>@i</b></td>
+<td colspan="3">( addr - n) Fetch the 16 bit word n from address addr in internal RAM.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c@i</b></td>
+<td colspan="3">( addr - c) Fetch the byte c from address addr in internal RAM.</td>
+</tr>
+
+<tr valign=top>
+<td><b>r&gt;</b></td>
+<td colspan="3">( - n) Pop the top of the return stack onto the data stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>pop</b></td>
+<td colspan="3">( - n) An alias for r&gt;.</td>
+</tr>
+
+<tr valign=top>
+<td><b>push</b></td>
+<td colspan="3">( n - ) Push n onto the return stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>&gt;r</b></td>
+<td colspan="3">( n - ) An alias for push.</td>
+</tr>
+
+<tr valign=top>
+<td><b>depth</b></td>
+<td colspan="3">( - n) Return the depth of the data stack, how many items are on the stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>and</b></td>
+<td colspan="3">( n1 n2 - n3) Bitwise AND.</td>
+</tr>
+
+<tr valign=top>
+<td><b>0&lt;</b></td>
+<td colspan="3">( n - flag) Flag is true if n is negative.</td>
+</tr>
+
+<tr valign=top>
+<td><b>-</b></td>
+<td colspan="3">( n1 n2 - n3) Subtract n2 from n1. Signed 16 bit numbers.</td>
+</tr>
+
+<tr valign=top>
+<td><b>+</b></td>
+<td colspan="3">( n1 n2 - n3) Add n2 to n1. Signed 16 bit numbers.</td>
+</tr>
+
+<tr valign=top>
+<td><b>c!x</b></td>
+<td colspan="3">( c addr - ) Store the byte c at address addr in external data memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>@x</b></td>
+<td colspan="3">( addr - n) Fetch the 16 bit word n from address addr in program memory.</td>
+</tr>
+
+<tr valign=top>
+<td><b>flip</b></td>
+<td colspan="3">( n1 - n2) Flip or swap the bytes in 16 bit word n1.</td>
+</tr>
+
+<tr valign=top>
+<td><b>over</b></td>
+<td colspan="3">( n1 n2 - n1 n2 n1) Copy the second number on the data stack onto the top of the data stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>swap</b>
+</td><td colspan="3">( n1 n2 - n2 n1) Swap the order of the top two numbers on the data stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>dup</b></td>
+<td colspan="3">( n1 - n1 n1) Make a copy of the top number on the data stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>drop</b></td>
+<td colspan="3">( n1 - ) Drop the top number on the data stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>2drop</b></td>
+<td colspan="3">( n1 n2 - ) Drop the top two numbers on the data stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>branch</b></td>
+<td colspan="3">The primitive for an unconditional branch. Compiled inline by again and repeat. Don't run this from the command line. It appears in words as an artifact of the compiler.</td>
+</tr>
+
+<tr valign=top>
+<td><b>?branch</b></td>
+<td colspan="3">The primitive for a conditional branch. &nbsp;&nbsp; Compiled inline by if, until, and while. Don't run this from the command line. It appears in words as an artifact of the compiler.</td>
+</tr>
+
+<tr valign=top>
+<td><b>noop</b></td>
+<td colspan="3">( - ) No operation, just delays a very short time and takes up a tiny bit of space.</td>
+</tr>
+
+<tr valign=top>
+<td><b>execute</b></td>
+<td colspan="3">( addr - ) Jumps to and begins executing at the address left on the data stack.</td>
+</tr>
+
+<tr valign=top>
+<td><b>lit</b></td>
+<td colspan="3">( - n) Runtime code for a word literal (a number to be placed on the data stack). Don't run this from the command line. It shows up in words as an artifact of the compiler.</td>
+</tr>
+
+<tr valign=top>
+<td><b>clit</b></td>
+<td colspan="3">( - c) Pronounced 'see-lit'. Runtime code for a byte literal. Don't execute this from the command line. &nbsp;&nbsp; It shows up in words as an artifact of the compiler.</td>
+</tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<tr><td colspan="4">
+<A NAME="Loops and For/Next"></A><b><FONT SIZE="+2">Loops and For/Next</FONT></b><br><br>
+
+The <b><u>do / loop</u></b> construct is no longer supported<b><u>.</u></b> The pair occupied over 200 bytes and were just too complicated.  Instead we now use <b><u>for / next</u></b>.  Do/loop are still included in the library should you wish to add and use but the memory requirements were too great.<br><br>
+
+Use <b><u>For / next</u></b> when you need a counted loop. <b><u>For / next</u></b> counts down from the number on top of the stack to one, so <b><u>10 for next</u></b> will execute 10 times. The word <b><u>i</u></b> still exists, and returns the index to the <b><u>for / next</u></b> loop. It is equivalent to R@. Unlike the version 5 <b><u>for / next</u></b> loop, this one uses a 16 bit index.<br><br>
+
+<br><br><HR><br><br>
+
+<A NAME="Goodbye to Old Friends"></A><b><FONT SIZE="+2">Goodbye to Old Friends</FONT></b><br><br>
+
+Several primitives have been eliminated, such as <EM>1+, 1-, 2+, 2-, tuck,</EM> and <EM>rot</EM>. If you really need any of these they are easy to implement and still included in the libarary files.
+
+<br><br><HR><br><br>
+
+<A NAME="Switching Between Forth and Assembler"></A><FONT SIZE="+2"><b>Switching Between Forth and Assembler</b></FONT><br><br>
+
+It is possible now to switch back and forth between assembler and forth in a single definition, if it seems to help solve a problem. See the definition of C2reset in the file ~/amrforth/V6/300/jtag/main.fs in Linux or \amrforth\V6\300\jtag\main.fs in Windows for examples.
+
+<br><br><HR><br><br>
+
+<A NAME="Target Heads"></A><b><FONT SIZE="+2">Target Heads</FONT></b><br><br>
+
+Another new feature is the ability to put heads on the target for a standalone interpreter. See the file headers.fs in the same jtag directory and main.fs for typical usage.
+
+<br><br><HR><br><br>
+
+<A NAME="System Portability"></A><FONT SIZE="+2"><b>System Portability</b></FONT><br><br>
+
+<b>Both Windows, Linux and BSD/Unix are now supported!</b><br><br>
+
+To achieve cross-platform portable TCL/TK are used for the GUI interface and serial port access.  This results in a unique, portable system for Windows, Linux and BSD/Unix. Version 5 was limited to Linux only.<br><br>
+
+When installation is complete amrFORTH and amrBASIC work almost identically on all operating systems.
+
+<br><br><HR><br><br>
+
+<A NAME="Comments and Suggestions"></A><FONT SIZE="+2"><b>Comments and Suggestions</b></FONT><br></br>
+
+Comments and suggestions are very welcome. Please look at the HISTORY file in ~/amrForth/V6 or \amrForth\V6. We are keeping a TODO list at the top and documenting bug fixes and feature additions below. Once again comments and suggestions are welcome.<br><br>
+
+Good luck, have fun, and let us know your experiences!<br><br><A HREF="mailto:alm@amresearch.com">email_support</A><br><br>
+</td><tr>
+
+<tr><td colspan="4"><hr></td></tr>
+
+<td colspan="4"><a name="history"></a><div align="center"><font size="+2"><b>History</b></font></div></td></tr>
+
+<td colspan="4">Open Source is not just sharing source code but sharing knowledge. &nbsp;&nbsp; We actively encourage users to modify and test their own variations and enhancements. &nbsp;&nbsp; To enable this we share our development history <a href="./linux/HISTORY">here</a>.</td></tr>
+
+<td colspan="4"><hr></td></tr>
+
+<td colspan="4"><a name="terminology"></a><div align="center"><font size="+2"><b>Terminology</b></font></div></td></tr>
+
+<td colspan="4">
+Throughout this manual, the names of menu sequences, drives, directories, files and executable command line sequences are italicised. This convention avoids having to place quotation marks around items within a sentence. &nbsp;&nbsp; This not only eliminates some visual clutter, but also avoids confusion where command sequences include quotation marks (e.g., Linux string specifications).<br><br>
+
+The following are various terms and abbeviations used througout this Development Manual.<br><br>
+
+<ul>
+<li>JTAG Loader -- a f300 Target Board programmed with JTAG loader code</li>
+<li>GUI -- amrForth Graphical User Interface window</li>
+<li>Host -- Your workstation, the host for V6 which commuicates to the embedded system connected via a serial port</li>
+<li>Linux/BSD -- So far we've tested V6 on Redhat, Debian, Suse, Yellow Dog linux and OpenBSD.  Please share your experiences.</li>
+<li>Mode -- The GUI command line interpreter has several modes.  Each mode has its own set of commands which can be used by typing "words <enter>".  Interactive testing on the Gadget happens in either "forth" or "basic" mode <em><b>only</b></em>.
+<li>Target -- The embedded controller running V6 attached to the end of a serial .</li>
+<li> Windows -- The worlds largest virus.</li>
+</ul>
+</td></tr>
+
+<td colspan="4"><hr></td></tr>
+<td colspan="4"><a name="appnotes"></a><div align="center"><font size="+2"><b>Application Notes</b></font></div></td></tr>
+<td colspan="4">
+
+<ul>
+<li><a href="./appnotes/appnote001.pdf">AN001</a>   Driving a LCD while inputting pushbuttons</li>
+<li><a href="./appnotes/appnote002.pdf">AN002</a>   An Accurate timebase</li>
+<li><a href="./appnotes/appnote003.pdf">AN003</a>   Oversampling an A/D to increase resolution by 1 to 6 bits</li>
+<li><a href="./appnotes/appnote004.pdf">AN004</a>   Using amrFORTH/BASIC</li>
+<li><a href="./appnotes/appnote005.pdf">AN005</a>   Converting a serial bit stream to Morse Code</li>
+</ul>
+</td></tr>
+
+<td colspan="4"><hr></td></tr>
+
+
+	
+		<td><h6>01NOV03</h6></td>
+		<td align="center"><a href="http://www.amresearch.com"><b>AMR Home</b></a></td>
+		<td align="center"><img src="../graphics/linuxpower2.gif" width="110" height="44" alt="LinuxLogo"></td>
+		<td valign="top"><div align="right"><a href="http://validator.w3.org/check/referer"><img border="0" src="../graphics/valid-html401.png" alt="Valid HTML 4.01!" height="31" width="88"></a></div></td>
+	</tr>
+</tbody></table>
+</body></html>

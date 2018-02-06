@@ -1,0 +1,12 @@
+: comma?  ( a - flag) 
+	case 
+	1364 of  -1  endof
+	1365 of  -1  endof
+	1366 of  -1  endof
+	1367 of  -1  endof
+	1368 of  -1  endof
+	1369 of  -1  endof
+	1370 of  -1  endof
+	1371 of  -1  endof
+	0 swap
+	endcase ; 

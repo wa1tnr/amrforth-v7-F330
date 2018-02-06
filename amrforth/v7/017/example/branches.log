@@ -1,0 +1,5 @@
+: branch-point?  ( a - flag) 
+	case 
+	1425 of  -1  endof
+	0 swap
+	endcase ; 
