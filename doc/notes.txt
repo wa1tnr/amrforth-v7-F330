@@ -17,5 +17,15 @@
   Gforth 0.6.x proves the hardware is fine as-is; something about
   gforth itself may be at issue.
 
+
+  RESET
+
+  The reset line of the C8051F330D target is shared with C2CLK.
+
+  When a reset line and system (pullup, capacitor) is used on
+  the pin for ordinary serial bootloading/downloading, it has
+  to be removed from the line when it is used as C2CLK.
+
+
   06 February 2018
 
