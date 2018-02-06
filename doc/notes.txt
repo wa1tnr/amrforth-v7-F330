@@ -1,0 +1,21 @@
+
+  System was rolled back to Gforth 0.6.x to be able to download
+  directly to the C8051F330D DIP-20 MCU, using CP2104 (Adafruit's
+  PiUART, repurposed with no modifications to it other than
+  cutting the one usual trace to prevent +5VDC from propagating).
+
+  System runs fine on recent Gforth (0.7.x) -- no changes to the
+  amrforth system were required.  However, no combination of efforts
+  produced a functioning serial download (TX/RX, CP2104 interface).
+
+  Puzzling since C2 works fine with the same hardware; once C2 is
+  leverage for a download, the regular forth environment communicates
+  with the target, just as expected!
+
+  Download handshaking seemed to be at issue.
+
+  Gforth 0.6.x proves the hardware is fine as-is; something about
+  gforth itself may be at issue.
+
+  06 February 2018
+
