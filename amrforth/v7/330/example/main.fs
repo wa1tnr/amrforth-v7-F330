@@ -7,7 +7,12 @@ code startup
 \ ----- initialization code goes here, before MAIN.
 
 	$ff # P0MDIN orl   \ No analog, all digital.
-	$04 # P0MDOUT orl  \ P0.2 output, push pull.
+      \ $04 # P0MDOUT orl  \ P0.2 output, push pull.
+        $04 # P0MDOUT orl  \ P0.2 output, push pull.
+      \ $0e # P0MDOUT orl  \ P0.2 output, push pull.  \ P0.1 P0.3 also outputs.
+
+  \ 7654 3210
+  \ 0000 1110
 
 	$01 # XBR0 mov  \ Enable TX and RX on P0.4, P0.5.
 
@@ -21,17 +26,44 @@ code startup
 	\ $20 # TMOD mov  \ Mode 2, 8 bit auto-reload.
 	\ $96 # TH1 mov  \ 9600 baud, at 24.5MHz.
 	\ 6 .TCON setb  \ Enable Timer 1.
+
+        2 .P0 clr \ initialize the LED's GPIO pin so that the LED is not lit.
 	next c;
 
 code wink  (  - ) 2 .P0 cpl  next c;
-code dark  (  - ) 2 .P0 setb  next c;
-code light (  - ) 2 .P0 clr   next c;
+code dark  (  - ) 2 .P0 clr   next c;
+code light (  - ) 2 .P0 setb  next c;
+
+code pins123 (  - )  1 .P0 setb  \ make LEDs attached to them bright; output is an NPN feeding a PNP transistor
+                     2 .P0 setb
+                     3 .P0 setb next c;
+
+code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
+                     2 .P0  clr
+                     3 .P0  clr next c;
 
 \ : delay  (  - ) $1111 for next ;
 : delay  (  - ) 40 ms ;
 
 : ldelay  (  - ) \ sizeable delay
   400 ms ;
+
+: wink-all (  - ) \ blink P0.1 P0.2 P0.3
+  pins123 ldelay !pins123 ldelay ;
+
+: wink-them (  - ) \ repeat blink P0.1 P0.2 P0.3
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all ;
 
 : ssdelay (  - ) \ short delay
   50 ms 
@@ -45,7 +77,15 @@ code light (  - ) 2 .P0 clr   next c;
 
 : mowink (  - ) light ssdelay dark 600 ms ;
 
-: planes  ( n - n1 n2 )
+: kanufb (  - ) dark ldelay light ldelay ;
+: kanuf  (  - ) kanufb  kanufb  kanufb  kanufb  kanufb  kanufb  ;
+
+: pialgo (  - ) kanuf kanuf kanuf ;
+
+
+: planes  ( n - ) \ TOS holds the number of planes (blink iterations)
+
+  \ ldelay ldelay ldelay ldelay ldelay \ delay 2 seconds - ldelay is 400 ms
 
   0 swap  ( planes - 0 planes )
 
@@ -60,8 +100,6 @@ code light (  - ) 2 .P0 clr   next c;
     1800 ms
   \ .s cr
   next
-  
-
   drop
   ;
 

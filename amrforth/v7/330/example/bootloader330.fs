@@ -110,7 +110,13 @@ a: blink-main  begin  2 .P0 cpl  blink-delay  again ;a
 label ENTRY
 	$40 invert # PCA0MD anl  \ Clear watchdog enable bit.
 \ ----- initialization code goes here, before MAIN.
+	\ $1e # P0MDOUT orl  \ P0.2 and P0.4 are outputs, push pull.  and P0.3 and P0.1 also outputs
+
 	$14 # P0MDOUT orl  \ P0.2 and P0.4 are outputs, push pull.
+
+\  7654  3210
+\  0001  0100
+
 	$ff # P0MDIN orl  \ No analog, all digital.
 	$01 # XBR0 mov  \ Enable TX and RX on P0.4, P0.5.
 	$40 # XBR1 mov  \ Enable crossbar and weak pull-ups.
