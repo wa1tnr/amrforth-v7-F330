@@ -1,0 +1,374 @@
+\ main.fs -- f330 example program
+
+\ 09 Feb - quick mod for 14-segment alphanumeric common cathode
+
+\ Fri Feb  9 17:40:24 UTC 2018
+
+\ PROBLEM: after reset all pins source Vcc 3.3 which would
+\ load the heck out of Vcc/GND with very low current-limiting
+\ resistors (should be 500 ohms anyway).
+
+\ +3.3 Vcc also turns on the darlingtons that sink the LED array common cathodes.
+
+\ So, the default after power-on reset is to turn the entire display on!
+
+
+
+\ 37 and 42 are cathodes
+
+\ 35 is lowest pin number on breadboard.
+\ 43 is highest pin number on breadboard.
+
+
+\ V.
+
+\     35      36      37      38      39      40      41      42      43
+\   P0.7    P1.2       x    P1.3    P1.4    P1.0    P0.0       x    P0.1
+
+\   P0.6    P1.5       n    P1.6    P1.7    P1.1    P0.3            P0.2
+\     35      36      37      38      39      40      41      42      43
+
+
+
+
+
+
+
+
+
+
+
+\ IV.
+
+\     35      36      37      38      39      40      41      42      43
+\   P0.7    P1.2       x    P1.3    P1.4    P1.0    P0.0       x    P0.1
+
+\   P0.6    P1.5       n    P1.6    P1.7    P1.1    P0.3            P0.2
+\     35      36      37      38      39      40      41      42      43
+
+
+
+
+
+
+
+\ III.
+
+\     35      36      37      38      39      40      41      42      43
+\   P0.7    P1.2       x    P1.3    P1.4                       x       z
+
+\           P1.5       n                                               z
+\     35      36      37      38      39      40      41      42      43
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\ II.
+
+\     35      36      37      38      39      40      41      42      43
+\   P0.7               x                                       x       z
+\                      n                                               z
+\     35      36      37      38      39      40      41      42      43
+
+
+
+
+
+
+
+
+\ I.
+
+\   35    36    37    38    39    40    41    42    43
+\                x                             x            z
+\                n                                          z
+\   35    36    37    38    39    40    41    42    43
+
+
+
+
+
+\ main.fs
+
+code startup
+	$40 invert # PCA0MD anl  \ Clear watchdog enable bit.
+\ ----- initialization code goes here, before MAIN.
+
+	$ff # P0MDIN orl   \ No analog, all digital, port 0.x
+      \ $04 # P0MDOUT orl  \ P0.2 output, push pull.
+      \ $04 # P0MDOUT orl  \ P0.2 output, push pull.
+      \ $0e # P0MDOUT orl  \ P0.2 output, push pull.  \ P0.1 P0.3 also outputs.
+        $cf # P0MDOUT orl  \ all pins output, push pull -- except 4 and 5
+
+        $ff # P1MDIN orl   \ No analog, all digital - port 1.x
+        $ff # P1MDOUT orl  \ all pins output, push pull.
+
+        \ does not exist - P2MDIN $01 # P2MDIN orl   \ No analog, all digital - port 1.x
+        $01 # P2MDOUT orl  \ push pull
+
+  \ 7654 3210
+  \ 11-- 1111 $nf  $cf
+
+  \ 7654 3210
+  \ 0000 1110
+
+	$01 # XBR0 mov  \ Enable TX and RX on P0.4, P0.5.
+
+\	$09 # XBR0 mov  \ Enable TX and RX on P0.4, P0.5, also sysclk on P0.0
+
+	$40 # XBR1 mov  \ Enable crossbar and weak pull-ups.
+\ Setup serial port.
+	\ $c3 # OSCICN mov  \ Full speed internal, 24.5 MHz.
+	\ $00 # CKCON mov  \ T1 uses SYSCLK/12.
+	\ $12 # SCON0 mov  \ 8 bit UART mode, TX ready.
+	\ $20 # TMOD mov  \ Mode 2, 8 bit auto-reload.
+	\ $96 # TH1 mov  \ 9600 baud, at 24.5MHz.
+	\ 6 .TCON setb  \ Enable Timer 1.
+
+        2 .P0 clr \ initialize the LED's GPIO pin so that the LED is not lit.
+
+        0 .P0 clr
+        1 .P0 clr
+     \  2 .P0 clr
+        3 .P0 clr
+        6 .P0 clr
+        7 .P0 clr
+        0 .P1 clr
+        1 .P1 clr
+        2 .P1 clr
+        3 .P1 clr
+        4 .P1 clr
+        5 .P1 clr
+        6 .P1 clr
+        7 .P1 clr
+
+\ 1. The ULN2804A Darlington sinks current to ground.
+\ 2. Bring the Darlington's input to Vcc, to enable its output,
+\    which will light the common-cathode LED array.
+
+\ 3. The PN2222A NPN transistor provides the signal to the ULN2804A input.
+\ 4. Bring the PN2222A's input to Vcc to *disable* the Darlington; doing
+\    so provides a ground on the Darlington transistor's input lead,
+\    disabling its output.  Note that if there is no connection to the
+\    darlington's input, it will not turn on; you have to raise its
+\    input to Vcc to get it to conduct.
+\  
+\    Whereas, with the PN2222A NPN transistor, if you leave its input
+\    floating, its output will rise to Vcc (thus switching on the
+\    Darlington's input!) because the output of the NPN is effectively
+\    on a pullup to Vcc.
+\ 
+\    So, in this case, if there's a broken wire between the port pin
+\    and the input to the NPN, the display will come on, unintentionally.
+\  
+\    Not exactly fail-safe during prototyping, but better than not
+\    doing even this much for prevention.
+
+
+
+     \  0 .P2 clr \ NPN driving UNL2804A input.
+                  \ Bring P2.0 LOW to enable the darlington's input
+                  \ (NPN drives the darlington input positive)
+                  \ which will in turn, ground the common cathodes
+                  \  and light the display.
+
+	next c;
+
+code allrlow (  - ) 
+
+        0 .P0 clr
+        1 .P0 clr
+        2 .P0 clr
+        3 .P0 clr
+        6 .P0 clr
+        7 .P0 clr
+        0 .P1 clr
+        1 .P1 clr
+        2 .P1 clr
+        3 .P1 clr
+        4 .P1 clr
+        5 .P1 clr
+        6 .P1 clr
+        7 .P1 clr
+     \  0 .P2 clr \ NPN driver.  Bring P2.0 LOW to ground the common cathodes and light the display.
+	next c;
+
+code enbl (  - ) 0 .P2 clr  next c;
+code dsbl (  - ) 0 .P2 setb next c;
+
+code allrhi (  - )
+        0 .P0 setb
+        1 .P0 setb
+        2 .P0 setb
+        3 .P0 setb
+        6 .P0 setb
+        7 .P0 setb
+        0 .P1 setb
+        1 .P1 setb
+        2 .P1 setb
+        3 .P1 setb
+        4 .P1 setb
+        5 .P1 setb
+        6 .P1 setb
+        7 .P1 setb
+        \ 0 .P2 setb \ NPN driver.  Bring P2.0 HIGH to disable the display.
+	next c;
+
+
+code wink  (  - ) 2 .P0 cpl  next c;
+code dark  (  - ) 2 .P0 clr   next c;
+code light (  - ) 2 .P0 setb  next c;
+
+code pins123 (  - )  1 .P0 setb  \ make LEDs attached to them bright; output is an NPN feeding a PNP transistor
+                     2 .P0 setb
+                     3 .P0 setb next c;
+
+code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
+                     2 .P0  clr
+                     3 .P0  clr next c;
+
+\ : delay  (  - ) $1111 for next ;
+: delay  (  - ) 40 ms ;
+
+: ldelay  (  - ) \ sizeable delay
+  400 ms ;
+
+: wink-all (  - ) \ blink P0.1 P0.2 P0.3
+  pins123 ldelay !pins123 ldelay ;
+
+: wink-them (  - ) \ repeat blink P0.1 P0.2 P0.3
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all wink-all wink-all
+  wink-all ;
+
+: ssdelay (  - ) \ short delay
+  50 ms 
+
+  \ intent is maybe 10 ms but let's expand that wildly:
+
+
+;
+
+: blink  (  - ) wink delay delay delay wink ;
+
+: mowink (  - ) light ssdelay dark 600 ms ;
+
+: kanufb (  - ) dark ldelay light ldelay ;
+: kanuf  (  - ) kanufb  kanufb  kanufb  kanufb  kanufb  kanufb  ;
+
+: pialgo (  - ) kanuf kanuf kanuf ;
+
+: vipew (  - ) enbl allrhi  4 us
+               dsbl allrlow 1 ms ; \ 1870 us ;
+
+: vipe2 1 begin
+      vipew
+      1 + dup
+      200 = if
+        \  cr .s cr drop exit
+          drop exit
+      then again ;
+
+
+: vipe3 1 begin
+      vipe2
+      1 + dup
+      12 = if
+          \ cr .s cr drop exit
+          drop exit
+      then again ;
+
+
+: vipe4 1 begin
+      vipe3
+      1 + dup
+      18  = if
+          \ cr .s cr drop exit
+          drop exit
+      then again ;
+
+: vipe (  - )
+  \ 100 1 do vipew loop
+  vipew
+  vipew
+  vipew
+  vipew
+  vipew
+  vipew
+;
+
+: planes  ( n - ) \ TOS holds the number of planes (blink iterations)
+
+  \ ldelay ldelay ldelay ldelay ldelay \ delay 2 seconds - ldelay is 400 ms
+
+  0 swap  ( planes - 0 planes )
+
+  dark
+
+  for
+    1 +
+    dup
+    for
+         mowink
+    next
+    1800 ms
+  \ .s cr
+  next
+  drop
+  ;
+
+
+: lxdelay ldelay ldelay ldelay ldelay ldelay ;
+
+: iter vipe3 lxdelay ;
+
+: test startup iter iter iter iter iter ;
+
+: testaa 1 begin
+
+  2 ms
+
+  1 +
+
+  .s
+
+  dup
+  200 = if abort then
+
+  again ;
+
+: go  (  - ) startup 
+  \ 65 emit 
+  begin
+  dark
+  77 planes
+  30 for 2000 ms next
+  30 for 2000 ms next
+  30 for 2000 ms next
+  again \ quit
+  -;
+
