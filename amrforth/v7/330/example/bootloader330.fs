@@ -118,6 +118,8 @@ label ENTRY
 \  0001  0100
 
 	$ff # P0MDIN orl  \ No analog, all digital.
+
+
 	$01 # XBR0 mov  \ Enable TX and RX on P0.4, P0.5.
 	$40 # XBR1 mov  \ Enable crossbar and weak pull-ups.
 \ Setup serial port.
@@ -127,6 +129,8 @@ label ENTRY
 	$20 # TMOD mov  \ Mode 2, 8 bit auto-reload.
 	$96 # TH1 mov  \ 9600 baud, at 24.5MHz.
 	6 .TCON setb  \ Enable Timer 1.
+
+        2 .P0 setb         \ will this clear 2 .P0 useful to bootloader status signalling?
 \ Only bootload if the password is received in time.
 	'KEY-OR-TIMEOUT call
 	$a5 # A xrl  0<> if  blink-main ( jump)  then
