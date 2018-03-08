@@ -1,5 +1,9 @@
 \ main.fs -- f330 example program
 
+\ Thu Mar  8 01:52:50 UTC 2018
+
+\ 7-segment display - ignore references to older 14-segment display.
+
 \ 09 Feb - quick mod for 14-segment alphanumeric common cathode
 
 \ Sat Feb 10 02:14:44 UTC 2018
@@ -78,10 +82,10 @@ code startup
         7 .P0 clr
         0 .P1 clr
         1 .P1 clr
-        2 .P1 clr
-        3 .P1 clr
-        4 .P1 clr
-        5 .P1 clr
+        2 .P1 setb
+        3 .P1 setb
+        4 .P1 setb
+        5 .P1 setb
         6 .P1 clr
         7 .P1 clr
 
@@ -188,12 +192,12 @@ code elF (  - )
 	next c;
 
 
-code elGl (  - )
+code elG (  - )
         0 .P1 setb
 	next c;
 
 
-code elGr (  - )
+code elDP (  - )
         1 .P1 setb
 	next c;
 
@@ -201,25 +205,49 @@ code elGr (  - )
 \ hjk  lmn
 
 
-code elH (  - )
+code clrdg0-3 (  - )
         2 .P1 setb
-	next c;
-
-
-code elJ (  - )
         3 .P1 setb
-	next c;
-
-
-code elK (  - )
         4 .P1 setb
-	next c;
-
-
-code elL (  - )
         5 .P1 setb
 	next c;
 
+: clrdgts clrdg0-3 ;
+
+code dg0c (  - )
+        2 .P1 clr
+	next c;
+
+: dg0 (  - )
+        clrdgts
+        dg0c ;
+
+
+code dg1c (  - )
+        3 .P1 clr
+	next c;
+
+: dg1 (  - )
+        clrdgts
+        dg1c ;
+
+
+code dg2c (  - )
+        4 .P1 clr
+	next c;
+
+: dg2 (  - )
+        clrdgts
+        dg2c ;
+
+
+code dg3c (  - )
+        5 .P1 clr
+	next c;
+
+: dg3 (  - )
+        clrdgts
+        dg3c ;
 
 code elM (  - )
         6 .P1 setb
@@ -303,8 +331,7 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 \ enbl elD hblank
   enbl elE hblank
   enbl elF hblank
-  enbl elGl hblank
-  enbl elGR hblank
+  enbl elG hblank
   ;
 
 
@@ -322,8 +349,7 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 \ enbl elD hblank
   enbl elE hblank
   enbl elF hblank
-  enbl elGl hblank
-\ enbl elGR hblank
+  enbl elG hblank
   ;
 
 \ pF, D
@@ -336,41 +362,102 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 
 \ pE, KN
 : paintB (  - ) 
-  paintE \ most of the char is already specified by paintE
-  \ just add K and N
 \ enbl elA hblank
-
-
-\ enbl elD hblank
-\ enbl elE hblank
-\ enbl elF hblank
-\ enbl elGl hblank
-
-  enbl elK hblank
-  enbl elN hblank
+\ enbl elB hblank
+  enbl elC hblank
+  enbl elD hblank
+  enbl elE hblank
+  enbl elF hblank
+  enbl elG hblank
   ;
 
-
-\ abcdefGlGR
-: paint8 (  - ) 
+: paintEIGHT (  - ) 
   enbl elA hblank
   enbl elB hblank
   enbl elC hblank
   enbl elD hblank
   enbl elE hblank
   enbl elF hblank
-  enbl elGl hblank
-  enbl elGR hblank
+  enbl elG hblank
   ;
 
-\ ABCDJM
-: paintD (  - )
+: paint5 (  - ) 
+  enbl elA hblank
+  enbl elF hblank
+  enbl elG hblank
+  enbl elC hblank
+  enbl elD hblank
+\ enbl elB hblank
+\ enbl elE hblank
+  ;
+
+: paint6 (  - ) 
+  enbl elA hblank
+\ enbl elB hblank
+  enbl elC hblank
+  enbl elD hblank
+  enbl elE hblank
+  enbl elF hblank
+  enbl elG hblank
+  ;
+
+: paint9 (  - ) 
+  enbl elA hblank
+  enbl elB hblank
+  enbl elC hblank
+\ enbl elD hblank
+\ enbl elE hblank
+  enbl elF hblank
+  enbl elG hblank
+  ;
+
+: paint4 (  - ) 
+\ enbl elA hblank
+  enbl elB hblank
+  enbl elC hblank
+\ enbl elD hblank
+\ enbl elE hblank
+  enbl elF hblank
+  enbl elG hblank
+  ;
+
+: paint3 (  - ) 
   enbl elA hblank
   enbl elB hblank
   enbl elC hblank
   enbl elD hblank
-  enbl elJ hblank
-  enbl elM hblank
+\ enbl elE hblank
+\ enbl elF hblank
+  enbl elG hblank
+  ;
+
+\ abcdefGlGR
+: paint2 (  - ) 
+  enbl elA hblank
+  enbl elB hblank
+  enbl elG hblank
+  enbl elE hblank
+  enbl elD hblank
+\ enbl elC hblank
+\ enbl elF hblank
+  ;
+
+\ abcdefGlGR
+: paint8 (  - ) 
+  enbl elC hblank
+  enbl elF hblank
+  paint2
+  ;
+
+\ ABCDJM
+: paintD (  - )
+\ enbl elA hblank
+  enbl elB hblank
+  enbl elC hblank
+  enbl elD hblank
+  enbl elE hblank
+\ enbl elF hblank
+  enbl elG hblank
   ;
 
 \ ADEF
@@ -390,21 +477,25 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 \ enbl elD hblank
 \ enbl elE hblank
 \ enbl elF hblank
-\ enbl elGl hblank
-\ enbl elGR hblank
+\ enbl elG hblank
+  ;
+
+\ BC
+: paint1 (  - ) 
+\ enbl elA hblank
+  enbl elB hblank
+  enbl elC hblank
+\ enbl elD hblank
+\ enbl elE hblank
+\ enbl elF hblank
+\ enbl elG hblank
   ;
 
 \ ABC
-: paint7 (  - ) 
-\ enbl elA hblank
-\ enbl elB hblank
-\ enbl elC hblank
-  enbl elD hblank
-\ enbl elE hblank
-\ enbl elF hblank
-\ enbl elGl hblank
-\ enbl elGR hblank
-  ;
+: paint7 (  - )
+  enbl elA hblank
+  paint1
+;
 
 : paint (  - ) paint7 ;
 
@@ -429,13 +520,34 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 : painta_E 1 begin paintE
       1 + dup delcount = if drop exit then again ;
 
-: painta_8 1 begin paint8
-      1 + dup delcount = if drop exit then again ;
-
 : painta_0 1 begin paint0
       1 + dup delcount = if drop exit then again ;
 
+: painta_1 1 begin paint1
+      1 + dup delcount = if drop exit then again ;
+
+: painta_2 1 begin paint2
+      1 + dup delcount = if drop exit then again ;
+
+: painta_3 1 begin paint3
+      1 + dup delcount = if drop exit then again ;
+
+: painta_4 1 begin paint4
+      1 + dup delcount = if drop exit then again ;
+
+: painta_5 1 begin paint5
+      1 + dup delcount = if drop exit then again ;
+
+: painta_6 1 begin paint6
+      1 + dup delcount = if drop exit then again ;
+
 : painta_7 1 begin paint7
+      1 + dup delcount = if drop exit then again ;
+
+: painta_8 1 begin paint8
+      1 + dup delcount = if drop exit then again ;
+
+: painta_9 1 begin paint9
       1 + dup delcount = if drop exit then again ;
 
 
@@ -450,13 +562,21 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 : iterE painta_E lxdelay ;
 : iterF painta_F lxdelay ;
 : iter0 painta_0 lxdelay ;
+: iter1 painta_1 lxdelay ;
+: iter2 painta_2 lxdelay ;
+: iter3 painta_3 lxdelay ;
+: iter4 painta_4 lxdelay ;
+: iter5 painta_5 lxdelay ;
+: iter6 painta_6 lxdelay ;
 : iter7 painta_7 lxdelay ;
 : iter8 painta_8 lxdelay ;
+: iter9 painta_9 lxdelay ;
 
 : test startup
-  iter0 iter7 iter8 iterA
-  iterB iterC iterD iterE
-  iterF ;
+  iter0 iter1 iter2 iter3 
+  iter4 iter5 iter6 iter7
+  iter8 iter9 iterA iterB
+  iterC iterD iterE iterF ;
 
 \ grand test
 : gtest test test test test test
