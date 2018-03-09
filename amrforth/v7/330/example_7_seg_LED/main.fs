@@ -4,6 +4,65 @@
 
 \ 7-segment display - ignore references to older 14-segment display.
 
+
+
+\ 50 microAmperes flows through the port pin and R4 to bias Q1 PN2222A,
+\ whenever the LED matrix cathode for that digit is *not* lit.
+\ When the digit is lit, no current flows through R4:
+\ 
+\     2 .P1 clr
+\ 
+\ Thus, the base of Q1 (through R4) is brought to Vcc to turn OFF
+\ its digit.  When the digit is lit, that's when there's the least
+\ load on the microcontroller C8051F330D.
+
+
+
+
+\ when you ground it, it is lit.
+\ when you bring the input of Q1 thru R4 to Vcc, it goes out.
+
+\ ground the input of Q1 thru R4 to turn on the LED.
+
+\ bring  the input of Q1 thru R4 to Vcc to turn the LED load OFF.
+
+\ Lines 25 and 27 were tested last and thoroughly.
+
+\ THERE IS a series resistor between the port pin and the
+\ rest of the circuit.  This is basic protection.  It is
+\ not in the schematic (yet).
+
+
+\ ULN2804A, direct connection (and inverse logic) to the port pin through the same series resistor:
+
+\ 7.7 uA drawn when LED digit (8 segments) not lit.
+\ 169 uA drawn when the digit is lit.
+
+\ So you have 53 uA the indirect way (with PN2222A intervening) but only 8 uA with ULN2804A (direct input).
+\ However, you get 169 uA on just this digit (with 7.7 uA on all the unlit digits).
+
+\ The math for either method isn't altogether dissimilar:
+
+\ 7 x 53 uA = 371 uA I_Total for the cathode control lines.
+
+\ vs
+
+\ 1 x 169 uA + 7 * 7.7 uA = 169 + 53 = 222.9 uA I_total, direct ULN2804A, and with inverse logic.
+
+\ Costs an extra 150 uA to use the PN2222As as intermediaries.
+
+
+
+
+
+
+
+
+
+
+
+
+
 \ 09 Feb - quick mod for 14-segment alphanumeric common cathode
 
 \ Sat Feb 10 02:14:44 UTC 2018
@@ -131,10 +190,10 @@ code allrlow (  - )
         7 .P0 clr
         0 .P1 clr
         1 .P1 clr
-        2 .P1 clr
-        3 .P1 clr
-        4 .P1 clr
-        5 .P1 clr
+      \ 2 .P1 setb \ inverse logic 2 .P1 thru 5 .P1 - cathode control lines ULN2804A via 2N2222A
+      \ 3 .P1 setb
+      \ 4 .P1 setb
+      \ 5 .P1 setb
         6 .P1 clr
         7 .P1 clr
      \  0 .P2 clr \ NPN driver.  Bring P2.0 LOW to ground the common cathodes and light the display.
@@ -163,22 +222,23 @@ code allrhi (  - )
 
 
 code elA (  - )
-        0 .P0 setb
+        7 .P0 setb
 	next c;
 
 
 code elB (  - )
-        1 .P0 setb
+        1 .P1 setb
 	next c;
 
 
 code elC (  - )
-        2 .P0 setb
+        1 .P0 setb
 	next c;
 
 
 code elD (  - )
         3 .P0 setb
+        \ 7 .P1 setb \ all the way to the right
 	next c;
 
 
@@ -188,17 +248,17 @@ code elE (  - )
 
 
 code elF (  - )
-        7 .P0 setb
-	next c;
-
-
-code elG (  - )
         0 .P1 setb
 	next c;
 
 
+code elG (  - )
+        0 .P0 setb
+	next c;
+
+
 code elDP (  - )
-        1 .P1 setb
+        2 .P0 setb
 	next c;
 
 
@@ -319,8 +379,12 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 : blank (  - ) 
   allrlow ;
 
-: hblank (  - )
-  2 ms dsbl blank 55 us \ 1 ms blank time formerly
+: hblank (  - ) \ above 1 ms can see the refresh obviously
+  \ 2 ms dsbl blank 55 us \ 1 ms blank time formerly
+  \ 2 us dsbl blank 5 us \ 1 ms blank time formerly
+  21880 us 
+  blank 
+  \ 1 us \ 1 us was acceptable
   ;
 
 \ abcEFGlGR
@@ -499,7 +563,9 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 
 : paint (  - ) paint7 ;
 
-: delcount 400 ;
+: delcount 4 ;
+
+: delcounts 400 ;
 
 : painta_F 1 begin paintF
       1 + dup delcount = if drop exit then again ;
@@ -509,7 +575,6 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 
 : painta_C 1 begin paintC
       1 + dup delcount = if drop exit then again ;
-
 
 : painta_A 1 begin paintA
       1 + dup delcount = if drop exit then again ;
@@ -572,11 +637,39 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 : iter8 painta_8 lxdelay ;
 : iter9 painta_9 lxdelay ;
 
-: test startup
+: test1 startup dg1
   iter0 iter1 iter2 iter3 
   iter4 iter5 iter6 iter7
   iter8 iter9 iterA iterB
   iterC iterD iterE iterF ;
+
+: test0 startup dg0
+  iter0 iter1 iter2 iter3 
+  iter4 iter5 iter6 iter7
+  iter8 iter9 iterA iterB
+  iterC iterD iterE iterF ;
+
+: testn startup
+   dg0 iter0 dg1 iter0 dg2 iter0
+   dg0 iter1 dg1 iter1 dg2 iter1
+   dg0 iter2 dg1 iter2 dg2 iter2
+   dg0 iter3 dg1 iter3 dg2 iter3
+   dg0 iter4 dg1 iter4 dg2 iter4
+   dg0 iter5 dg1 iter5 dg2 iter5
+   dg0 iter6 dg1 iter6 dg2 iter6
+   dg0 iter7 dg1 iter7 dg2 iter7
+   dg0 iter8 dg1 iter8 dg2 iter8
+   dg0 iter9 dg1 iter9 dg2 iter9
+   dg0 iter9 dg1 iter9 dg2 iter9
+   dg0 itera dg1 itera dg2 itera
+   dg0 iterb dg1 iterb dg2 iterb
+   dg0 iterc dg1 iterc dg2 iterc
+   dg0 iterd dg1 iterd dg2 iterd
+   dg0 itere dg1 itere dg2 itere
+   dg0 iterf dg1 iterf dg2 iterf
+;
+
+: test testn ; \ test0 test1 ;
 
 \ grand test
 : gtest test test test test test
@@ -647,7 +740,33 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
   drop
   ;
 
-: go  (  - ) startup 
+
+: geer
+     dup  \ 255 -- 255 255
+     1 -  \ 255 255 -- 255 255 1 -- 255 254
+     swap \ 255 254 -- 254 255
+     drop \ 254 255 -- 254
+     .s
+
+     dup  \ 254 -- 254 254
+     0    \ 254 254 -- 254 254 0
+     =    \ 254 254 0 -- 254 BOOL
+
+  ;
+
+: gonee
+  startup
+  ela ele elf elg dg0 lxdelay lxdelay startup lxdelay lxdelay
+  ela ele elf elg dg0 lxdelay lxdelay startup lxdelay lxdelay
+  ela ele elf elg dg0 lxdelay lxdelay startup lxdelay lxdelay
+
+  startup \ silence
+  lxdelay lxdelay lxdelay lxdelay
+  lxdelay lxdelay lxdelay lxdelay
+  lxdelay lxdelay lxdelay lxdelay
+  ;
+
+: gono  (  - ) startup 
   \ 65 emit 
   begin
   dark
@@ -656,5 +775,17 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
   30 for 2000 ms next
   30 for 2000 ms next
   again \ quit
-  -;
+  ;
 
+
+: go (  - )
+  begin
+  0 9000 startup for dg0 paintF   dg1 paint8   dg2 paint2 next drop
+  \ 2500 ms
+  0 9000 startup for dg0 paintB   dg1 paintA   dg2 paintC next drop
+  startup
+  500 ms 2500 ms 2500 ms 2500 ms 2500 ms 2500 ms
+  \ cr .s cr
+  \ 500 ms
+  again
+-;
