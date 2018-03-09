@@ -172,12 +172,6 @@ code startup
 
 
 
-     \  0 .P2 clr \ NPN driving UNL2804A input.
-                  \ Bring P2.0 LOW to enable the darlington's input
-                  \ (NPN drives the darlington input positive)
-                  \ which will in turn, ground the common cathodes
-                  \  and light the display.
-
 	next c;
 
 code allrlow (  - ) 
@@ -190,13 +184,8 @@ code allrlow (  - )
         7 .P0 clr
         0 .P1 clr
         1 .P1 clr
-      \ 2 .P1 setb \ inverse logic 2 .P1 thru 5 .P1 - cathode control lines ULN2804A via 2N2222A
-      \ 3 .P1 setb
-      \ 4 .P1 setb
-      \ 5 .P1 setb
         6 .P1 clr
         7 .P1 clr
-     \  0 .P2 clr \ NPN driver.  Bring P2.0 LOW to ground the common cathodes and light the display.
 	next c;
 
 code enbl (  - ) 0 .P2 clr  next c;
@@ -217,7 +206,6 @@ code allrhi (  - )
         5 .P1 setb
         6 .P1 setb
         7 .P1 setb
-        \ 0 .P2 setb \ NPN driver.  Bring P2.0 HIGH to disable the display.
 	next c;
 
 
@@ -238,7 +226,6 @@ code elC (  - )
 
 code elD (  - )
         3 .P0 setb
-        \ 7 .P1 setb \ all the way to the right
 	next c;
 
 
@@ -260,9 +247,6 @@ code elG (  - )
 code elDP (  - )
         2 .P0 setb
 	next c;
-
-
-\ hjk  lmn
 
 
 code clrdg0-3 (  - )
@@ -323,11 +307,11 @@ code wink  (  - ) 2 .P0 cpl  next c;
 code dark  (  - ) 2 .P0 clr   next c;
 code light (  - ) 2 .P0 setb  next c;
 
-code pins123 (  - )  1 .P0 setb  \ make LEDs attached to them bright; output is an NPN feeding a PNP transistor
+code pins123 (  - )  1 .P0 setb
                      2 .P0 setb
                      3 .P0 setb next c;
 
-code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
+code !pins123 (  - ) 1 .P0  clr
                      2 .P0  clr
                      3 .P0  clr next c;
 
@@ -359,7 +343,6 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 
   \ intent is maybe 10 ms but let's expand that wildly:
 
-
 ;
 
 : blink  (  - ) wink delay delay delay wink ;
@@ -374,17 +357,11 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 
 
 
-
-
 : blank (  - ) 
   allrlow ;
 
-: hblank (  - ) \ above 1 ms can see the refresh obviously
-  \ 2 ms dsbl blank 55 us \ 1 ms blank time formerly
-  \ 2 us dsbl blank 5 us \ 1 ms blank time formerly
-  21880 us 
-  blank 
-  \ 1 us \ 1 us was acceptable
+: hblank (  - )
+  21880 us blank 
   ;
 
 \ abcEFGlGR
@@ -397,11 +374,6 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
   enbl elF hblank
   enbl elG hblank
   ;
-
-
-\ hjk  lmn
-
-
 
 
 
@@ -618,7 +590,6 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
 
 : lxdelay ldelay ldelay ldelay ldelay ldelay ;
 
-\ : iter vipe3 lxdelay ;
 
 : iterA painta_A lxdelay ;
 : iterB painta_B lxdelay ;
@@ -676,10 +647,6 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
   test test test test test
   test test test test test ;
 
-\ : testaa 1 begin again ;
-
-
-
 
 : vipew (  - ) paint ;
 
@@ -688,7 +655,6 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
       vipew
       1 + dup
       200 = if
-        \  cr .s cr drop exit
           drop exit
       then again ;
 
@@ -697,7 +663,6 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
       vipe2
       1 + dup
       12 = if
-          \ cr .s cr drop exit
           drop exit
       then again ;
 
@@ -706,28 +671,17 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
       vipe3
       1 + dup
       18  = if
-          \ cr .s cr drop exit
           drop exit
       then again ;
 
 : vipe (  - )
-  \ 100 1 do vipew loop
-  vipew
-  vipew
-  vipew
-  vipew
-  vipew
-  vipew
+  vipew vipew vipew
+  vipew vipew vipew
 ;
 
-: planes  ( n - ) \ TOS holds the number of planes (blink iterations)
-
-  \ ldelay ldelay ldelay ldelay ldelay \ delay 2 seconds - ldelay is 400 ms
-
+: planes  ( n - ) \ TOS holds the number of planes (blink iterations) 
   0 swap  ( planes - 0 planes )
-
   dark
-
   for
     1 +
     dup
@@ -740,31 +694,6 @@ code !pins123 (  - ) 1 .P0  clr  \ make the attached LEDs dark
   drop
   ;
 
-
-: geer
-     dup  \ 255 -- 255 255
-     1 -  \ 255 255 -- 255 255 1 -- 255 254
-     swap \ 255 254 -- 254 255
-     drop \ 254 255 -- 254
-     .s
-
-     dup  \ 254 -- 254 254
-     0    \ 254 254 -- 254 254 0
-     =    \ 254 254 0 -- 254 BOOL
-
-  ;
-
-: gonee
-  startup
-  ela ele elf elg dg0 lxdelay lxdelay startup lxdelay lxdelay
-  ela ele elf elg dg0 lxdelay lxdelay startup lxdelay lxdelay
-  ela ele elf elg dg0 lxdelay lxdelay startup lxdelay lxdelay
-
-  startup \ silence
-  lxdelay lxdelay lxdelay lxdelay
-  lxdelay lxdelay lxdelay lxdelay
-  lxdelay lxdelay lxdelay lxdelay
-  ;
 
 : gono  (  - ) startup 
   \ 65 emit 
