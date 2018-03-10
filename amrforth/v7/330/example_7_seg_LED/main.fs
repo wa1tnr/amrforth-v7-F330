@@ -393,6 +393,13 @@ code !pins123 (  - ) 1 .P0  clr
   21880 us blank 
   ;
 
+
+: paintCO (  - )
+  enbl elCO hblank ;
+
+: paintDP (  - )
+  enbl elDP hblank ;
+
 \ abcEFGlGR
 : paintA (  - ) 
   enbl elA hblank
@@ -565,78 +572,94 @@ code !pins123 (  - ) 1 .P0  clr
 
 : paint (  - ) paint7 ;
 
-: delcount 4 ;
+: delcount1 3500 ;
+: delcount2 3000 ;
+: delcount3 2500 ;
+: delcount4 2000 ;
+: delcount5 1500 ;
+: delcount6 1000 ;
+: delcount7  750 ;
+: delcount8  500 ;
 
 : delcounts 400 ;
 
 : painta_F 1 begin paintF
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount4 = if drop exit then again ;
 
 : painta_D 1 begin paintD
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount5 = if drop exit then again ;
 
 : painta_C 1 begin paintC
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount4 = if drop exit then again ;
 
 : painta_A 1 begin paintA
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount6 = if drop exit then again ;
 
 : painta_B 1 begin paintB
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount5 = if drop exit then again ;
 
 : painta_E 1 begin paintE
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount5 = if drop exit then again ;
 
 : painta_0 1 begin paint0
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount6 = if drop exit then again ;
 
 : painta_1 1 begin paint1
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount2 = if drop exit then again ;
 
 : painta_2 1 begin paint2
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount5 = if drop exit then again ;
 
 : painta_3 1 begin paint3
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount5 = if drop exit then again ;
 
 : painta_4 1 begin paint4
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount4 = if drop exit then again ;
 
 : painta_5 1 begin paint5
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount5 = if drop exit then again ;
 
 : painta_6 1 begin paint6
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount6 = if drop exit then again ;
 
 : painta_7 1 begin paint7
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount3 = if drop exit then again ;
 
 : painta_8 1 begin paint8
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount7 = if drop exit then again ;
 
 : painta_9 1 begin paint9
-      1 + dup delcount = if drop exit then again ;
+      1 + dup delcount5 = if drop exit then again ;
 
+: painta_co 1 begin paintCO
+      1 + dup delcount1 = if drop exit then again ;
+
+: painta_dp 1 begin paintDP
+      1 + dup delcount1 = if drop exit then again ;
 
 : lxdelay ldelay ldelay ldelay ldelay ldelay ;
 
+: lwdelay ldelay ;
 
-: iterA painta_A lxdelay ;
-: iterB painta_B lxdelay ;
-: iterC painta_C lxdelay ;
-: iterD painta_D lxdelay ;
-: iterE painta_E lxdelay ;
-: iterF painta_F lxdelay ;
-: iter0 painta_0 lxdelay ;
-: iter1 painta_1 lxdelay ;
-: iter2 painta_2 lxdelay ;
-: iter3 painta_3 lxdelay ;
-: iter4 painta_4 lxdelay ;
-: iter5 painta_5 lxdelay ;
-: iter6 painta_6 lxdelay ;
-: iter7 painta_7 lxdelay ;
-: iter8 painta_8 lxdelay ;
-: iter9 painta_9 lxdelay ;
+
+: iterA painta_A lwdelay ;
+: iterB painta_B lwdelay ;
+: iterC painta_C lwdelay ;
+: iterD painta_D lwdelay ;
+: iterE painta_E lwdelay ;
+: iterF painta_F lwdelay ;
+: iter0 painta_0 lwdelay ;
+: iter1 painta_1 lwdelay ;
+: iter2 painta_2 lwdelay ;
+: iter3 painta_3 lwdelay ;
+: iter4 painta_4 lwdelay ;
+: iter5 painta_5 lwdelay ;
+: iter6 painta_6 lwdelay ;
+: iter7 painta_7 lwdelay ;
+: iter8 painta_8 lwdelay ;
+: iter9 painta_9 lwdelay ;
+: iterco painta_co lwdelay ;
+: iterdp painta_dp lwdelay ;
 
 : test1 startup dg1
   iter0 iter1 iter2 iter3 
@@ -651,23 +674,26 @@ code !pins123 (  - ) 1 .P0  clr
   iterC iterD iterE iterF ;
 
 : testn startup
-   dg0 iter0 dg1 iter0 dg2 iter0
-   dg0 iter1 dg1 iter1 dg2 iter1
-   dg0 iter2 dg1 iter2 dg2 iter2
-   dg0 iter3 dg1 iter3 dg2 iter3
-   dg0 iter4 dg1 iter4 dg2 iter4
-   dg0 iter5 dg1 iter5 dg2 iter5
-   dg0 iter6 dg1 iter6 dg2 iter6
-   dg0 iter7 dg1 iter7 dg2 iter7
-   dg0 iter8 dg1 iter8 dg2 iter8
-   dg0 iter9 dg1 iter9 dg2 iter9
-   dg0 iter9 dg1 iter9 dg2 iter9
-   dg0 itera dg1 itera dg2 itera
-   dg0 iterb dg1 iterb dg2 iterb
-   dg0 iterc dg1 iterc dg2 iterc
-   dg0 iterd dg1 iterd dg2 iterd
-   dg0 itere dg1 itere dg2 itere
-   dg0 iterf dg1 iterf dg2 iterf
+
+   dg0 iterco dg1 iterco dg2 iterco dg3 iterco
+   dg0 iterdp dg1 iterdp dg2 iterdp dg3 iterdp
+   dg0 iter0 dg1 iter0 dg2 iter0 dg3 iter0
+   dg0 iter1 dg1 iter1 dg2 iter1 dg3 iter1
+   dg0 iter2 dg1 iter2 dg2 iter2 dg3 iter2
+   dg0 iter3 dg1 iter3 dg2 iter3 dg3 iter3
+   dg0 iter4 dg1 iter4 dg2 iter4 dg3 iter4
+   dg0 iter5 dg1 iter5 dg2 iter5 dg3 iter5
+   dg0 iter6 dg1 iter6 dg2 iter6 dg3 iter6
+   dg0 iter7 dg1 iter7 dg2 iter7 dg3 iter7
+   dg0 iter8 dg1 iter8 dg2 iter8 dg3 iter8
+   dg0 iter9 dg1 iter9 dg2 iter9 dg3 iter9
+
+   dg0 itera dg1 itera dg2 itera dg3 itera
+   dg0 iterb dg1 iterb dg2 iterb dg3 iterb
+   dg0 iterc dg1 iterc dg2 iterc dg3 iterc
+   dg0 iterd dg1 iterd dg2 iterd dg3 iterd
+   dg0 itere dg1 itere dg2 itere dg3 itere
+   dg0 iterf dg1 iterf dg2 iterf dg3 iterf
 ;
 
 : test testn ; \ test0 test1 ;
@@ -755,7 +781,9 @@ code !pins123 (  - ) 1 .P0  clr
  ;
 
 : go (  - )
-  alllit
-\  begin 500 ms again
-  
+  2500 ms
+  begin
+  alllit 2500 ms 2500 ms 2500 ms 2500 ms startup 2500 ms
+  test   startup 2500 ms 2500 ms 2500 ms 2500 ms 2500 ms
+  again
 -;
