@@ -1,10 +1,27 @@
 \ main.fs -- f330 example program
 
-\ Thu Mar  8 01:52:50 UTC 2018
+\ Sat Mar 10 03:39:57 UTC 2018
+
+\ STATUS:
+
+0 [if]
+
+200 ohm resistors substituted for the 470 ohm resistors in previous
+version of the breadboarded circuit.
+
+elCO (colon) now distinct and is on 2 .P0 (usual AMR led for kernel status).
+
+Less than 18 mA with everything turned on -- seems difficult to violate
+limitations to electrical current capacity; draws just about the same
+milliAmperes with all segments of all four digits lit, as with just 8
+segments lit (one full digit).
+
+[then]
 
 \ 7-segment display - ignore references to older 14-segment display.
 
 
+\ Thu Mar  8 01:52:50 UTC 2018
 
 \ 50 microAmperes flows through the port pin and R4 to bias Q1 PN2222A,
 \ whenever the LED matrix cathode for that digit is *not* lit.
@@ -141,10 +158,10 @@ code startup
         7 .P0 clr
         0 .P1 clr
         1 .P1 clr
-        2 .P1 setb
-        3 .P1 setb
-        4 .P1 setb
-        5 .P1 setb
+        2 .P1 clr
+        3 .P1 clr
+        4 .P1 clr
+        5 .P1 clr
         6 .P1 clr
         7 .P1 clr
 
@@ -223,7 +240,6 @@ code elC (  - )
         1 .P0 setb
 	next c;
 
-
 code elD (  - )
         3 .P0 setb
 	next c;
@@ -232,7 +248,6 @@ code elD (  - )
 code elE (  - )
         6 .P0 setb
 	next c;
-
 
 code elF (  - )
         0 .P1 setb
@@ -243,23 +258,37 @@ code elG (  - )
         0 .P0 setb
 	next c;
 
-
-code elDP (  - )
+code elCO (  - ) \ colon
         2 .P0 setb
 	next c;
 
+code elDP (  - )
+        6 .P1 setb
+	next c;
 
-code clrdg0-3 (  - )
+\ 0 .P0   1 .P0   2 .P0   3 .P0   6 .P0   7 .P0   0 .P1   1 .P1
+
+code litdg0-3 (  - ) \ these lines are active low. Other words in forth need renaming to reflect this.
         2 .P1 setb
         3 .P1 setb
         4 .P1 setb
         5 .P1 setb
 	next c;
 
+code clrdg0-3 (  - )
+        2 .P1 clr
+        3 .P1 clr
+        4 .P1 clr
+        5 .P1 clr
+	next c;
+
+: lightalldgts
+  litdg0-3 ;
+
 : clrdgts clrdg0-3 ;
 
 code dg0c (  - )
-        2 .P1 clr
+        2 .P1 setb
 	next c;
 
 : dg0 (  - )
@@ -268,7 +297,7 @@ code dg0c (  - )
 
 
 code dg1c (  - )
-        3 .P1 clr
+        3 .P1 setb
 	next c;
 
 : dg1 (  - )
@@ -277,7 +306,7 @@ code dg1c (  - )
 
 
 code dg2c (  - )
-        4 .P1 clr
+        4 .P1 setb
 	next c;
 
 : dg2 (  - )
@@ -286,21 +315,21 @@ code dg2c (  - )
 
 
 code dg3c (  - )
-        5 .P1 clr
+        5 .P1 setb
 	next c;
 
 : dg3 (  - )
         clrdgts
         dg3c ;
 
-code elM (  - )
-        6 .P1 setb
-	next c;
+\ code elM (  - )
+\        6 .P1 setb
+\	next c;
 
 
-code elN (  - )
-        7 .P1 setb
-	next c;
+\ code elN (  - )
+\        7 .P1 setb
+\	next c;
 
 
 code wink  (  - ) 2 .P0 cpl  next c;
@@ -484,6 +513,7 @@ code !pins123 (  - ) 1 .P0  clr
   enbl elF hblank
   paint2
   ;
+
 
 \ ABCDJM
 : paintD (  - )
@@ -707,7 +737,12 @@ code !pins123 (  - ) 1 .P0  clr
   ;
 
 
-: go (  - )
+: alllit (  - ) \ meant to load the MCU to the max, given the wiring.
+  startup
+  lightalldgts ela elb elc eld ele elf elg eldp
+;
+
+: goaa (  - )
   begin
   0 9000 startup for dg0 paintF   dg1 paint8   dg2 paint2 next drop
   \ 2500 ms
@@ -717,4 +752,10 @@ code !pins123 (  - ) 1 .P0  clr
   \ cr .s cr
   \ 500 ms
   again
+ ;
+
+: go (  - )
+  alllit
+\  begin 500 ms again
+  
 -;
