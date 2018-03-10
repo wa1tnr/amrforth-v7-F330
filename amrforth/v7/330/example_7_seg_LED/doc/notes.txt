@@ -1,0 +1,149 @@
+
+ 09 March 2018
+
+ 19:26z
+
+ 20.72 mA is I_Total for the breadboard, when displaying
+ three digits but not every segment lit.  Message is
+ bac and F82 or something like that (alternating).
+
+ The current is max when no segments are lit!
+
+ 9.50 10.13
+
+ MCU Vcc line is 9.50 mA unlit; 10.13 lit.  So there's a
+ significant current draw not directly through the MCU,
+ on the order of 10 mA (ULN2804A, PN2222A x 3, and a
+ discrete LED that is always lit).
+
+ MCU Vcc line 15.22 mA with all 8 segments lit incl DP on three digits (24 segments!)
+
+ Delta is about 5 mA for entire digit.
+
+ LabVolt x 2 different ammeters reports similar results. Nothing wrong with measurements.
+
+
+ Suspicion: The voltage divider for the collector Q1 PN2222A is presently
+ 470 ohms (low side) 2200 ohms (high side to Vcc).  These were selected
+ for performance of the circuit, but may not have the dynamic range
+ required.
+
+ Also, the 47k input to the base of Q1 may be too much (insufficient current
+ flowing through the base).
+ 
+ Specifically, the PN2222A's only partially turn on ULN2804A Darlingtons.  If memory
+ serves, a different set of values was chosen initially, that did not fully
+ turn off the inputs to the Darlingtons.  The newer values fully turn off
+ the Darlingtons (by lowering the input closer to ground than the initial
+ values did).
+
+ Note: MPS2222A or similar part number is the correct callout for this device.
+
+ It was noted that the other three digits (all 8's - every segment lit) grew
+ more dim when the fourth digit was energized by applying Vcc 3.3 directly to
+ its ULN2804A input (and it was brighter than the other three digits, even
+ to their brightnesses prior to its being lit).
+
+ That may possibly (unsure) be explained by the simple fact that all four digits
+ share what amounts to eight power busses -- each A or B or C .. segment .. is
+ wired in parallel with the other three (from the other three digits).
+
+ Adding the fourth member of that grouping creates another branch current.
+
+ Each segment puts a bit less than 1 mA onto its port pin on the F330D, as
+ it sources current (provides some positive voltage <= 3.3VDC).
+
+ I_total thru the MCU, with all 64 segments lit, was 16 mA (max 8 mA added
+ split between 8 segment sourcing port pins of the F330D).  Again, about 1 mA
+ per segment /bus/.  The 16 mA measurement was taken both with the ULN2804A
+ cathode driver inputs connected direct to Vcc 3.3 (at the rail) and with
+ each of their inputs connected to a port pin (directly, and through a
+ current-limiting resistor -- I_Total thru the rail was about the same in
+ each case).
+
+ The only way I_Total can be further increased is to lower the current-limiting
+ resistances on each of the 8 segment bus driving pins of the F330D MCU.
+
+ The suspicion about PN2222A having a lack of dynamic range seems unfounded,
+ at this juncture.
+
+
+ 09 Mar 22:14z:
+
+ The colon dots are now connected to P0.2, which raises baseline from 9.7 mA
+ through the F330 MCU, to 11.7 mA (delta 2 mA for the two segments of the
+ colon dots pair).
+
+ This is nice because they only go off when /RST is brought low, or by
+ program control.  This is deep in the kernel, so it would have to be
+ changed there, if desired.
+
+ startup is currently setup to turn off P0.2:
+
+     2 .P0 clr
+
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ Absolute Max is 500 mA and 100 mA (500 mA through VDD or GND;
+ 100 mA *sunk* though any port pin (current sourced will be
+ less than this).
+
+ Consult Table 14.1 Port I/O DC Electrical Characteristics.
+
+     VDD is 2.7 to 3.6 VDC.
+
+     I_OH  -10 mA (push-pull) -- VDD - 0.8V typical.
+
+     I_OL  8.5 mA (max 0.6V)
+     I_OL  25 mA (1.0 Volt typical)
+
+  
+ So, sink to 25 mA or source to 10 mA (push-pull).  Power
+ supply is 3.301 volts on the nose.
+
+ 2.7 VDC after 470 ohm current-limiting resistor off of each port pin.
+
+ 3.12 VDC on the port pin itself. 
+
+
+ If you divide absolute max by 4, you get the specified 25 mA
+ sunk by the port pins.  Extrapolating from that, a 125 mA
+ limit through VDD or GND might be reasonable as a working
+ figure (within Port I/O DC Electrical Characteristics).
+
+
+
+ 10 mA sourcing current x 17 port I/O pins is 170 mA which is
+ beyond spec (taking 125 mA to be that spec, here).
+
+ 8 mA x 17 is 136 mA so plan for 7 mA or less, maybe.  5 mA per
+ port pin would be better (and would be plenty bright).
+
+ 9.57/12.24 mA for no/two segments lit, with new 220 ohm current
+ limiting resistors inline with the port pins.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+END.
