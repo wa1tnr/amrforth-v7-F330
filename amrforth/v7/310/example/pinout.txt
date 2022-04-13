@@ -1,0 +1,26 @@
+pinout.txt
+
+Wed 13 Apr 16:15:57 UTC 2022
+
+F310 Carrier Board
+
+Jacks match 14-pin sockets (not crossed; C2 Jack works with J3 target header)
+
+Target MCU F310 J4 can run fine with J3 populated with the JTAG/C2_MCU present.
+
+         C2         Forth
+
+         J3          J2               J4
+       oooooo+     oooooo+     oxooooooooooooooo
+       oooooo-     oooooo-     ooooooooooooooooo
+
+                               x : p0.2 C8051F310
+
+       ooooooo              oxoxoxoxoxoxoxoxo
+
+             ooooooo
+             ooooooo
+
+oxoxoxoxoxoxoxoxo
+oxoxoxoxoxoxoxoxo
+
