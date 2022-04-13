@@ -1,0 +1,75 @@
+Wed 13 Apr 13:23:40 UTC 2022
+
+Schematic needs to be redrawn.
+
+CP2104 Friend (not PiUART) used in example real circuit.
+
+RXD on the CP2104 Friend goes to Pin 20 of the C8051F330D PDIP-20 chip.
+
+That should be TX (P0.4 or P0.5 but definitely Pin 20).
+
+The correct schematic would show a DPDT that routes the
+two lines TXD and RXD of the CP2104 Friend, to one of
+two possible destinations: either of the two (shown)
+C8051F330D USART ports (on pins 19 and 20).
+
+The F330D with the C2 lines connected is the application
+MCU to be initialized; the one without (C2D and C2CK
+connected at pins 17 and 18 -- or 18 and 17, swapped)
+also needs the CP2104 Friend connection at its UART
+(Pins 19 and 20).
+
+In other words, the Application MCU only gets a UART
+connection on the four pins 17, 18, 19 and 20 .. there
+is never anything connected to the Application MCU at
+pins 17 and 18 - only on pins 19 and 20.
+
+Whereas, the JTAG/C2 MCU has four connections all ganged
+together, at pins 17, 18, 19 and 20.
+
+The two wires at pins 17 and 18 are the ones that are
+routed to the Application MCU for C2D and C2CK.
+
+
+  --
+
+AppMCU P2.0 - package pin 8 - C2D  (C2 protocol, data line).
+routed to:
+JTAG/C2_MCU P0.6 - package pin 18 - used here as C2D (defined by the JTAG/C2 program).
+
+AppMCU /RST - package pin 7 - C2CK (C2 protocol, clock line).
+routed to:
+JTAG/C2_MCU P0.7 - package pin 17 - used here as C2CK (defined by JTAG/C2 program).
+
+
+AppMCU P0.4 - package pin 20 - TX? UART
+routed to:
+CP2104 Friend - RXD
+
+AppMCU P0.5 - package pin 19 - RX? UART
+routed to:
+CP2104 Friend - TXT
+
+These two (AppMCU P0.4, P0.5) only get the connection to
+the CP2104 Friend after (normal user application) software
+has been uploaded to the target.
+
+Otherwise, the JTAG/C2_MCU gets the same connection from
+the CP2104 Friend.  Never both MCU's at the same time.
+
+This policy was enforced using two separate jacks on the
+carrier board, that routed RS232 serial (via MAX3232) to
+just one of the two MCU's at a time.
+
+Here, the suggestion is DPDT - either a real one, or just
+move the pair of wires from one MCU to the other, as the
+roles require.
+
+The JTAG/C2_MCU gets its UART connection whenever the
+'c2' interface is used (download, erase, dump).
+
+The two C2 protocol wired can stay bonded between the
+two MCU's at all times - no need to remove them when
+they are not put to use.
+
+END.
