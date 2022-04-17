@@ -1,1 +1,1 @@
-gforth -m 1M -e "false constant windows" ./jtag.fs -e quit
+./gforth -m 1M -e "false constant windows" ./jtag.fs -e quit
