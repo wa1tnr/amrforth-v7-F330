@@ -762,7 +762,6 @@ code !pins123 (  - ) 1 .P0  clr
   again \ quit
   ;
 
-
 : alllit (  - ) \ meant to load the MCU to the max, given the wiring.
   startup
   lightalldgts ela elb elc eld ele elf elg eldp
@@ -780,8 +779,28 @@ code !pins123 (  - ) 1 .P0  clr
   again
  ;
 
+: msvdelay ( - )
+  alllit
+  20 for 250 ms next
+  blank
+  3 for 250 ms next
+;
+
+: mdelay (  - )
+  3 for
+      msvdelay 43 emit 32 emit
+  next cr ;
+
 : go (  - )
-  2500 ms
+  startup
+  6 for
+      4 for
+          250 ms
+      next
+  next
+  mdelay
+  cr cr
+  ." test directory as of 19:21 UTC Sunday 17 April 2022" cr cr
   begin
   alllit 2500 ms 2500 ms 2500 ms 2500 ms startup 2500 ms
   test   startup 2500 ms 2500 ms 2500 ms 2500 ms 2500 ms
