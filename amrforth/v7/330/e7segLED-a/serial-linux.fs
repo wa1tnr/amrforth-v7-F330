@@ -25,9 +25,9 @@ has com? 0= [if]  1 value com?  [then]
 has baudrate 0= [if]  9600 value baudrate  [then]
 
 \ a list of four strings
-here ," /dev/ttyS2"
 here ," /dev/ttyS1"
 here ," /dev/ttyS0"
+here ," /dev/ttyUSB1"
 here ," /dev/ttyUSB0"
 create 'portnames   , , , ,
 
