@@ -1,0 +1,44 @@
+Sun 17 Apr 11:49:54 UTC 2022
+
+ $ pwd
+/some/path/to/TEST/subdir/0-now.d/subdir/amrforth-v7-F330/amrforth/v7/330/e7segLED-a
+
+See source directory:
+
+  ../example_7_seg_LED/00-ONLY_HISTORIES
+
+Basically, this (very) file marks the only copy of the
+work done (and committed to a public repository) since
+March of 2018 (as of 11:49z 17 Apr 2022).
+
+Should compile and upload clean; may not be entirely
+committed (but works in the local directory just fine).
+
+Tested on new (April 2022) target board (on small
+breadboard affixed to perfboard, with reset button
+and CP2104 Friend).
+
+Had to change com back to 1 (/dev/ttyUSB0) which
+apparently isn't a committed change, in amrfconf.fs
+which currently reads:
+
+: processor  s" C8051F330" ;
+: sfr-file  s" sfr-f330.fs" ;
+: downloader  s" download-cygnal.fs" ;
+9600 constant baudrate
+create frequency 24500000 ,
+250 constant default-TH1
+true constant smod?
+635 constant rom-start
+create polled-kernel
+1 value com?
+
+$ ./gforth
+decimal 635 hex . 27B  ok
+
+bootloader330.fs:71:    $7b org  \ Code starts here, after interrupts (on both F310 F330).
+
+The $7b (0x27b is 635 decimal) has been carefully checked,
+this week, as have the others encountered (F310, F300).
+
+END.
