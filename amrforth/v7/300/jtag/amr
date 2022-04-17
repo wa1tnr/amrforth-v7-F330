@@ -1,2 +1,2 @@
 #! /bin/sh
-gforth -e "false constant windows" ./system.fs
+./gforth -e "false constant windows" ./system.fs
