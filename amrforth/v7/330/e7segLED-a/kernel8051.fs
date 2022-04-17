@@ -86,20 +86,25 @@ nowarn
 : ]]  (  - ) ] ;
 warn
 
-: $=  ( a1 l1 a2 l2 - flag)  compare 0= ;
+\ not defined here anymore:
+\ : $=  ( a1 l1 a2 l2 - flag)  compare 0= ;
 
-sfr-file s" sfr-816.fs"  $= [if]  create ADuC816  [then]
-sfr-file s" sfr-812.fs"  $= [if]  create ADuC812  [then]
-sfr-file s" sfr-f000.fs" $= [if]  create C8051F000  [then]
-sfr-file s" sfr-f300.fs" $= [if]  create C8051F300  [then]
-sfr-file s" sfr-f310.fs" $= [if]  create C8051F310  [then]
-sfr-file s" sfr-f330.fs" $= [if]  create C8051F330  [then]
-sfr-file s" sfr-f061.fs" $= [if]  create C8051F061  [then]
-sfr-file s" sfr-552.fs"  $= [if]  create 80c552   [then]
-sfr-file s" sfr-537.fs"  $= [if]  create 80c537   [then]
-sfr-file s" sfr-31.fs"   $= [if]  create 8051   [then]
-sfr-file s" sfr-32.fs"   $= [if]  create 8052   [then]
-sfr-file s" sfr-C51RC2.fs"   $= [if]  create C51RC2   [then]
+\ defined in compile.fs and used here:
+\ compile.fs
+\ 31 : $=ngfv6  ( addr1 len1 addr2 len2 - flag) compare 0= ;
+
+sfr-file s" sfr-816.fs"  $=ngfv6 [if]  create ADuC816  [then]
+sfr-file s" sfr-812.fs"  $=ngfv6 [if]  create ADuC812  [then]
+sfr-file s" sfr-f000.fs" $=ngfv6 [if]  create C8051F000  [then]
+sfr-file s" sfr-f300.fs" $=ngfv6 [if]  create C8051F300  [then]
+sfr-file s" sfr-f310.fs" $=ngfv6 [if]  create C8051F310  [then]
+sfr-file s" sfr-f330.fs" $=ngfv6 [if]  create C8051F330  [then]
+sfr-file s" sfr-f061.fs" $=ngfv6 [if]  create C8051F061  [then]
+sfr-file s" sfr-552.fs"  $=ngfv6 [if]  create 80c552   [then]
+sfr-file s" sfr-537.fs"  $=ngfv6 [if]  create 80c537   [then]
+sfr-file s" sfr-31.fs"   $=ngfv6 [if]  create 8051   [then]
+sfr-file s" sfr-32.fs"   $=ngfv6 [if]  create 8052   [then]
+sfr-file s" sfr-C51RC2.fs"   $=ngfv6 [if]  create C51RC2   [then]
 
 has C8051F000
 has C8051F300 or
