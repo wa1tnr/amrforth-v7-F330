@@ -1,1 +1,12 @@
-Sun 17 Apr 12:19:59 UTC 2022
+Sun 17 Apr 12:27:42 UTC 2022
+
+Tested in temporary directory that cloned
+the localorigin repo.
+
+F300 JTAG program seems solid as-committed (dvlp-bb).
+
+last commit to have that status:
+
+commit 491c731c98654900d6468d71d4c2eda16b4b236c
+Date:   Sun Apr 17 12:26:31 2022 +0000
+
