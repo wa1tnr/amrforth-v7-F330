@@ -1,0 +1,29 @@
+Sun 17 Apr 11:02:54 UTC 2022
+
+* dvlp-aa
+  dvlp-xx
+  main
+
+ $  git checkout -b dvlp-bb
+Switched to a new branch 'dvlp-bb'
+
+ $  date
+Sun 17 Apr 11:03:35 UTC 2022
+
+ $  pwd 
+/some/path/to/TEST/path_element/0-now.d/subdirectory/amrforth-v7-F330/amrforth
+
+INTENT is to rapidly commit good changes to dvlp-bb,
+and immediately merge them back into dvlp-aa, and
+(possibly) never use dvlp-xx as source of any merge.
+
+This way, tested changes are merged into dvlp-aa (a
+public-facing branch) only.
+
+dvlp-xx was where the work was done, but a brief
+inspection suggests it wasn't used (at all) and
+its presence seems unimpactful (Sun 17 Apr 11:11z).
+
+Sun 17 Apr 11:12:48 UTC 2022
+
+END.
