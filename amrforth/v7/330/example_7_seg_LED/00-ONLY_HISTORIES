@@ -1,0 +1,57 @@
+00-ONLY_HISTORIES
+
+Sun 17 Apr 11:25:14 UTC 2022
+
+Earlier work done in March of 2018:
+
+  ../0-now.d/subdirectory/amrforth-v7-F330/amrforth/v7/330/example_7_seg_LED
+
+That would be the one that runs the large breadboard
+(three rows of breadboards on a metal plate).
+
+ - - -
+
+PROJECT  e7segLED-a
+
+ ../330/e7segLED-a/amrfconf.fs
+
+This appears to be the only (recent) copy of any
+project that carries histories with it:
+
+  diff --git a/amrforth/v7/330/example_7_seg_LED/amrfconf.fs
+             b/amrforth/v7/330/e7segLED-a/amrfconf.fs
+
+(example commit of amrfconf.fs shown above)
+
+The others (done in April 2022) are not committed,
+anywhere (possibly).
+
+So the new work that got done in them (in April 2022)
+needs to be committed and tracked &c.
+
+
+
+Exhibit - copy with histories - 9 April 2022:
+
+ $ git show ed9cab358d
+
+commit ed9cab358d0f46b3411eecdb7cb47f8c03fcfa81
+Date:   Sat Apr 9 00:31:51 2022 +0000
+
+    restore originals
+
+diff --git a/amrforth/v7/330/example_7_seg_LED/amr b/amrforth/v7/330/example_7_seg_LED/amr
+
+
+ $ git show d04b65315a
+
+commit d04b65315a31dad9e320f13e080285324b2df712
+Author: wa1tnr <wa1tnr@users.noreply.github.com>
+Date:   Fri Apr 8 23:58:25 2022 +0000
+
+    duplicated files
+
+diff --git a/amrforth/v7/330/example_7_seg_LED/amrfconf.fs b/amrforth/v7/330/e7segLED-a/amrfconf.fs
+similarity index 100%
+
+END.
