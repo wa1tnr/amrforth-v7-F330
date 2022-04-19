@@ -1,1 +1,1 @@
-gforth -m 1M -e true ./compile.fs -e bye
+./gforth -m 1M -e true ./compile.fs -e bye
