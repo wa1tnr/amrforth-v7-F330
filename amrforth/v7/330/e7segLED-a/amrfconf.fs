@@ -7,4 +7,4 @@ create frequency 24500000 ,
 true constant smod?
 635 constant rom-start
 create polled-kernel
-1 value com?
+2 value com?

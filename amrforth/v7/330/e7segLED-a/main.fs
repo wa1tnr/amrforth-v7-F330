@@ -696,7 +696,7 @@ code !pins123 (  - ) 1 .P0  clr
    dg0 iterf dg1 iterf dg2 iterf dg3 iterf
 ;
 
-: test testn ; \ test0 test1 ;
+: test ." this is the test word jj0" cr testn ; \ test0 test1 ;
 
 \ grand test
 : gtest test test test test test
@@ -779,30 +779,43 @@ code !pins123 (  - ) 1 .P0  clr
   again
  ;
 
-: msvdelay ( - )
-  alllit
-  20 for 250 ms next
-  blank
-  3 for 250 ms next
-;
-
-: mdelay (  - )
-  3 for
-      msvdelay 43 emit 32 emit
-  next cr ;
-
-: go (  - )
-  startup
-  6 for
-      4 for
-          250 ms
-      next
-  next
-  mdelay
-  cr cr
-  ." test directory as of 19:21 UTC Sunday 17 April 2022" cr cr
+: borked
   begin
   alllit 2500 ms 2500 ms 2500 ms 2500 ms startup 2500 ms
   test   startup 2500 ms 2500 ms 2500 ms 2500 ms 2500 ms
   again
+;
+
+: strobe dark lwdelay light lwdelay dark lwdelay wink lwdelay wink lwdelay ;
+
+: qstrobe for strobe next ;
+
+: samps -99 dup 1+ dup 1+ ;
+
+: arun 3 qstrobe ." end " .s cr ;
+
+: goo 1 drop
+  startup
+  samps
+  arun
+  begin
+    1 drop
+    light
+    2 ms
+    \ 2 for delay next
+    dark
+    200 for delay next
+    \ 43 emit space \ cr .s cr
+  again
+;
+
+: goaf 1 drop
+  goo \ does not return
+  ." never reached " cr
+  begin 1 drop again
+;
+
+: go startup 1 drop
+  light
+  begin wink 50 ms wink 8400 ms again
 -;

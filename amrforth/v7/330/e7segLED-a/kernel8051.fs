@@ -132,7 +132,8 @@ false value table?
 
 f: mark-token  (  - )
 	romHERE 1+ erase-target-byte-record  \ Erase following record.
-	sourceline# romHERE line# w!  >in @ romHERE column# c! ;f
+	\ sourceline# romHERE line# w!ngfv7 >in @ romHERE column# c! ;f
+	sourceline# romHERE line# w! >in @ romHERE column# c! ;f
 
 \ Tokens need to be called, except in jump tables.
 f: token,  ( a - )
