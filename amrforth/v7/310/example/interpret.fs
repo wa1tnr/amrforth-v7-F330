@@ -82,7 +82,8 @@ only forth also definitions
 	2 emit-s s" symbols emit forth" evaluate sputter key-s + listen
 	interpreter-colors ;
 
-include singlestep.fs
+\ 2022 may need to keep this commented because of w@
+\ include singlestep.fs
 
 \ This is a search order trick to help search a single vocabulary,
 \ without also looking in forth or root.
@@ -127,7 +128,8 @@ include singlestep.fs
 \ take precedence over the special words, just like in most forths.
 : interpret-word  ( a - )
 	symbol? if  execute >execute exit  then
-	step? if  drop step exit  then
+	\ 2022 commented out for now
+	\ step? if  drop step exit  then
 	see? if  drop see exit  then
 	words? if  drop show-symbols exit  then
 	bye? if  cr text_normal bye  then
