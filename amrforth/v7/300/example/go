@@ -1,0 +1,10 @@
+# Compile, Download, and interpret Forth, in one command.
+./c
+if [ $? == 0 ]
+then
+	./d
+	if [ $? == 0 ]
+	then
+		./f
+	fi
+fi

@@ -1,0 +1,5 @@
+#! /bin/sh
+./gforth -m 1M -e "false constant windows" ./interpret.fs $1 -e "cr text_normal bye"
+# A file full of commands is executed on the target.
+# Begin each line with please for command to reach target,
+# otherwise host executes the command.
