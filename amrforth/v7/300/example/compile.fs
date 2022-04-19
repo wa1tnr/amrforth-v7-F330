@@ -28,7 +28,8 @@ only forth also definitions
 true constant extending
 
 : has  (  - flag)  BL word find nip 0<> ; immediate
-: $=  ( addr1 len1 addr2 len2 - flag) compare 0= ;
+\ : $=  ( addr1 len1 addr2 len2 - flag) compare 0= ;
+: $=ngfv6  ( addr1 len1 addr2 len2 - flag) compare 0= ;
 
 : warn  warnings on ;
 : nowarn  warnings off ;
