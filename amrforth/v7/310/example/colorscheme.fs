@@ -30,11 +30,11 @@ windows [if]
 	," -e 'true constant windows' "
 	: myeditor  (  - ) s" gvim " pad place ;
 	: gforth-string  (  - addr len)
-		s" gforth -m 1M " pad place ;
+		s" ./gforth -m 1M " pad place ;
 [else]	," -e 'false constant windows' "
 	: myeditor  (  - ) s" vim " pad place ;
 	: gforth-string  (  - addr len)
-		s" gforth -m 1M " pad place ;
+		s" ./gforth -m 1M " pad place ;
 [then]
 
 : escape-quotes  ( addr len - addr' len')
