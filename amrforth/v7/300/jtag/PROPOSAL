@@ -1,0 +1,40 @@
+Thu 21 Apr 12:53:45 UTC 2022
+
+Branch: dvlp-aa
+Commit: b517c67d5aac7c0dca25e26580151994b2fd47c6
+Merge: 7adfbb0 9e18310
+Date:   Tue Apr 19 19:45:50 UTC 2022
+
+  * Turnkey this Jtag/c2 code and upload to F300 on regular serial bootloader and port.
+
+    RESULT: works after USB0 used.
+
+  * cd to F300 example and 'ruin' the JTAG.  Test that and come back here. 12:58z
+
+    F300 example 4a2d7c14e6de401d0a426e 19 April - test this.
+
+    RESULT: amrforth-v7-F330/amrforth/v7/300/example  fully tested - definitely 'ruined'
+            the old JTAG program on this target board (which means in order to use C2
+            again, it'll need to be reprogrammed from code found in
+            amrforth-v7-F330/amrforth/v7/300/jtag  in order to meet this PROPOSAL. ;) 21 April 2022
+
+  * cd to F300 jtag and reinstall JTAG/C2 program on F300.
+
+    REMEMBER: it's just a turnkey and an ordinary serial bootloader download of JTAG/C2 code.
+
+    Not using an F330 to do a C2 upload to this F300 board. ;)
+
+            RESULT: new turnkey F300 now under test 13:58z 21 April 2022.
+
+
+  * cd to F330 and 'ruin' the good e7seg prog, then reinstate it, both using C2. 21 Apr 14:02z
+
+     cd ./amrforth-v7-F330/amrforth/v7/330/e7segLED-a  21 Apr 14:03z 2022
+
+     RESULT: F330 'ruined' with a simpler program that operated the 7-segment 4-digit LED
+             display just fine.  C2 seems just fine using F300 JTAG/C2.  Considered vetted now.
+
+
+last edited: Thu 21 Apr 14:42:08 UTC 2022
+
+END.
