@@ -768,14 +768,11 @@ code !pins123 (  - ) 1 .P0  clr
 ;
 
 : goaa (  - )
-  begin
-  0 9000 startup for dg0 paintF   dg1 paint8   dg2 paint2 next drop
-  \ 2500 ms
-  0 9000 startup for dg0 paintB   dg1 paintA   dg2 paintC next drop
   startup
+  begin
+  0 9000         for dg0 paintF   dg1 paint8   dg2 paint2 next drop
+  0 9000         for dg0 paintB   dg1 paintA   dg2 paintC next drop
   500 ms 2500 ms 2500 ms 2500 ms 2500 ms 2500 ms
-  \ cr .s cr
-  \ 500 ms
   again
  ;
 
@@ -814,6 +811,9 @@ code !pins123 (  - ) 1 .P0  clr
   ." never reached " cr
   begin 1 drop again
 ;
+
+: runzz goaa ;
+: run runzz ;
 
 : go startup 1 drop
   light
