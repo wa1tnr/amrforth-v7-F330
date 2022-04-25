@@ -28,7 +28,7 @@ has baudrate 0= [if]  9600 value baudrate  [then]
 here ," /dev/ttyS3"
 here ," /dev/ttyS2"
 here ," /dev/ttyS1"
-here ," /dev/ttyS0"
+here ," /dev/ttyUSB0"
 create 'portnames   , , , ,
 
 : "portname   (  - a u)   
