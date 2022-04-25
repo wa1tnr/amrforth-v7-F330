@@ -20,3 +20,5 @@ target-markers.bin
 xdatex
 _head
 Current.d
+all-th*
+git.rem*
