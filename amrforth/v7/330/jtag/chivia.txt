@@ -28,12 +28,6 @@ index 4092a0d..809d797 100644
  
  **From bootloader330.fs**
 
--> Then the host sends pages beginning with `page 1`, at address `$200`
--> or `512` decimal. The target responds after each page is received
--> with a byte containing the loop counter, i.e. number of pages remaining,
--> including the one just received. In other words, it counts down from
--> the total number of pages, to `1`.
-->
 -> Flash program memory can't be written unless `PSCTL.0` is set. This
 -> bit is clear during normal operation. It is only set in the bootloader
 -> immediately before `DPTR` is loaded with `$200`. Even if a rogue
@@ -74,11 +68,36 @@ index 4092a0d..809d797 100644
 +  pages and responds with  $5a.
 -> pages and responds with `$5a`.
 
-+Then the host sends pages beginning with page 1, at address $200 or
-+512. The target responds after each page is received with a byte
-+containing the loop counter, i.e. number of pages remaining, including
-+the one just received. In other words it counts down from the total
-+number of pages to 1.*
++  Then the host sends pages beginning with  page 1,  at address  $200
+-> Then the host sends pages beginning with `page 1`, at address `$200`
+
++  or
+-> or
+
++   512.          The target responds after each page is received
+-> `512` decimal. The target responds after each page is received
+
++  with a byte
+-> with a byte
+
++  containing the loop counter, i.e. number of pages remaining,
+-> containing the loop counter, i.e. number of pages remaining,
+
++  including
+-> including
+
++ the one just received. In other words  it counts down from
+- the one just received. In other words, it counts down from
+
++  the total
+-> the total
+
++ number of pages  to  1.*
+- number of pages, to `1`.
+
+-> including the one just received. In other words, it counts down from
+
+
  
 +
 +*Flash program memory can't be written unless PSCTL.0 is set. This bit
