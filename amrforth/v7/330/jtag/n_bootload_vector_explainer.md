@@ -10,8 +10,14 @@ Memory flash space is `0x0000` to `0x1DFF`  (`0xFFFF` is `65535` decimal).
 
 `0x1DFF` is `7679` - 8 kb on-chip flashROM.
 
-Flash is read-only, unless the **Program Store Write Enable** bit
+Flash is read-only, unless the **PSWE Program Store Write Enable** bit
 (**`PSCTL.0`**) is set; the `MOVX` write instruction handles this.
+
+Flash is organized in 512 byte pages (*cite: `11.1.2`*).
+
+*&hellip; all resets cause program execution to begin at the same location (`0x0000`).*
+(*cite: `10.1`*)
+
 
 
 **From bootloader330.fs**
