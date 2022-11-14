@@ -27,12 +27,6 @@ index 4092a0d..809d797 100644
  
  
  **From bootloader330.fs**
-
--> bootloader, because `DPTR` is loaded with `$200` in the
--> bootloader right after `PSCTL.0` is set. The only way the bootloader
--> might be ruined is by having `PSCTL.0` set in the user's code&hellip;
--> and then accidentally jumping into the bootloader, at the point where
--> `DPTR` was just loaded with `$200`.
 -> 
 -> Not very likely.
 ->
@@ -95,23 +89,50 @@ index 4092a0d..809d797 100644
 - number of pages, to `1`.
 
 
-+
-+*Flash program memory can't be written unless PSCTL.0 is set. This bit
-+is clear during normal operation. It is only set in the bootloader
-+immediately before DPTR is loaded with $200. Even if a rogue program
-+jumps into the middle of the bootloader it can't overwrite the
 
++* Flash program memory can't be written unless  PSCTL.0  is set. This
 -> Flash program memory can't be written unless `PSCTL.0` is set. This
+
++  bit is clear during normal operation. It is only set in the bootloader
 -> bit is clear during normal operation. It is only set in the bootloader
+
++  immediately before  DPTR  is loaded with  $200.  Even if a rogue
 -> immediately before `DPTR` is loaded with `$200`. Even if a rogue
+
++  program jumps into the middle of the bootloader it can't overwrite
 -> program jumps into the middle of the bootloader it can't overwrite
+
++  the
 -> the 
 
 
-+bootloader because DPTR is loaded with $200 in the bootloader right
-+after PSCTL.0 is set. The only way the bootloader might be ruined is
-+by having PSCTL.0 set in the user's code and then accidentally jumping
-+into the bootloader at the point where DPTR was just loaded with $200.
+
+
+
+
++  bootloader  because  DPTR  is loaded with  $200  in the
+-> bootloader, because `DPTR` is loaded with `$200` in the
+
++  bootloader right
+-> bootloader right
+
++  after  PSCTL.0  is set. The only way the bootloader
+-> after `PSCTL.0` is set. The only way the bootloader
+
++  might be ruined is
+-> might be ruined is
+
++  by having  PSCTL.0  set in the user's code
+-> by having `PSCTL.0` set in the user's code&hellip;
+
++  and then accidentally jumping
+-> and then accidentally jumping
+
++  into the bootloader  at the point where
+-> into the bootloader, at the point where
+
++   DPTR  was just loaded with  $200.
+-> `DPTR` was just loaded with `$200`.
 +Not very likely.*
 +
 +*The bootloader sets up the crossbar such that:*
