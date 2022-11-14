@@ -28,11 +28,7 @@ index 4092a0d..809d797 100644
  
  **From bootloader330.fs**
 
--> Flash program memory can't be written unless `PSCTL.0` is set. This
--> bit is clear during normal operation. It is only set in the bootloader
--> immediately before `DPTR` is loaded with `$200`. Even if a rogue
--> program jumps into the middle of the bootloader it can't overwrite
--> the bootloader, because `DPTR` is loaded with `$200` in the
+-> bootloader, because `DPTR` is loaded with `$200` in the
 -> bootloader right after `PSCTL.0` is set. The only way the bootloader
 -> might be ruined is by having `PSCTL.0` set in the user's code&hellip;
 -> and then accidentally jumping into the bootloader, at the point where
@@ -89,21 +85,29 @@ index 4092a0d..809d797 100644
 + the one just received. In other words  it counts down from
 - the one just received. In other words, it counts down from
 
+-> including the one just received. In other words, it counts down from
+(repeated text was probably an editor gaffe not present in useful final results)
+
 +  the total
 -> the total
 
 + number of pages  to  1.*
 - number of pages, to `1`.
 
--> including the one just received. In other words, it counts down from
 
-
- 
 +
 +*Flash program memory can't be written unless PSCTL.0 is set. This bit
 +is clear during normal operation. It is only set in the bootloader
 +immediately before DPTR is loaded with $200. Even if a rogue program
 +jumps into the middle of the bootloader it can't overwrite the
+
+-> Flash program memory can't be written unless `PSCTL.0` is set. This
+-> bit is clear during normal operation. It is only set in the bootloader
+-> immediately before `DPTR` is loaded with `$200`. Even if a rogue
+-> program jumps into the middle of the bootloader it can't overwrite
+-> the 
+
+
 +bootloader because DPTR is loaded with $200 in the bootloader right
 +after PSCTL.0 is set. The only way the bootloader might be ruined is
 +by having PSCTL.0 set in the user's code and then accidentally jumping
