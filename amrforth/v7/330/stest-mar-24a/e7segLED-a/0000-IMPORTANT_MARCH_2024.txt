@@ -1,0 +1,41 @@
+0000-IMPORTANT_MARCH_2024.txt
+
+IMPORTANT
+
+C2 commands in the ide work in any project directory.
+
+Therefore you can use them to dump, erase and download
+new firmware that is *not* C2 oriented at all.
+
+Seems like the C2 firmware itself does not carry the
+bootloader (its directory is labeled jtag).
+
+So, to do serial booloading, use c2 to sequentially
+dump, erase, dump and finally download (terminating
+the session back to the Linux shell each iteration).
+
+That will load your current project onto the target
+MCU (F330D) even though it was found to be unresponsive
+(its serial bootloader was inoperative).
+
+This happens from time to time; c2 is the path back
+to a resident bootloader.
+
+There is no distinguishing the serial bootloader from
+the rest of your application - both reside in the same
+part of the memory map of the F330 (or it seems to be
+that way, since 'blowing' the serial bootloader code is
+easy to do).
+
+It's possible to go weeks without needing the c2 protocol
+at all, and simply use the serial bootloader.
+
+On occasion that will cease to function.
+
+It is unknown how else to recover from this (somewhat
+rare) inoperative condition.
+
+Flashing firmware via C2 seems to correct it, almost
+always.
+
+end.
