@@ -1,0 +1,26 @@
+Tue  5 Mar 23:23:12 UTC 2024
+
+CAUTION: DO NOT PROPAGATE  without detailed thought/plans
+
+This directory is meant only for immediate testing; due to
+the lack of frequent use of AMR Forth (lately) it seemed like
+a good idea to work with a cheap snapshot, and give it a
+unique branch name.
+
+Nothing about this directory is meant to be long-term, in the
+one sense of propagating it to other projects.
+
+It's not for that (and is itself a copy of a somewhat known to
+work well project).
+
+And an incomplete copy at that: no effort made to supply the
+forth source (for gforth running on the host Linux PC) for
+the c2 routines, basic &c.
+
+So please, look elsewhere for 'completeness' as it is not intended
+to supply that in this directory (March 2024).
+
+ ref. amrforth-v7-F330/amrforth/v7/330/test-march-2024.d
+
+END.
+
