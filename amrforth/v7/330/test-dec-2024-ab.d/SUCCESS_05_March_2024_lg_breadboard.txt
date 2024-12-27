@@ -1,0 +1,108 @@
+Tue  5 Mar 22:18:36 UTC 2024
+
+ * ncpl works, as in the idiom:
+
+   ncpl
+
+This word toggles 2.P0 .. which is a known port pin for
+simple testing (LED blinking).
+
+It's also active during firmware upload (see bootsomething.fs).
+
+ $ cat -n ./bootloader330.fs | ag 108 | cat
+
+   108	a: blink-main  begin  2 .P0 cpl  blink-delay  again ;a
+
+In fact P0.2 is (and was found to be, as stored) wired
+to blink the 'colon' of the 7-segment display mounted
+to this breadboard.
+
+No wonder it blinks during an attempt to upload revised firmware!
+
+ncpl supplies the port pin number as part of the definition.
+
+    code ncpl 2 .P0 cpl next c;
+
+
+IDE HINT:  'f' invokes the proper target-specific vocabulary;
+when 'f' is run the text turns green in the AMRF IDE.
+
+
+Exhibit AA shows the typical AMRF IDE in context of the
+current definitions of job.fs main.fs.
+
+
+
+
+
+Tue  5 Mar 21:43:01 UTC 2024
+
+The STM32 Black Pill tan phenolic protoboard 'tower'
+has CP2014 Friend.
+
+3.3v measured by Extech 330 meter at near point (very
+close to target MCU, F330D, lower right corner when
+RESET black pb switch is upper left corner).
+
+3.3 there was supplied by CP2104 (next to 5v pin).
+
+Obviously used in the pair, Power and Ground (3.3 and GND)
+from CP2104 providing this.
+
+TX/RX pair used on P0.4 P0.5 pair, F330D (upper left
+corner, normal view, pins 20 (P0.4, TX) and 19 (P0.5, RX).
+
+  TX    RX
+  P0.4  P0.5
+  20    19    18    17 ...
+     F330D
+
+ Here is the color mapping for the two wires there:
+
+ Orange - P0.4 (TX)  to   
+
+
+
+ - - - - - - - -   Exhibits   - - - - - - - -
+
+Exhibit AA
+
+
+2 ncpl ok   
+words 
+mine godgca gobcde gonoa counted delayed ncpl startup ms us */ / mod /mod fm/mod floor-qr rot sm/rem 
+?negate dabs d+ +' .rs rdepth clear .su .sh .s .s? dumpd countd dump b. bb. (bb.) .nibble u. . dot 
+space hb. h. (hb.) .hex (.hex) type count cr quit perform number (exec:) depth max min key? key emit 
+abort execute (r@) (r>) (>r) < > u< u> not 0= = 0< um/mod * um* negate abs 2/ 2* - xor or and + @p 
+@ c@p c@ !d c!d @d c@d !i ! c!i c! @i c@i over swap 1- 2+ 1+ flip invert drop 2drop dup noop ok   
+
+amrFORTH v7.1.0_beta FORTH interpreter C8051F330 9600 baud /dev/ttyUSB0
+
+Note: user defined words are at the beginning of the list.
+Oldest of these (earliest defined) is the 'us' and 'ms' words.
+
+'startup' is definitely an end-user defined word in forth:
+
+ $ cat -n main.fs | sed 19q
+     1	\ main.fs -- f330 example program
+     2	
+     3	code startup
+     4		$40 invert # PCA0MD anl  \ Clear watchdog enable bit.
+     5		$ff # P0MDIN orl         \ No analog, all digital, port 0.x
+     6	        $cf # P0MDOUT orl        \ all pins output, push pull -- except 4 and 5
+     7		$01 # XBR0 mov           \ Enable TX and RX on P0.4, P0.5.
+     8		$40 # XBR1 mov           \ Enable crossbar and weak pull-ups.
+     9	\       2 .P0 clr                \ initialize the LED's GPIO pin so that the LED is not lit.
+    10		next c;
+    11
+    12	
+    13	code ncpl 2 .P0 cpl next c;
+    14	
+    15	: delayed
+    16	 1000 ms
+    17	 1000 ms
+    18	 1000 ms
+    19	;
+
+END.
+
