@@ -1,4 +1,5 @@
 \ main.fs -- f330 example program
+\ Fri 27 Dec 21:59:56 UTC 2024
 
 code startup
 	$40 invert # PCA0MD anl  \ Clear watchdog enable bit.
@@ -11,6 +12,9 @@ code startup
 \ short
 
 code ncpl 2 .P0 cpl next c;
+
+\ works without type - why:
+: rjcpl ." test alias 23:24z Fri 27th" cr cr .s cr cr space space ncpl ; \ was: type space
 
 : delayed
   1000 ms
