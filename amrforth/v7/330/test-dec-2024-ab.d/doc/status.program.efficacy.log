@@ -1,0 +1,9 @@
+Sat 28 Dec 23:40:55 UTC 2024
+
+ $ sha1sum  ./main.fs
+e2728a13765ea2a35eb6df34827737f733c6df01  ./main.fs
+
+Program turnkey'd and seems to do what it should do.
+
+
+end.
