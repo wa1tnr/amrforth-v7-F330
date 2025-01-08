@@ -1,7 +1,22 @@
-Sun 24 Apr 21:47:58 UTC 2022
+Wed  8 Jan 22:49:26 UTC 2025
 
-Accidentally merged to 2018 version.  Keeping it. ;)
+Recently added F330 template directory.
 
-It was probably overdue.
+Fairly straightforward to make operational.  If in doubt,
+only be sure gforth is v6, and start with the upstream
+version (part of this repository holds that).
 
-NO TESTING DONE.  Just git work at the command line, today.
+If gforth v6 for any reason does not serve, also try v5.
+Gforth V7 is pretty much off limits (feel free to try though).
+
+A few files are linked and may be broken as-is (fix the links!
+or just copy the real files they stand for into where the
+linked files are).
+
+Some of the most recent work has the operator press and hold
+the RESET button on the target system, initiate download,
+then let go of the RESET button - no space bar interim step.
+
+Sometimes this is the best way.
+
+end.
