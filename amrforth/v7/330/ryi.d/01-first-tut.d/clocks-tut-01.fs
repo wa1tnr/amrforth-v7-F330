@@ -1,18 +1,30 @@
 \ clocks-tut-01.fs -- ryi tutorial 01 - clocks - f330 example program
-\ Thu  9 Jan 21:28:38 UTC 2025
+\ Thu  9 Jan 23:20:19 UTC 2025
 
 5 spaces .( loading clocks-tut-01.fs) cr
 5 spaces .(         getting somewhat interesting now..) cr
 
 : sayClocksID
-  ." Thu  9 Jan 21:28:38 UTC 2025 "
+  ." Thu  9 Jan 23:20:19 UTC 2025 "
+  $20 emit
+  ." WORKING clock scaling /1 /2 /4 and /8"
   cr
 ;
 
+-1 [if] .( TRUE - do NOT print - condx compile) cr
+: initDevice (  - )
+  init
+  \ sayClocksID
+;
+[then]
+
+0 [if] .( FALSE - print debug msgs - condx compile) cr
 : initDevice (  - )
   init
   sayClocksID
 ;
+[then]
+
 
 \  sfr-f330.fs:75:$b1 sfr OSCXCN
 \  sfr-f330.fs:76:$b2 sfr OSCICN
@@ -60,6 +72,10 @@ variable LEDState
 : setLEDState (  - ) -1 LEDState !  ;
 : getLEDState (  - s ) ledState @ ;
 
+: getPbSwCount (  - n )
+  pb @
+;
+
 : ledsDisplay01 (  - ) 0 .P1 setb 1 .P1 clr  ;
 : ledsDisplay10 (  - ) 0 .P1 clr  1 .P1 setb ;
 
@@ -80,6 +96,27 @@ variable LEDState
   duty50Timing
 ;
 
+
+
+-1 [if] .( TRUE - do NOT print - condx compile) cr
+: dispatch ( n - n )
+  dup -3 - 0= IF \ ." saw -3" cr
+    oscicn/1
+    exit THEN
+  dup -2 - 0= IF \ ." saw -2" cr
+    oscicn/2
+    exit THEN
+  dup -1 - 0= IF \ ." saw -1" cr
+    oscicn/4
+    exit THEN
+  dup  0 - 0= IF \ ." saw  0" cr 
+    oscicn/8
+    exit THEN
+  \ ." UNTESTED CASE drops: " .s cr
+;
+[then]
+
+0 [if] .( FALSE - print debug msgs - condx compile) cr
 : dispatch ( n - n )
   dup -3 - 0= IF ." saw -3" cr exit THEN
   dup -2 - 0= IF ." saw -2" cr exit THEN
@@ -87,7 +124,27 @@ variable LEDState
   dup 0 - 0= IF  ." saw  0" cr exit THEN
   ." UNTESTED CASE drops: " .s cr
 ;
+[then]
 
+-1 [if] .( TRUE - do NOT print - condx compile) cr
+: simPBSw (  - )
+  pb @ 1 +
+  dup
+  pb !
+  20 ms
+  4 -
+  \ ." simPBSw  20 ms 4 -   result before dispatch, TOS: " dup .
+  dispatch
+  \ ." after dispatch .s: " .s cr
+  0< IF
+    exit
+  THEN
+  resetPBSwCounter
+;
+[then]
+
+
+0 [if] .( FALSE - print debug msgs - condx compile) cr
 : simPBSw (  - )
   pb @ 1 +
   dup
@@ -102,7 +159,29 @@ variable LEDState
   THEN
   resetPBSwCounter
 ;
+[then]
 
+-1 [if] .( TRUE - do NOT print - condx compile) cr
+: go (  - )
+  clear stkpad
+  mainFcn
+  resetLEDState
+  resetPBSwCounter
+  ." pb: 0" $20 emit
+  begin
+    simPBSw
+    32 for
+      toggleLEDs
+    next
+    \ ." did 8 for next toggle leds stack: " .s cr
+    \ ." bottom of loop, stack: " .s cr
+    getPbSwCount
+    oscicn/1 $20 emit [char] . emit $20 emit $20 emit ." pb: " .
+  again
+-;
+[then]
+
+0 [if] .( FALSE - print debug msgs - condx compile) cr
 : go (  - )
   clear stkpad
   mainFcn
@@ -114,7 +193,9 @@ variable LEDState
       toggleLEDs
     next
     ." did 8 for next toggle leds stack: " .s cr
+    ." bottom of loop, stack: " .s cr
   again
 -;
+[then]
 
 \ end.
