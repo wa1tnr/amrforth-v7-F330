@@ -49,8 +49,60 @@ code oscicn/1 (  - ) $83 # OSCICN mov next c;
   defaultClock
 ;
 
-: go (  - )
-  mainFcn
+variable pb
+
+: resetPBSwCounter
+  0 pb !
 ;
+
+cvariable LEDState
+
+: resetLEDState (  - ) 0 LEDState c!  ;
+: setLEDState (  - ) -1 LEDState c!  ;
+
+: ledsDisplay01 (  - ) 0 .P1 setb 1 .P1 clr  ;
+: ledsDisplay10 (  - ) 0 .P1 clr  1 .P1 setb ;
+
+: toggleLEDs
+  ledSTATE c@
+  dup 0= IF
+    setLEDState
+    ledsDisplay01
+    drop
+    exit
+  THEN
+  ledsDisplay10
+;
+
+: simPBSw (  - )
+  cr ." every simPBSw iteration marker" cr
+  pb @ cr ." pb @ stack: " .s
+  1 +
+  dup
+  pb !
+  43 emit
+  1200 ms
+  15000 -
+  cr ." test of 15k- stack: " .s
+  0< IF
+    cr ." final stack path A: " .s
+    exit
+  THEN
+  resetPBSwCounter
+  toggleLEDs
+  cr ." final stack path B: " .s
+;
+
+: go (  - )
+  clear stkpad
+  mainFcn
+  ." mainFcn ran already - stack: "
+  .s cr
+  resetLEDState
+  resetPBSwCounter
+  begin
+    simPBSw
+  again
+-;
 
 \ end.
