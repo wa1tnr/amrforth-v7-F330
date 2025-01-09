@@ -69,29 +69,30 @@ variable LEDState
   dup 0= IF
     setLEDState
     ledsDisplay01
+    40 ms
     drop
     exit
   THEN
   drop
   resetLEDState
   ledsDisplay10
+  40 ms
 ;
 
 : simPBSw (  - )
-  cr ." every simPBSw iteration marker" cr
-  pb @
-  cr ." pb @ stack: " .s
-  1 +
+  \ cr ." every simPBSw iteration marker" cr
+  \ cr ." pb @ stack: " .s
+  pb @ 1 +
   dup
   pb !
-  43 emit
+  \ 43 emit
   20 ms
-  5 -
+  4 -
+  ." pb 4 - result: " dup .
   0< IF
     exit
   THEN
   resetPBSwCounter
-  toggleLEDs
 ;
 
 : go (  - )
@@ -101,6 +102,7 @@ variable LEDState
   resetPBSwCounter
   begin
     simPBSw
+    toggleLEDs
   again
 -;
 
