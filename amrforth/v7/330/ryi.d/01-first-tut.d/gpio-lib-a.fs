@@ -1,6 +1,8 @@
 \ gpio-lib-a.fs
 \ Thu  2 Jan 19:24:04 UTC 2025
 
+5 spaces .( loading gpio-lib-a.fs) cr
+
 \ : testLshift ( n - p )
 \  0 max 15 min ;
 
