@@ -1,11 +1,11 @@
 \ clocks-tut-01.fs -- ryi tutorial 01 - clocks - f330 example program
-\ Thu  9 Jan 18:16:27 UTC 2025
+\ Thu  9 Jan 19:19:12 UTC 2025
 
 5 spaces .( loading clocks-tut-01.fs) cr
 5 spaces .(         not yet interesting .. more study ahead) cr
 
 : sayClocksID
-  ." Thu  9 Jan 18:16:27 UTC 2025 "
+  ." Thu  9 Jan 19:19:12 UTC 2025 "
   cr
 ;
 
@@ -55,49 +55,48 @@ variable pb
   0 pb !
 ;
 
-cvariable LEDState
+variable LEDState
 
-: resetLEDState (  - ) 0 LEDState c!  ;
-: setLEDState (  - ) -1 LEDState c!  ;
+: resetLEDState (  - ) 0 LEDState !  ;
+: setLEDState (  - ) -1 LEDState !  ;
+: getLEDState (  - s ) ledState @ ;
 
 : ledsDisplay01 (  - ) 0 .P1 setb 1 .P1 clr  ;
 : ledsDisplay10 (  - ) 0 .P1 clr  1 .P1 setb ;
 
 : toggleLEDs
-  ledSTATE c@
+  getLEDState
   dup 0= IF
     setLEDState
     ledsDisplay01
     drop
     exit
   THEN
+  drop
+  resetLEDState
   ledsDisplay10
 ;
 
 : simPBSw (  - )
   cr ." every simPBSw iteration marker" cr
-  pb @ cr ." pb @ stack: " .s
+  pb @
+  cr ." pb @ stack: " .s
   1 +
   dup
   pb !
   43 emit
-  1200 ms
-  15000 -
-  cr ." test of 15k- stack: " .s
+  20 ms
+  5 -
   0< IF
-    cr ." final stack path A: " .s
     exit
   THEN
   resetPBSwCounter
   toggleLEDs
-  cr ." final stack path B: " .s
 ;
 
 : go (  - )
   clear stkpad
   mainFcn
-  ." mainFcn ran already - stack: "
-  .s cr
   resetLEDState
   resetPBSwCounter
   begin
