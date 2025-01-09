@@ -1,5 +1,8 @@
 \ ustimer-cwh.fs
 \ adapted from: main.fs  JTAG driver for F300
+
+5 spaces .( loading ustimer-cwh.fs) cr
+
 in-meta decimal
 
 0 bit-variables

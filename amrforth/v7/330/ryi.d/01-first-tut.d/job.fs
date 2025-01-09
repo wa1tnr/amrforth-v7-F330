@@ -1,9 +1,14 @@
 \ job.fs
-include ustimer-cwh.fs
-include main.fs
-: mine (  - ) cr cr ." nearo 23:19z hello you all" cr cr 55 drop ;
+
+\ include ustimer-cwh.fs
+\ include gpio-lib-a.fs
+\ include gpio-init-a.fs
+include stdlib.fs
+include clocks-tut-01.fs
+
 0 [if] \ a zero here will disable this code block
   include ustimer-cwh.fs
   include main.fs
   include little.fs
 [then]
+

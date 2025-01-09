@@ -1,4 +1,9 @@
 \ download-cygnal.fs
+\ Sun  5 Jan 18:18:01 UTC 2025 - matched set timestamp
+\ REVISED - KLUDGE - Wed  1 Jan 17:22:50 UTC 2025
+\ download word is having issues with present hardware reset circuit
+\ Best to press and hold RESET then invoke ./d from bash shell
+\ or use the download word in forth (same exec path after).
 
 0 [if]
 Copyright (C) 1991-2004 by AM Research, Inc.
@@ -43,18 +48,27 @@ create object-code  64 1024 * allot
 : download-page  ( a1 - a2)
 	$200 0 do  dup c@-t emit-s 1 +  loop ;
 
+: .spcInstrux ( n - )
+   14 spaces ;
+
 : download-all  (  - )
 	clear-sbuf cr
         ." download-cygnal.fs:" cr
         ." Silabs CP2104 is a suitable interface for uploading." cr cr
-	."     To download to the target," cr
-	." press and hold RESET on the target board," cr
-	." or turn off power to the target board," cr
-	." then press the SPACE key..." cr
-	key drop
-	."    Now release the RESET button." cr
-	."    or" cr
-	."    turn on the power to the target board." cr
+	."     To download to the target," cr cr
+	."         press and hold RESET on the target board," cr
+	."         then," cr
+	."         run the download word," cr
+	."         and then," cr
+	cr
+	\ key drop
+	."         release the RESET button on the target board." cr cr
+	."         You may also try pressing and releasing the" cr
+	."         RESET button NOW if no target response was" cr
+	."         seen during the above invocation." cr cr
+	."         You can also try simply pressing and releasing RESET," cr
+	."         now, with no further planned action preceding that. ;)" cr cr
+	."         Ctrl + \  to abort   (frees /dev/ttyUSB0 CP2104)." cr
 	begin	$a5 emit-s 10 ms
 		key?-s if
 			key-s $5a =  \ Target has responded.
