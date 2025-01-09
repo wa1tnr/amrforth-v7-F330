@@ -1,11 +1,11 @@
 \ clocks-tut-01.fs -- ryi tutorial 01 - clocks - f330 example program
-\ Thu  9 Jan 19:19:12 UTC 2025
+\ Thu  9 Jan 21:28:38 UTC 2025
 
 5 spaces .( loading clocks-tut-01.fs) cr
-5 spaces .(         not yet interesting .. more study ahead) cr
+5 spaces .(         getting somewhat interesting now..) cr
 
 : sayClocksID
-  ." Thu  9 Jan 19:19:12 UTC 2025 "
+  ." Thu  9 Jan 21:28:38 UTC 2025 "
   cr
 ;
 
@@ -34,7 +34,6 @@ code oscicn/4 (  - ) $81 # OSCICN mov next c;
 code oscicn/2 (  - ) $82 # OSCICN mov next c;
 code oscicn/1 (  - ) $83 # OSCICN mov next c;
 
-\ breaks serial : defaultClock oscicn/8 ;
 : defaultClock oscicn/1 ; \ trial - not expected to break serial comm P0.4 (TX) and P0.5 (RX)
 
 : setInitPins
@@ -64,31 +63,40 @@ variable LEDState
 : ledsDisplay01 (  - ) 0 .P1 setb 1 .P1 clr  ;
 : ledsDisplay10 (  - ) 0 .P1 clr  1 .P1 setb ;
 
+: duty50Timing (  - ) 340 ms ;
+
 : toggleLEDs
   getLEDState
   dup 0= IF
     setLEDState
     ledsDisplay01
-    40 ms
+    duty50Timing
     drop
     exit
   THEN
   drop
   resetLEDState
   ledsDisplay10
-  40 ms
+  duty50Timing
+;
+
+: dispatch ( n - n )
+  dup -3 - 0= IF ." saw -3" cr exit THEN
+  dup -2 - 0= IF ." saw -2" cr exit THEN
+  dup -1 - 0= IF ." saw -1" cr exit THEN
+  dup 0 - 0= IF  ." saw  0" cr exit THEN
+  ." UNTESTED CASE drops: " .s cr
 ;
 
 : simPBSw (  - )
-  \ cr ." every simPBSw iteration marker" cr
-  \ cr ." pb @ stack: " .s
   pb @ 1 +
   dup
   pb !
-  \ 43 emit
   20 ms
   4 -
-  ." pb 4 - result: " dup .
+  ." simPBSw  20 ms 4 -   result before dispatch, TOS: " dup .
+  dispatch
+  ." after dispatch .s: " .s cr
   0< IF
     exit
   THEN
@@ -102,7 +110,10 @@ variable LEDState
   resetPBSwCounter
   begin
     simPBSw
-    toggleLEDs
+    32 for
+      toggleLEDs
+    next
+    ." did 8 for next toggle leds stack: " .s cr
   again
 -;
 
