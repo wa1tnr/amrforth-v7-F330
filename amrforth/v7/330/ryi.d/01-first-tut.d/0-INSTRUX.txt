@@ -1,0 +1,11 @@
+Fri 10 Jan 00:05:16 UTC 2025
+
+Be sure to create the linked items after a fresh git clone:
+
+ $  pwd
+../amrforth-v7-F330/amrforth/v7/330/ryi.d/01-first-tut.d
+
+ $  cd ../linked
+ $  sh ./dothis.sh
+
+end.
