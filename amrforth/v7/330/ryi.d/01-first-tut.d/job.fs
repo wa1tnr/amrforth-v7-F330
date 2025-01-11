@@ -1,8 +1,7 @@
 \ job.fs
+cr .( job.fs loading w timestamp of )
+   .( Sat 11 Jan 21:05:18 UTC 2025) cr
 
-\ include ustimer-cwh.fs
-\ include gpio-lib-a.fs
-\ include gpio-init-a.fs
 include stdlib.fs
 include clocks-tut-01.fs
 
@@ -12,3 +11,4 @@ include clocks-tut-01.fs
   include little.fs
 [then]
 
+\ end.
