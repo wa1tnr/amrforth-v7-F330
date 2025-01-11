@@ -1,0 +1,1 @@
+./gforth -m 1M -e "false constant windows" ./interpret.fs -e "-1 to alone? black background go"
