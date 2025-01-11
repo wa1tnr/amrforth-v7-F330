@@ -1,52 +1,45 @@
 \ clocks-tut-01.fs -- ryi tutorial 01 - clocks - f330 example program
-\ Thu  9 Jan 23:20:19 UTC 2025
+\ Sat 11 Jan 21:05:18 UTC 2025
 
 5 spaces .( loading clocks-tut-01.fs) cr
-5 spaces .(         getting somewhat interesting now..) cr
+10 spaces .( Conditional compilations: )
+
+variable pb
+variable LEDState
 
 : sayClocksID
-  ." Thu  9 Jan 23:20:19 UTC 2025 "
+  ." Sat 11 Jan 21:05:18 UTC 2025 "
   $20 emit
   ." WORKING clock scaling /1 /2 /4 and /8"
   cr
 ;
 
--1 [if] .( TRUE - do NOT print - condx compile) cr
 : initDevice (  - )
   init
-  \ sayClocksID
+  sayClocksID \ disable of oscicn/1 is not in effect
 ;
-[then]
 
-0 [if] .( FALSE - print debug msgs - condx compile) cr
-: initDevice (  - )
-  init
-  sayClocksID
-;
-[then]
-
-
-\  sfr-f330.fs:75:$b1 sfr OSCXCN
-\  sfr-f330.fs:76:$b2 sfr OSCICN
-\  sfr-f330.fs:77:$b3 sfr OSCICL
-\  sfr-f330.fs:117:$e3 sfr OSCLCN
+\ sfr-f330.fs:75:$b1  sfr OSCXCN
+\ sfr-f330.fs:76:$b2  sfr OSCICN
+\ sfr-f330.fs:77:$b3  sfr OSCICL
+\ sfr-f330.fs:117:$e3 sfr OSCLCN
 
 \ OSCICN
-\ Bit7: 0: IOSCEN Internal H-F Osc Dsbl
-\ Bit7: 1: IOSCEN Internal H-F Osc Enbl
+\ Bit7: 0:   IOSCEN Internal H-F Osc Dsbl
+\ Bit7: 1:   IOSCEN Internal H-F Osc Enbl
 \ Bits 1-0:  IFCN1-0: Internal H-F Oscillator Frequency Control Bits
 
-\   00: SYSCLK H-F Osc / 8
-\   01: SYSCLK H-F Osc / 4
-\   10: SYSCLK H-F Osc / 2
-\   11: SYSCLK H-F Osc / 1
+\ 00: SYSCLK H-F Osc / 8
+\ 01: SYSCLK H-F Osc / 4
+\ 10: SYSCLK H-F Osc / 2
+\ 11: SYSCLK H-F Osc / 1
 
 code oscicn/8 (  - ) $80 # OSCICN mov next c;
 code oscicn/4 (  - ) $81 # OSCICN mov next c;
 code oscicn/2 (  - ) $82 # OSCICN mov next c;
 code oscicn/1 (  - ) $83 # OSCICN mov next c;
 
-: defaultClock oscicn/1 ; \ trial - not expected to break serial comm P0.4 (TX) and P0.5 (RX)
+: defaultClock oscicn/1 ; \ use when printing text to terminal
 
 : setInitPins
   0 .P1 setb
@@ -60,26 +53,14 @@ code oscicn/1 (  - ) $83 # OSCICN mov next c;
   defaultClock
 ;
 
-variable pb
-
-: resetPBSwCounter
-  0 pb !
-;
-
-variable LEDState
-
-: resetLEDState (  - ) 0 LEDState !  ;
-: setLEDState (  - ) -1 LEDState !  ;
-: getLEDState (  - s ) ledState @ ;
-
-: getPbSwCount (  - n )
-  pb @
-;
-
-: ledsDisplay01 (  - ) 0 .P1 setb 1 .P1 clr  ;
-: ledsDisplay10 (  - ) 0 .P1 clr  1 .P1 setb ;
-
-: duty50Timing (  - ) 340 ms ;
+: resetPBCtr    (  - )   0 pb ! ;
+: resetLEDState (  - )   0 LEDState ! ;
+: setLEDState   (  - )   -1 LEDState ! ;
+: getLEDState   (  - s ) ledState @ ;
+: getPbSwCount  (  - n ) pb @ ;
+: ledsDisplay01 (  - )   0 .P1 setb 1 .P1 clr  ;
+: ledsDisplay10 (  - )   0 .P1 clr  1 .P1 setb ;
+: duty50Timing  (  - )   340 ms ;
 
 : toggleLEDs
   getLEDState
@@ -96,9 +77,7 @@ variable LEDState
   duty50Timing
 ;
 
-
-
--1 [if] .( TRUE - do NOT print - condx compile) cr
+-1 [if] .( TRUE )
 : dispatch ( n - n )
   dup -3 - 0= IF \ ." saw -3" cr
     oscicn/1
@@ -116,7 +95,7 @@ variable LEDState
 ;
 [then]
 
-0 [if] .( FALSE - print debug msgs - condx compile) cr
+0 [if] .( FALSE) cr
 : dispatch ( n - n )
   dup -3 - 0= IF ." saw -3" cr exit THEN
   dup -2 - 0= IF ." saw -2" cr exit THEN
@@ -126,7 +105,7 @@ variable LEDState
 ;
 [then]
 
--1 [if] .( TRUE - do NOT print - condx compile) cr
+-1 [if] .( TRUE )
 : simPBSw (  - )
   pb @ 1 +
   dup
@@ -139,12 +118,12 @@ variable LEDState
   0< IF
     exit
   THEN
-  resetPBSwCounter
+  resetPBCtr
 ;
 [then]
 
 
-0 [if] .( FALSE - print debug msgs - condx compile) cr
+0 [if] .( FALSE) cr
 : simPBSw (  - )
   pb @ 1 +
   dup
@@ -157,20 +136,22 @@ variable LEDState
   0< IF
     exit
   THEN
-  resetPBSwCounter
+  resetPBCtr
 ;
 [then]
 
--1 [if] .( TRUE - do NOT print - condx compile) cr
+: iterLEDs 12 ; \ 32
+
+-1 [if] .( TRUE )
 : go (  - )
   clear stkpad
   mainFcn
   resetLEDState
-  resetPBSwCounter
+  resetPBCtr
   ." pb: 0" $20 emit
   begin
     simPBSw
-    32 for
+    iterLEDs for
       toggleLEDs
     next
     \ ." did 8 for next toggle leds stack: " .s cr
@@ -181,15 +162,17 @@ variable LEDState
 -;
 [then]
 
-0 [if] .( FALSE - print debug msgs - condx compile) cr
+cr \ final cr during compile
+
+0 [if] .( FALSE) cr
 : go (  - )
   clear stkpad
   mainFcn
   resetLEDState
-  resetPBSwCounter
+  resetPBCtr
   begin
     simPBSw
-    32 for
+    iterLEDs for
       toggleLEDs
     next
     ." did 8 for next toggle leds stack: " .s cr
@@ -199,3 +182,5 @@ variable LEDState
 [then]
 
 \ end.
+
+\ defaultClock
