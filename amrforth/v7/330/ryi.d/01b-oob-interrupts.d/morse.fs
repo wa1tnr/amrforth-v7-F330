@@ -1,4 +1,13 @@
 \ morse.fs
+\ Sun 12 Jan 22:54:10 UTC 2025
+
+cr .( LATEST: )
+   .( Sun 12 Jan 23:26:44 UTC 2025) cr
+
+   .( Sun 12 Jan 21:01:22 UTC 2025 - possibly fixed 2 .P0 not work issue) cr
+   .( Sun 12 Jan 20:48:58 UTC 2025 w00 h00 found $4b $5b vector issue) cr
+
+\ amrforth-v6-25/amrforth/trial/v6_4/lib is where this version came from
 \ Use the kernel with the serial interrupt to be safe.
 
 \ ----- Using the Programmable Counter Array ----- /
@@ -7,10 +16,28 @@
 code init-pca  (  - )
     $08 # PCA0MD mov    \ Sysclk/1
     $49 # PCA0CPM0 mov  \ Software Timer (Compare) Mode
+    \ $48 # PCA0CPM0 mov  \ Software Timer (Compare) Mode
     $40 # PCA0CN mov    \ Start the timer.
-    $08 # EIE1 orl  \ Enable pca interrupt.
+    $10 # EIE1 orl  \ Enable pca interrupt, F330D
     $80 # IE orl    \ Enable global interrupts.
     next c;
+
+\ ref only not our code here:
+\   $04 # P0MDOUT orl  \ pin 0.2 output.
+\   2 .P0 cpl      \ Toggle noise maker.
+    
+\ 3 2 1 0 .P0/.P1
+\ 8 4 2 1
+
+code initPortIO
+        $04 # P0MDOUT orl \ or mov  2 .P0 output
+	$04 # P0MDIN orl  \ digital, not analog, 2 .P0
+
+        $04 # P1MDOUT orl \         2 .P1 output
+	$04 # P1MDIN orl  \ digital 2 .P1
+
+	$40 # XBR1 mov    \ Enable crossbar and weak pull-ups.
+	next c;
 
 \ 24.5 MHz = 24500 cycles per millisecond.
 24500 $ff and constant ms-lo
@@ -28,9 +55,12 @@ label pca-interrupt  (  - )
         ms-hi # A mov  PCA0CPH0 A addc  A PCA0CPH0 mov
     then
     $40 # PCA0CN mov  \ Clear interrupt bit.
+        \ CCF0 0 .PCA0CN gets cleared - it got set when the interrupt fired
     PSW pop  ACC pop
     reti c;
-pca-interrupt $4b int!
+\ pca-interrupt $4b int!
+\ $4b is ADC0 on F330D that is a definite PROBLEM haha
+pca-interrupt $5b int! \ $5b on F330D same as $4b F300
 
 code ms  ( c - )
     A wpm-counter direct mov
@@ -64,8 +94,15 @@ code noise-off  (  - )
     $00 # TMR2CN mov  \ Timer off.
     next c;
 
+cr .( 2 .P1 setup also ) cr
+
 code init-timer2  (  - )
     $04 # P0MDOUT orl  \ pin 0.2 output.
+    $04 # P0MDIN  orl  \ digital not analog or is that MDOUT
+    $04 # P1MDOUT orl  \ 2 .P1 output.
+    $04 # P1MDIN  orl
+
+    2 .P1 clr
     next c;
 
 label t2-interrupt
@@ -95,7 +132,8 @@ t2-interrupt $2b int!
 
 \ ----- Morse Code Characters ----- /
 
-: spc  (  - ) duration c@ ms ;
+: spc  (  - ) duration c@ ms duration c@ ms
+duration c@ ms duration c@ ms duration c@ ms ;
 : lsp  (  - ) spc spc ;
 : wsp  (  - ) spc spc spc spc ;
 : .  (  - ) noise-on spc noise-off spc ;
@@ -203,7 +241,14 @@ t2-interrupt $2b int!
 \ We only turn x-on when we have an empty buffer.
 \ This is as conservative as we can get.
 : key-echo  (  - c)
-    key? not if  x-on  then  key x-off dup emit ;
+    \ key? not if  x-on  then  key x-off dup emit ;
+    key? not \ if  x-on  then
+        drop \ the boolean not consumed no if then
+    key \ x-off
+
+      [char] Q emit \ local mod
+
+      dup emit ;
 
 : get-number  (  - n)
     0
@@ -230,7 +275,10 @@ t2-interrupt $2b int!
         then
     then ;
 
-: init  (  - ) init-pca  1300 Hz  5 wpm ;
+\ : init  (  - ) init-pca  initPortIO  1300 hz  5 wpm ;
+\ : init  (  - ) init-pca  1300 Hz  5 wpm ;
+
+: init  (  - ) init-pca  800 hz  5 wpm ;
 
 : go  (  - )
     init begin  key-echo check translate  again -;
@@ -243,5 +291,21 @@ t2-interrupt $2b int!
 : sos  (  - )  s" sos" send ;
 : abc  s" abc" send ;
 : 123  s" 123" send ;
+
+: hundms (  - )
+  100 ms
+;
+
+: twhms (  - )
+  12 for hundms next ;
+
+: blinker
+  [ in-assembler 2 .P0 setb ]
+  twhms \ if 1200 ms were in range above 255
+
+  [ in-assembler 2 .P0 clr ]
+  twhms
+;
+
 : test s" The quick brown fox jumped over the lazy dog." send ;
 
