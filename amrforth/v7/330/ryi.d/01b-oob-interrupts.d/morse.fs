@@ -1,11 +1,14 @@
 \ morse.fs
-\ Sun 12 Jan 22:54:10 UTC 2025
+\ Mon 13 Jan 02:30:34 UTC 2025
+
+: saymsg cr
+  ." Mon 13 Jan 02:30:34 UTC 2025"
+  cr
+;
 
 cr .( LATEST: )
-   .( Sun 12 Jan 23:26:44 UTC 2025) cr
-
-   .( Sun 12 Jan 21:01:22 UTC 2025 - possibly fixed 2 .P0 not work issue) cr
-   .( Sun 12 Jan 20:48:58 UTC 2025 w00 h00 found $4b $5b vector issue) cr
+   .( Mon 13 Jan 02:30:34 UTC 2025)
+cr
 
 \ amrforth-v6-25/amrforth/trial/v6_4/lib is where this version came from
 \ Use the kernel with the serial interrupt to be safe.
@@ -92,6 +95,7 @@ code noise-on  (  - )
 code noise-off  (  - )
     5 .IE clr
     $00 # TMR2CN mov  \ Timer off.
+    2 .P0 clr
     next c;
 
 cr .( 2 .P1 setup also ) cr
@@ -132,70 +136,112 @@ t2-interrupt $2b int!
 
 \ ----- Morse Code Characters ----- /
 
-: spc  (  - ) duration c@ ms duration c@ ms
-duration c@ ms duration c@ ms duration c@ ms ;
-: lsp  (  - ) spc spc ;
-: wsp  (  - ) spc spc spc spc ;
-: .  (  - ) noise-on spc noise-off spc ;
-: -  (  - ) noise-on spc spc spc noise-off spc ;
+: spc  (  - )
+  duration c@ ms
+  duration c@ ms
+;
 
-: /a   . -         lsp ;
-: /b   - . . .     lsp ;
-: /c   - . - .     lsp ;
-: /d   - . .       lsp ;
-: /e   .           lsp ;
-: /f   . . - .     lsp ;
-: /g   - - .       lsp ;
-: /h   . . . .     lsp ;
-: /i   . .         lsp ;
-: /j   . - - -     lsp ;
-: /k   - . -       lsp ;
-: /l   . - . .     lsp ;
-: /m   - -         lsp ;
-: /n   - .         lsp ;
-: /o   - - -       lsp ;
-: /p   . - - .     lsp ;
-: /q   - - . -     lsp ;
-: /r   . - .       lsp ;
-: /s   . . .       lsp ;
-: /t   -           lsp ;
-: /u   . . -       lsp ;
-: /v   . . . -     lsp ;
-: /w   . - -       lsp ;
-: /x   - . . -     lsp ;
-: /y   - . - -     lsp ;
-: /z   - - . .     lsp ;
-: /0   - - - - -   lsp ;
-: /1   . - - - -   lsp ;
-: /2   . . - - -   lsp ;
-: /3   . . . - -   lsp ;
-: /4   . . . . -   lsp ;
-: /5   . . . . .   lsp ;
-: /6   - . . . .   lsp ;
-: /7   - - . . .   lsp ;
-: /8   - - - . .   lsp ;
-: /9   - - - - .   lsp ;
+: lsp  (  - )
+  spc spc
+  spc spc
+  spc spc
+  spc spc
+;
 
-: full_stop         . - . - . -    lsp ;
-: comma             - - . . - -    lsp ;
-: colon             - - - . . .    lsp ;
-: question_mark     . . - - . .    lsp ;
-: apostrophe        . - - - - .    lsp ;
-: hyphen            - . . . . -    lsp ;
-: fraction_bar      - . . - .      lsp ;
-: parentheses       - . - - . -    lsp ;
-: quotation_mark    . - . . - .    lsp ;
+: wsp  (  - )
+  spc spc spc spc
+  spc spc spc spc
+  spc spc spc spc
+;
 
-: within  ( n lo hi - flag) over - push - pop u< ;
+: dit  (  - )
+  \ cr ." dot stack entry: " .s
+  noise-on spc spc noise-off spc spc
+  \ cr ." dot stack exit: " .s
+;
+
+: di dit ; \ alias
+
+: dah  (  - ) noise-on spc spc spc spc spc spc noise-off spc spc spc ;
+
+\ : /a   dit dah         lsp ;
+: /a cr ." saw: /a"  dit dah         lsp ;
+: /b   dah di di dit   lsp ;
+: /c   dah di dah dit  lsp ;
+: /d   dah di dit      lsp ;
+: /e   dit             lsp ;
+: /f   di di dah dit   lsp ;
+: /g   dah dah dit     lsp ;
+: /h   di di di dit    lsp ;
+\ : /i   di dit          lsp ;
+: /i cr ." saw: /i"  di dit          lsp ;
+: /j   di dah dah dah  lsp ;
+: /k   dah di dah      lsp ;
+: /l   di dah di dit   lsp ;
+: /m   dah dah         lsp ;
+: /n   dah dit         lsp ;
+: /o   dah dah dah     lsp ;
+\ : /p   di dah dah dit  lsp ;
+: /p cr ." saw: /p"   di dah dah dit  lsp ;
+: /q   dah dah di dah  lsp ;
+\ : /r   di dah dit      lsp ;
+: /r cr ." saw: /r"   di dah dit      lsp ;
+: /s cr ." saw: /s"
+  \ cr ." the /s word entry, stack: " .s
+       di di dit       lsp
+  \ cr ." the /s word exit,  stack: " .s
+;
+: /t   dah             lsp ;
+: /u   di di dah       lsp ;
+: /v   di di di dah    lsp ;
+: /w   di dah dah      lsp ;
+: /x   dah di di dah   lsp ;
+: /y   dah di dah dah  lsp ;
+: /z   dah dah di dit  lsp ;
+: /1   dit dah dah dah dah   lsp ;
+: /2   dit dit dah dah dah   lsp ;
+: /3   dit dit dit dah dah   lsp ;
+: /4   dit dit dit dit dah   lsp ;
+: /5   dit dit dit dit dit   lsp ;
+: /6   dah dit dit dit dit   lsp ;
+: /7   dah dah dit dit dit   lsp ;
+: /8   dah dah dah dit dit   lsp ;
+: /9   dah dah dah dah dit   lsp ;
+: /0   dah dah dah dah dah   lsp ;
+
+: full_stop         di dah di dah di dah     lsp ;
+: comma             dah dah di di dah dah    lsp ;
+: colon             dah dah dah dit dit dit  lsp ;
+: question_mark     di di dah dah di dit     lsp ;
+: apostrophe        di dah dah dah dah dit   lsp ; \ WG
+: hyphen            dah di di di dit dah     lsp ; \ THT
+: fraction_bar      dah di dit dah dit       lsp ; \ DN
+: parentheses       dah dit dah dah dit dah  lsp ; \ NQ
+: quotation_mark    di dah dit di dah dit    lsp ; \ RR
+
+: within  ( n lo hi - flag)
+  \ cr ." within entry stack: " .s
+  over - push - pop u<
+  \ cr ." within exit  stack: " .s
+;
 
 : upc  ( c1 - c2)
+    \ cr ." upc word entry stack: " .s
     dup [char] a [ char z 1 + ] literal
-    within if  $df and  then ;
+    \ cr ." upc word before within stack: " .s
+    within if  $df and
+      \ cr ." hit within upc stack: " .s
+    then
+      \ cr ." upc word exit  stack: " .s
+;
 
 : bad  (  - ) ;
 
 : translate  ( c - )
-    upc -31 + 0 max 65 min exec:
+    \ cr ." translate: ( c - ) stack: " .s
+    upc -31 + 0 max 65 min
+    \ cr ." translate before exec: stack: " .s
+    exec:
     bad     \ All control characters
     wsp     \ BL
     quotation_mark \ "
@@ -232,7 +278,11 @@ duration c@ ms duration c@ ms duration c@ ms ;
     -;
 
 : send  ( addr len - )
-    for  count translate  next  drop ;
+    \ cr ." send word's entry: " .s
+    for  count
+    \ cr ." in SEND stack: " .s
+      translate  next  drop
+;
 
 : x-on   (  - ) $11 emit ;  \ ^Q for Continue
 : x-off  (  - ) $13 emit ;  \ ^S for Stop
@@ -241,14 +291,20 @@ duration c@ ms duration c@ ms duration c@ ms ;
 \ We only turn x-on when we have an empty buffer.
 \ This is as conservative as we can get.
 : key-echo  (  - c)
+
+    \ cr ." key-echo entry (  - c ) stack: " .s
+
     \ key? not if  x-on  then  key x-off dup emit ;
+
     key? not \ if  x-on  then
+    \ cr .s
         drop \ the boolean not consumed no if then
     key \ x-off
 
       [char] Q emit \ local mod
 
-      dup emit ;
+      dup emit
+;
 
 : get-number  (  - n)
     0
@@ -276,9 +332,14 @@ duration c@ ms duration c@ ms duration c@ ms ;
     then ;
 
 \ : init  (  - ) init-pca  initPortIO  1300 hz  5 wpm ;
+
 \ : init  (  - ) init-pca  1300 Hz  5 wpm ;
 
-: init  (  - ) init-pca  800 hz  5 wpm ;
+
+: init  (  - ) saymsg init-pca  240 hz  13 wpm
+    [ in-assembler 2 .P0 clr ] 15 for 240 ms next
+    cr ." exiting init stack: " .s cr
+;
 
 : go  (  - )
     init begin  key-echo check translate  again -;
@@ -288,9 +349,16 @@ duration c@ ms duration c@ ms duration c@ ms ;
 \ Should take 1 minute at 5 wmp.
 : paris  (  - )
     s" paris paris paris paris paris" send ;
+: rispa
+    s" rispa rispa rispa rispa rispa" send ;
+: pairs
+    s" pairs pairs pairs pairs pairs" send ;
+: spair
+    s" spair spair spair spair spair" send ;
+
 : sos  (  - )  s" sos" send ;
-: abc  s" abc" send ;
-: 123  s" 123" send ;
+: xabc  s" abc" send ;
+: x123  s" 123" send ;
 
 : hundms (  - )
   100 ms
@@ -306,6 +374,8 @@ duration c@ ms duration c@ ms duration c@ ms ;
   [ in-assembler 2 .P0 clr ]
   twhms
 ;
+
+: stkpad -99 dup 1 + dup 1 + ;
 
 : test s" The quick brown fox jumped over the lazy dog." send ;
 
