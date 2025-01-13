@@ -1,7 +1,7 @@
 \ morse.fs
 cr
 .( morse.fs - closely patched upstream for )
-.( Mon 13 Jan 15:56:40 UTC 2025) cr
+.( Mon 13 Jan 16:39:38 UTC 2025) cr
 
 \ Use the kernel with the serial interrupt to be safe.
 
@@ -99,13 +99,20 @@ t2-interrupt $2b int!
 : hz  ( n - ) init-timer2 hz>steps invert t! ;
 
 \ ----- Morse Code Characters ----- /
+\ letters sent high speed with spacing for lower overall speed
 
-: spc  (  - ) duration c@ ms ;
+: spc  (  - )
+  duration c@ \ ms ;
+  dup ms
+  dup ms
+  ms ; \ double or more, the canonical time
+
+: spc-el  (  - ) duration c@ ms ; \ standard length dot dash elements
 : lsp  (  - ) spc spc ;
 : wsp  (  - ) spc spc spc spc ;
-: di   (  - ) noise-on spc noise-off spc ;
+: di   (  - ) noise-on spc-el noise-off spc-el ;
 : dit  (  - ) di ; \ alias F330D
-: dah  (  - ) noise-on spc spc spc noise-off spc ;
+: dah  (  - ) noise-on spc-el spc-el spc-el noise-off spc-el ;
 
 : /a   di dah           lsp ;
 : /b   dah di di dit    lsp ;
@@ -164,6 +171,7 @@ t2-interrupt $2b int!
 : bad  (  - ) ;
 
 : translate  ( c - )
+    dup emit
     upc -31 + 0 max 65 min exec:
     bad     \ All control characters
     wsp     \ BL
@@ -237,7 +245,7 @@ t2-interrupt $2b int!
         then
     then ;
 
-: init  (  - ) init-pca  1300 Hz  5 wpm ;
+: init  (  - ) init-pca  1300 Hz  10 wpm ; \ 5 okay
 
 : go  (  - )
     init begin  key-echo check translate  again -;
@@ -245,10 +253,19 @@ t2-interrupt $2b int!
 \ ----- Interactive testing ----- /
 
 \ Should take 1 minute at 5 wmp.
-: paris  (  - )
+: paris5  (  - )
     s" paris paris paris paris paris" send ;
+
+\ about 7 wpm with current timings
+: paris7 (  - )
+    s" paris paris paris paris paris " send
+    s" paris paris " send ;
+
+: paris (  - ) paris7 ; \ alias
+
 : sos  (  - )  s" sos" send ;
 : abc  s" abc" send ;
 : 123  s" 123" send ;
 : test s" The quick brown fox jumped over the lazy dog." send ;
 
+\ end.
