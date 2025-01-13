@@ -1,0 +1,12 @@
+With version 6.3, the top of the data stack is cached in the R2:A
+register pair, for greater efficiency.  The old macros named Apop and
+Apush have disappeared.  They are replaced to some extent by |dup and
+|drop, inline dup and inline drop.  |dup pushes the R2:A pair onto the
+actual data stack.  |drop pops the actual data stack (second item on
+top) into R2:A.  See the primitive definitions of words like + or 0= to
+see how this new method makes a difference.  The files in this lib
+directory have been modified to reflect the new data stack structure.
+
+The A register contains the low byte of the top of the data stack.  The
+R2 register contains the high byte of the top of the data stack.
+
