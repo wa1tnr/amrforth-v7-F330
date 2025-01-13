@@ -1,7 +1,7 @@
 \ morse.fs
 cr
 .( morse.fs - closely patched upstream for )
-.( Mon 13 Jan 16:39:38 UTC 2025) cr
+.( Mon 13 Jan 18:42:56 UTC 2025) cr
 
 \ Use the kernel with the serial interrupt to be safe.
 
@@ -170,8 +170,10 @@ t2-interrupt $2b int!
 
 : bad  (  - ) ;
 
+: char-echo ( c - c ) dup emit ;
+
 : translate  ( c - )
-    dup emit
+    char-echo
     upc -31 + 0 max 65 min exec:
     bad     \ All control characters
     wsp     \ BL
@@ -217,13 +219,13 @@ t2-interrupt $2b int!
 \ This is where the x-on/x-off is handled.
 \ We only turn x-on when we have an empty buffer.
 \ This is as conservative as we can get.
-: key-echo  (  - c)
-    key? not if  x-on  then  key x-off dup emit ;
+: key-get  (  - c)
+    key? not if  x-on  then  key x-off ; \ dup emit ;
 
 : get-number  (  - n)
     0
     begin
-        key-echo
+        key-get
         dup [char] 0 [ char 9 1 + ] literal
         within not if  drop exit  then
         [ char 0 negate ] literal + swap 10 * +
@@ -234,13 +236,13 @@ t2-interrupt $2b int!
 
 : check  ( c1 - c2)
     dup [char] ` = if
-        drop key-echo dup [char] \ = if
-            drop key-echo upc
+        drop key-get dup [char] \ = if
+            drop key-get upc
             dup [char] H = if
-                drop change-hz key-echo exit
+                drop change-hz key-get exit
             then
             dup [char] W = if
-                drop change-wpm key-echo exit
+                drop change-wpm key-get exit
             then
         then
     then ;
@@ -248,7 +250,7 @@ t2-interrupt $2b int!
 : init  (  - ) init-pca  1300 Hz  10 wpm ; \ 5 okay
 
 : go  (  - )
-    init begin  key-echo check translate  again -;
+    init begin  key-get check translate  again -;
 
 \ ----- Interactive testing ----- /
 
