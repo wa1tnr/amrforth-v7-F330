@@ -1,7 +1,7 @@
 \ morse.fs
 cr
 .( morse.fs - closely patched upstream for )
-.( Mon 13 Jan 15:20:20 UTC 2025) cr
+.( Mon 13 Jan 15:56:40 UTC 2025) cr
 
 \ Use the kernel with the serial interrupt to be safe.
 
@@ -107,54 +107,53 @@ t2-interrupt $2b int!
 : dit  (  - ) di ; \ alias F330D
 : dah  (  - ) noise-on spc spc spc noise-off spc ;
 
-: . 1 drop ;   : - 1 drop ; \ temporary
+: /a   di dah           lsp ;
+: /b   dah di di dit    lsp ;
+: /c   dah di dah dit   lsp ;
+: /d   dah di dit       lsp ;
+: /e   dit              lsp ;
+: /f   di di dah dit    lsp ;
+: /g   dah dah dit      lsp ;
+: /h   di di di dit     lsp ;
+: /i   di dit           lsp ;
+: /j   di dah dah dah   lsp ;
+: /k   dah di dah       lsp ;
+: /l   di dah di dit    lsp ;
+: /m   dah dah          lsp ;
+: /n   dah dit          lsp ;
+: /o   dah dah dah      lsp ;
+: /p   di dah dah dit   lsp ;
+: /q   dah dah di dah   lsp ;
+: /r   di dah dit       lsp ;
+: /s   di di dit        lsp ;
+: /t   dah              lsp ;
+: /u   di di dah        lsp ;
+: /v   di di di dah     lsp ;
+: /w   di dah dah       lsp ;
+: /x   dah di di dah    lsp ;
+: /y   dah di dah dah   lsp ;
+: /z   dah dah di dit   lsp ;
 
-: /a   di dah          lsp ;
-: /b   dah di di dit   lsp ;
-: /c   dah di dah dit  lsp ;
-: /d   - . .       lsp ;
-: /e   .           lsp ;
-: /f   . . - .     lsp ;
-: /g   - - .       lsp ;
-: /h   . . . .     lsp ;
-: /i   . .         lsp ;
-: /j   . - - -     lsp ;
-: /k   - . -       lsp ;
-: /l   . - . .     lsp ;
-: /m   - -         lsp ;
-: /n   - .         lsp ;
-: /o   - - -       lsp ;
-: /p   . - - .     lsp ;
-: /q   - - . -     lsp ;
-: /r   . - .       lsp ;
-: /s   . . .       lsp ;
-: /t   -           lsp ;
-: /u   . . -       lsp ;
-: /v   . . . -     lsp ;
-: /w   . - -       lsp ;
-: /x   - . . -     lsp ;
-: /y   - . - -     lsp ;
-: /z   - - . .     lsp ;
-: /0   - - - - -   lsp ;
-: /1   . - - - -   lsp ;
-: /2   . . - - -   lsp ;
-: /3   . . . - -   lsp ;
-: /4   . . . . -   lsp ;
-: /5   . . . . .   lsp ;
-: /6   - . . . .   lsp ;
-: /7   - - . . .   lsp ;
-: /8   - - - . .   lsp ;
-: /9   - - - - .   lsp ;
+: /0   dah dah dah dah dah   lsp ;
+: /1   di  dah dah dah dah   lsp ;
+: /2   di  di  dah dah dah   lsp ;
+: /3   di  di  di  dah dah   lsp ;
+: /4   di  di  di  di  dah   lsp ;
+: /5   di  di  di  di  dit   lsp ;
+: /6   dah di  di  di  dit   lsp ;
+: /7   dah dah di  di  dit   lsp ;
+: /8   dah dah dah di  dit   lsp ;
+: /9   dah dah dah dah dit   lsp ;
 
-: full_stop         . - . - . -    lsp ;
-: comma             - - . . - -    lsp ;
-: colon             - - - . . .    lsp ;
-: question_mark     . . - - . .    lsp ;
-: apostrophe        . - - - - .    lsp ;
-: hyphen            - . . . . -    lsp ;
-: fraction_bar      - . . - .      lsp ;
-: parentheses       - . - - . -    lsp ;
-: quotation_mark    . - . . - .    lsp ;
+: full_stop         di  dah di  dah di  dah   lsp ;
+: comma             dah dah di  di  dah dah   lsp ;
+: colon             dah dah dah di  di  dit   lsp ;
+: question_mark     di  di  dah dah di  dit   lsp ;
+: apostrophe        di  dah dah dah dah dit   lsp ;
+: hyphen            dah di  di  di  di  dah   lsp ;
+: fraction_bar      dah di  di  dah dit       lsp ;
+: parentheses       dah di  dah dah di  dah   lsp ;
+: quotation_mark    di  dah di  di  dah dit   lsp ;
 
 : within  ( n lo hi - flag) over - push - pop u< ;
 
