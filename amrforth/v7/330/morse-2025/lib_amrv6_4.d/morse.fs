@@ -1,4 +1,8 @@
 \ morse.fs
+cr
+.( morse.fs - closely patched upstream for )
+.( Mon 13 Jan 15:20:20 UTC 2025) cr
+
 \ Use the kernel with the serial interrupt to be safe.
 
 \ ----- Using the Programmable Counter Array ----- /
@@ -8,8 +12,8 @@ code init-pca  (  - )
     $08 # PCA0MD mov    \ Sysclk/1
     $49 # PCA0CPM0 mov  \ Software Timer (Compare) Mode
     $40 # PCA0CN mov    \ Start the timer.
-    $08 # EIE1 orl  \ Enable pca interrupt.
-    $80 # IE orl    \ Enable global interrupts.
+    $10 # EIE1 orl      \ Enable pca interrupt, F330D
+    $80 # IE orl        \ Enable global interrupts.
     next c;
 
 \ 24.5 MHz = 24500 cycles per millisecond.
@@ -30,7 +34,7 @@ label pca-interrupt  (  - )
     $40 # PCA0CN mov  \ Clear interrupt bit.
     PSW pop  ACC pop
     reti c;
-pca-interrupt $4b int!
+pca-interrupt $5b int! \ $5b on F330D same as $4b F300
 
 code ms  ( c - )
     A wpm-counter direct mov
@@ -62,6 +66,7 @@ code noise-on  (  - )
 code noise-off  (  - )
     5 .IE clr
     $00 # TMR2CN mov  \ Timer off.
+    2 .P0 clr \ for LED flasher
     next c;
 
 code init-timer2  (  - )
@@ -98,12 +103,15 @@ t2-interrupt $2b int!
 : spc  (  - ) duration c@ ms ;
 : lsp  (  - ) spc spc ;
 : wsp  (  - ) spc spc spc spc ;
-: .  (  - ) noise-on spc noise-off spc ;
-: -  (  - ) noise-on spc spc spc noise-off spc ;
+: di   (  - ) noise-on spc noise-off spc ;
+: dit  (  - ) di ; \ alias F330D
+: dah  (  - ) noise-on spc spc spc noise-off spc ;
 
-: /a   . -         lsp ;
-: /b   - . . .     lsp ;
-: /c   - . - .     lsp ;
+: . 1 drop ;   : - 1 drop ; \ temporary
+
+: /a   di dah          lsp ;
+: /b   dah di di dit   lsp ;
+: /c   dah di dah dit  lsp ;
 : /d   - . .       lsp ;
 : /e   .           lsp ;
 : /f   . . - .     lsp ;
