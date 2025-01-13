@@ -1,7 +1,7 @@
 \ morse.fs
 cr
 .( morse.fs - closely patched upstream for )
-.( Mon 13 Jan 18:42:56 UTC 2025) cr
+.( Mon 13 Jan 23:12:30 UTC 2025) cr
 
 \ Use the kernel with the serial interrupt to be safe.
 
@@ -173,7 +173,7 @@ t2-interrupt $2b int!
 : char-echo ( c - c ) dup emit ;
 
 : translate  ( c - )
-    char-echo
+    \ char-echo
     upc -31 + 0 max 65 min exec:
     bad     \ All control characters
     wsp     \ BL
@@ -220,7 +220,8 @@ t2-interrupt $2b int!
 \ We only turn x-on when we have an empty buffer.
 \ This is as conservative as we can get.
 : key-get  (  - c)
-    key? not if  x-on  then  key x-off ; \ dup emit ;
+    \ key? not if  x-on  then  key x-off ; \ dup emit ;
+    key? not if  x-on  then  key x-off dup emit ;
 
 : get-number  (  - n)
     0
